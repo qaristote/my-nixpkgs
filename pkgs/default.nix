@@ -1,7 +1,7 @@
 pkgs:
 
 let
-  firefoxAddons = pkgs.callPackage ./firefox/addons { };
+  firefoxAddons = pkgs.callPackage ./firefox/addons { inherit (pkgs.nur.repos.rycee) buildFirefoxXpiAddon; };
   gitignores = pkgs.callPackage ./gitignore { };
   icons = pkgs.callPackage ./icons { };
   personal =
@@ -11,7 +11,7 @@ let
     } //
     # firefox packages
     firefoxAddons // {
-      arkenfoxUserJs = ./firefox/user-js/arkenfox.nix;
+      arkenfoxUserJs = pkgs.callPackage ./firefox/user-js/arkenfox.nix { };
     } //
     # font metadata
     {

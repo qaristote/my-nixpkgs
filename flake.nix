@@ -1,8 +1,11 @@
 {
-  outputs = { self, flake-utils }: {
+  outputs = { self, nur, ... }: {
     nixosModules.personal = import ./modules/nixos;
-    overlays.personal = self: super: {
-      personal = import ./pkgs self;
+    overlays = {
+      default = self.overlays.personal;
+      personal = self: super: {
+        personal = import ./pkgs (self.extend nur.overlay);
+      };
     };
   };
 }
