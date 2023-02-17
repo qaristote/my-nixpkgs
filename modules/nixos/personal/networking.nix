@@ -47,8 +47,10 @@ in {
     services = lib.mkIf cfg.ssh.enable {
       openssh = {
         enable = true;
-        permitRootLogin = "no";
-        passwordAuthentication = false;
+        settings = {
+          PermitRootLogin = "no";
+          PasswordAuthentication = false;
+        };
         extraConfig = ''
           AcceptEnv PS1
         '';
