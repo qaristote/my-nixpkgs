@@ -24,6 +24,7 @@ let
       barista = pkgs.callPackage ./barista {
         inherit (personal) fontawesomeMetadata materialDesignIconsMetadata;
       };
+      filtron = pkgs.callPackage ./filtron {};
       lockscreen = pkgs.callPackage ./lockscreen { };
     } // gitignores // icons;
 in personal
