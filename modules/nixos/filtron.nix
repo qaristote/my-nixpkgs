@@ -16,8 +16,7 @@ in {
     enable = lib.mkEnableOption "filtron";
     package = lib.mkOption {
       type = lib.types.package;
-      default = pkgs.personal.filtron;
-      defaultText = lib.literalExample "pkgs.personal.filtron";
+      default = pkgs.filtron;
       description = ''
         The package containing the filtron executable.
       '';
