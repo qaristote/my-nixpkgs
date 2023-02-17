@@ -9,6 +9,10 @@ let
     {
       lib.home-manager = import ./lib/home-manager { };
     } //
+    # css
+    {
+      line-awesome-css = pkgs.callPackage ./css/lineAwesome { };
+    }
     # firefox packages
     firefoxAddons // {
       arkenfoxUserJs = pkgs.callPackage ./firefox/user-js/arkenfox.nix { };
