@@ -1,4 +1,5 @@
-{ stdenv, fetchurl, fontsRelativeDirectory ? "./webfonts" }:
+{ stdenv, fetchurl, fontsRelativeDirectory ? "./webfonts", fontDisplay ? "auto"
+}:
 stdenv.mkDerivation rec {
   name = "line-awesome.css";
   version = "v1.2.1";
@@ -12,6 +13,7 @@ stdenv.mkDerivation rec {
   phases = [ "installPhase" ];
   installPhase = ''
     cp $src $out
-    substituteInPlace $out --replace '../fonts' '${fontsRelativeDirectory}'
+    substituteInPlace $out --replace '../fonts' '${fontsRelativeDirectory}' \
+                           --replace 'font-display: auto' 'font-display: ${fontDisplay}'
   '';
 }
