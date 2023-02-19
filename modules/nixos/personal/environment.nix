@@ -9,12 +9,10 @@ in {
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
-      environment.systemPackages = with pkgs; [
-        vim
-        gitMinimal
-        busybox
-        coreutils
-      ];
+      environment = {
+        systemPackages = with pkgs; [ vim gitMinimal busybox coreutils ];
+        variables.EDITOR = "vim";
+      };
     }
     (lib.mkIf cfg.locale.enable {
       time.timeZone = "Europe/Paris";
