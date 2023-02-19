@@ -4,7 +4,8 @@
     overlays = {
       default = self.overlays.personal;
       personal = self: super: {
-        personal = super.personal // import ./pkgs (self.extend nur.overlay);
+        personal = (if super ? personal then super.personal else { })
+          // import ./pkgs (self.extend nur.overlay);
       };
     };
   };
