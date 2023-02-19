@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, options, ... }:
 
 let
   cfg = config.personal.networking;
@@ -47,14 +47,18 @@ in {
     services = lib.mkIf cfg.ssh.enable {
       openssh = {
         enable = true;
+        extraConfig = ''
+          AcceptEnv PS1
+        '';
+      } // (if options.services.openssh ? settings then {
         settings = {
           PermitRootLogin = "no";
           PasswordAuthentication = false;
         };
-        extraConfig = ''
-          AcceptEnv PS1
-        '';
-      };
+      } else {
+        permitRootLogin = "no";
+        passwordAuthentication = false;
+      });
       fail2ban.enable = true;
     };
     hardware.bluetooth.enable = cfg.bluetooth.enable;
