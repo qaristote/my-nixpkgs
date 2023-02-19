@@ -12,7 +12,7 @@ let
     # css
     {
       line-awesome-css = pkgs.callPackage ./css/lineAwesome { };
-    }
+    } //
     # firefox packages
     firefoxAddons // {
       arkenfoxUserJs = pkgs.callPackage ./firefox/user-js/arkenfox.nix { };
