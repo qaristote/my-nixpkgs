@@ -1,0 +1,5 @@
+$clean_ext = 'bbl nav prv_%R.fmt prv_%R.log prv/*/* prv/* prv run.xml snm vrb';
+
+$ENV{'TZ'}='Europe/Paris';
+
+$pdf_previewer = 'evince %O %S 2>&1 | grep -v Gtk-WARNING | grep . 1>&2';

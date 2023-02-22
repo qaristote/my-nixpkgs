@@ -1,21 +1,25 @@
 pkgs:
 
 let
-  firefoxAddons = pkgs.callPackage ./firefox/addons { inherit (pkgs.nur.repos.rycee) buildFirefoxXpiAddon; };
+  mozillaAddons = pkgs.callPackage ./mozilla/addons {
+    inherit (pkgs.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+  };
   gitignores = pkgs.callPackage ./gitignore { };
   icons = pkgs.callPackage ./icons { };
   personal =
     # lib
     {
-      lib.home-manager = import ./lib/home-manager { };
+      lib = import ./lib { inherit (pkgs) lib; };
     } //
     # css
     {
       line-awesome-css = pkgs.callPackage ./css/lineAwesome { };
     } //
-    # firefox packages
-    firefoxAddons // {
-      arkenfoxUserJs = pkgs.callPackage ./firefox/user-js/arkenfox.nix { };
+    # mozilla packages
+    mozillaAddons // {
+      arkenfoxUserJS = pkgs.callPackage ./mozilla/user-js/arkenfox.nix { };
+      thunderbirdUserJS =
+        pkgs.callPackage ./mozilla/user-js/thunderbird.nix { };
     } //
     # font metadata
     {

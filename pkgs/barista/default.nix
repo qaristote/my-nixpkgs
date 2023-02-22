@@ -8,8 +8,8 @@ in buildGoModule {
   src = fetchFromGitHub {
     owner = "soumya92";
     repo = "barista";
-    rev = "c8725f1d8765e36869eb54272f29c770ce1f2f67";
-    sha256 = "19nvwrr8baf8k0pp7ph07hmjcrxm7kv5j4f2rsfa8m7hgcyarjp4";
+    rev = "7ba8592f52325a15fe4971cd7800b9faf8638d17";
+    sha256 = "Qd57ya/RBmkk8iMzYFCLVGIU0uTF4kP0JbQ5VZSwWH4=";
   };
 
   patchPhase = ''
@@ -21,16 +21,16 @@ in buildGoModule {
   ''
     cp ${i3statusGo} main/i3status.go
     substituteInPlace main/i3status.go \
-                      --replace 'fontawesome.Load()' 'fontawesome.Load("${fontawesomeMetadata}")'
-                      --replace 'mdi.Load()' 'mdi.Load("${materialDesignIconsMetadata})'
+                      --replace 'fontawesome.Load()' 'fontawesome.Load("${fontawesomeMetadata}")' \
+                      --replace 'mdi.Load()' 'mdi.Load("${materialDesignIconsMetadata}")'
   '') + # patch call to iwgetid
     ''
       substituteInPlace modules/wlan/wlan.go \
-                        --replace 'iwgetid' '${wirelesstools}/bin/iwgetid'
+                        --replace '/sbin/iwgetid' '${wirelesstools}/bin/iwgetid'
     '';
 
   subPackages = [ "main/i3status.go" ];
 
-  vendorSha256 = "1q8bmgv7aac29yvpvgh6hi4c33ydj7f54l7xn7jg2sjbac4f8kbk";
+  vendorSha256 = "uE8/z5fJbgr2BTswQknVpXH7wcFNVkFNxEcVgzecfZo=";
 }
 
