@@ -13,7 +13,7 @@ in {
 
     keybindings = lib.mkOptionDefault {
       # launching apps
-      "${modifier}+Control+Return" = ''exec "$EDITOR"'';
+      "${modifier}+Control+Return" = ''exec "emacsclient --create-frame"'';
       "${modifier}+Shift+Return" = ''exec "$BROWSER"'';
       "${modifier}+d" = lib.mkIf config.programs.rofi.enable
         ''exec "rofi -modi drun,filebrowser,run,window -show drun"'';

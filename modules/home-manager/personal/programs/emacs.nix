@@ -26,7 +26,7 @@ in {
       client.enable = lib.mkDefault true;
       startWithUserSession = lib.mkDefault true;
     };
-    home.sessionVariables.EDITOR = "emacsclient --create-frame";
+    home.sessionVariables.EDITOR = "emacsclient --tty";
 
     # add some packages necessary in spacemacs
     programs.emacs.extraPackages =
