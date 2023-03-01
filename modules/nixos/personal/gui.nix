@@ -1,11 +1,18 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }@extraArgs:
 
-let cfg = config.personal.gui;
+let
+  cfg = config.personal.gui;
+  wallpaper = pkgs.personal.static.wallpapers.nga-1973-68-1;
+  importedStylix = extraArgs ? stylix;
 in {
+  imports =
+    lib.optional importedStylix extraArgs.stylix.nixosModules.stylix;
+
   options.personal.gui = {
     enable = lib.mkEnableOption "GUI";
     xserver.enable = lib.mkEnableOption "X server";
     i3.enable = lib.mkEnableOption "i3";
+    stylix.enable = lib.mkEnableOption "stylix";
   };
 
   config = lib.mkIf cfg.enable (lib.mkMerge [
@@ -16,17 +23,17 @@ in {
         displayManager = {
           lightdm = {
             enable = true;
-            # background = background-image;
+            background = lib.mkDefault wallpaper;
             greeters.gtk = {
               enable = true;
-              # extraConfig = ''
-              #   user-background = false
-              # '';
-              theme = {
+              extraConfig = ''
+                user-background = false
+              '';
+              theme = lib.mkDefault {
                 name = "Arc-Dark";
                 package = pkgs.arc-theme;
               };
-              iconTheme = {
+              iconTheme = lib.mkDefault {
                 name = "Breeze-dark";
                 package = pkgs.breeze-icons;
               };
@@ -50,5 +57,19 @@ in {
         displayManager.defaultSession = "xfce+i3";
       };
     })
+    (lib.mkIf cfg.stylix.enable ({
+      assertions = let
+        missingArgAssertion = name: {
+          assertion = lib.hasAttr name extraArgs;
+          message =
+            "attribute ${name} missing: add it in lib.nixosSystem's specialArgs, or set config.personal.gui.stylix.enable to false";
+        };
+      in [ (missingArgAssertion "stylix") ];
+    } // lib.optionalAttrs importedStylix {
+      stylix = {
+        image = lib.mkDefault wallpaper;
+        polarity = lib.mkDefault "dark";
+      };
+    }))
   ]);
 }
