@@ -1,17 +1,24 @@
 {
-  outputs = { self, nur, ... }: {
-    nixosModules.personal = import ./modules/nixos;
-    homeModules.personal = import ./modules/home-manager;
-    overlays = {
-      default = self.overlays.personal;
-      personal = self: super:
-        let personal-pkgs = import ./pkgs (self.extend nur.overlay);
-        in {
-          personal = (super.personal or { }) // personal-pkgs;
-          lib = (super.lib or { }) // {
-            personal = (super.lib.personal or { }) // personal-pkgs.lib;
+  outputs = { self, flake-utils, nur, nixpkgs, ... }:
+    {
+      nixosModules.personal = import ./modules/nixos;
+      homeModules.personal = import ./modules/home-manager;
+      overlays = {
+        default = self.overlays.personal;
+        personal = self: super:
+          let personalPackages = import ./pkgs (super.extend nur.overlay);
+          in {
+            personal = (super.personal or { }) // personalPackages;
+            lib = (super.lib or { }) // {
+              personal = (super.lib.personal or { }) // personalPackages.lib;
+            };
           };
+      };
+    } // flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ nur.overlay ];
         };
-    };
-  };
+      in { packages = import ./pkgs pkgs; });
 }

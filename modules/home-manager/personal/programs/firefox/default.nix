@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.personal.firefox;
   userjs = pkgs.callPackage ./userjs.nix {
-    inherit (pkgs.personal) arkenfoxUserJS;
+    inherit (pkgs.personal.static.userjs) arkenfox;
     inherit (pkgs.lib.personal) toUserJS;
   };
   engines = import ./engines.nix;
@@ -23,7 +23,7 @@ let
       visibility: collapse;
     }
   '';
-  extensions = with pkgs.personal; [
+  extensions = with pkgs.personal.firefoxAddons; [
     canvasblocker
     clearurls
     darkreader

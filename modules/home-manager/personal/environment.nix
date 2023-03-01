@@ -2,11 +2,10 @@
 
 {
   home.packages = with pkgs; [ coreutils moreutils ];
-  personal.home.wallpaper = lib.mkDefault config.personal.home.dotfiles.wallpaper;
+  personal.home.wallpaper =
+    lib.mkDefault pkgs.personal.static.wallpapers.nga-1973-68-1;
 
-  programs.bash = {
-    enable = lib.mkDefault true;
-  };
+  programs.bash = { enable = lib.mkDefault true; };
 
   home = {
     shellAliases = {

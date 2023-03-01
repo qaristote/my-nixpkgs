@@ -15,9 +15,6 @@
   # ++ autostartIf config.services.redshift.enable {
   #   command = "systemctl --user start redshift";
   # }
-  ++ autostartIf (config.personal.home.wallpaper != null) {
-    command = "${pkgs.feh}/bin/feh --bg-scale ${config.personal.home.wallpaper}";
-  }
   # ++ autostartIf config.services.xidlehook.enable {
   #   command = "systemctl --user start xidlehook.service";
   # }

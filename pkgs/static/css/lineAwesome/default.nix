@@ -12,8 +12,8 @@ stdenv.mkDerivation rec {
 
   phases = [ "installPhase" ];
   installPhase = ''
-    cp $src $out
-    substituteInPlace $out --replace '../fonts' '${fontsRelativeDirectory}' \
-                           --replace 'font-display: auto' 'font-display: ${fontDisplay}'
+    cp "$src" "$out"
+    substituteInPlace "$out" --replace '../fonts' '${fontsRelativeDirectory}' \
+                             --replace 'font-display: auto' 'font-display: ${fontDisplay}'
   '';
 }

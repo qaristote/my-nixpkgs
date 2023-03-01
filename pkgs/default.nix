@@ -1,37 +1,35 @@
-pkgs:
+super:
 
 let
-  mozillaAddons = pkgs.callPackage ./mozilla/addons {
-    inherit (pkgs.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
-  };
-  gitignores = pkgs.callPackage ./gitignore { };
-  icons = pkgs.callPackage ./icons { };
-  personal =
-    # lib
-    {
-      lib = import ./lib { inherit (pkgs) lib; };
-    } //
-    # css
-    {
-      line-awesome-css = pkgs.callPackage ./css/lineAwesome { };
-    } //
-    # mozilla packages
-    mozillaAddons // {
-      arkenfoxUserJS = pkgs.callPackage ./mozilla/user-js/arkenfox.nix { };
-      thunderbirdUserJS =
-        pkgs.callPackage ./mozilla/user-js/thunderbird.nix { };
-    } //
-    # font metadata
-    {
-      fontawesomeMetadata = pkgs.callPackage ./fontMetadata/fontawesome.nix { };
+  self = {
+    barista = super.callPackage ./barista {
+      fontawesomeMetadata = self.static.fontMetadata.fontawesome;
       materialDesignIconsMetadata =
-        pkgs.callPackage ./fontMetadata/materialDesignIcons.nix { };
-    } //
-    # miscellaneous
-    {
-      barista = pkgs.callPackage ./barista {
-        inherit (personal) fontawesomeMetadata materialDesignIconsMetadata;
+        self.static.fontMetadata.materialDesignIcons;
+    };
+
+    lib = import ./lib { inherit (super) lib; };
+
+    lockscreen = super.callPackage ./lockscreen { };
+
+    firefoxAddons = super.callPackage ./firefoxAddons {
+      inherit (super.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+    };
+
+    static = {
+      css = { lineAwesome = super.callPackage ./static/css/lineAwesome { }; };
+      fontMetadata = {
+        fontawesome = super.callPackage ./static/fontMetadata/fontawesome { };
+        materialDesignIcons =
+          super.callPackage ./static/fontMetadata/materialDesignIcons { };
       };
-      lockscreen = pkgs.callPackage ./lockscreen { };
-    } // gitignores // icons;
-in personal
+      gitignore = super.callPackage ./static/gitignore { };
+      icons = super.callPackage ./static/icons { };
+      userjs = {
+        arkenfox = super.callPackage ./static/userjs/arkenfox { };
+        thunderbird = super.callPackage ./static/userjs/thunderbird { };
+      };
+      wallpapers = super.callPackage ./static/wallpapers { };
+    };
+  };
+in self

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  configDefault = builtins.readFile "${pkgs.personal.thunderbirdUserJS}"
+  configDefault = builtins.readFile "${pkgs.personal.static.userjs.thunderbird}"
     + pkgs.lib.personal.toUserJS {
       # 0391
       "mail.bii.alert.show_preview" = false;

@@ -51,7 +51,7 @@ in {
           {
             name = "Netflix";
             genericName = "Streaming service";
-            icon = "${pkgs.personal.netflixIcon}";
+            icon = "${pkgs.personal.static.icons.netflix}";
             comment = "Unlimited movies, TV shows, and more.";
             url = "https://www.netflix.com/fr-en/login";
             categories = [ "AudioVideo" "Video" "Player" ];
@@ -59,7 +59,7 @@ in {
           {
             name = "MUBI";
             genericName = "Streaming service";
-            icon = "${pkgs.personal.mubiIcon}";
+            icon = "${pkgs.personal.static.icons.mubi}";
             comment = "Watch hand-picked cinema.";
             url = "https://mubi.com";
             categories = [ "AudioVideo" "Video" "Player" ];
@@ -67,7 +67,7 @@ in {
           {
             name = "Deezer";
             genericName = "Streaming service";
-            icon = "${pkgs.personal.deezerIcon}";
+            icon = "${pkgs.personal.static.icons.deezer}";
             comment = "Listen to music online";
             url = "https://deezer.com/login";
             categories = [ "AudioVideo" "Audio" "Player" "Music" ];

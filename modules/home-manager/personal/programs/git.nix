@@ -6,7 +6,7 @@
     userEmail = lib.mkDefault "quentin@aristote.fr";
 
     ignores = builtins.map builtins.readFile
-      (with pkgs.personal; [ emacsGitignore linuxGitignore direnvGitignore ])
+      (with pkgs.personal.static.gitignore; [ direnv emacs linux ])
       ++ [
         # Personal rules
         ''
