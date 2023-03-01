@@ -44,7 +44,14 @@ in {
           titlebar = lib.mkDefault false;
           border = lib.mkDefault 0;
         };
-        floating.titlebar = lib.mkDefault false;
+        floating = {
+          titlebar = lib.mkDefault false;
+          border = lib.mkDefault (if config.services.picom.enable
+          && config.services.picom.shadow then
+            0
+          else
+            lib.mkOptionDefault);
+        };
         gaps = {
           inner = lib.mkDefault 15;
           outer = lib.mkDefault 5;

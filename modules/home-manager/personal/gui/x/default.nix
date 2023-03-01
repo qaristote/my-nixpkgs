@@ -2,7 +2,7 @@
 
 let cfg = config.personal.x;
 in {
-  imports = [ ./i3 ./idlehook.nix ];
+  imports = [ ./i3 ./idlehook.nix ./picom.nix ];
 
   options.personal.x = {
     enable = lib.mkEnableOption "X" // {
@@ -10,5 +10,8 @@ in {
     };
   };
 
-  config.xsession.enable = lib.mkDefault cfg.enable;
+  config = lib.mkIf (cfg.enable && config.personal.gui.enable) {
+    xsession.enable = true;
+    services.picom.enable = lib.mkDefault true;
+  };
 }
