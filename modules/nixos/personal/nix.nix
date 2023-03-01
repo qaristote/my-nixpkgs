@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 let cfg = config.personal.nix;
 in {
@@ -30,11 +30,8 @@ in {
       flake = cfg.flake;
       flags = if (cfg.flake == null) then
         [ "--upgrade-all" ]
-      else [
-        "--update-input"
-        "nixpkgs"
-        "--commit-lock-file"
-      ];
+      else
+        [ "--commit-lock-file" ] ++ pkgs.personal.lib.updateInputFlag "nixpkgs";
     };
     systemd.services = {
       nix-gc.after =
