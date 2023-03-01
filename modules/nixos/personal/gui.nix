@@ -5,8 +5,7 @@ let
   wallpaper = pkgs.personal.static.wallpapers.nga-1973-68-1;
   importedStylix = extraArgs ? stylix;
 in {
-  imports =
-    lib.optional importedStylix extraArgs.stylix.nixosModules.stylix;
+  imports = lib.optional importedStylix extraArgs.stylix.nixosModules.stylix;
 
   options.personal.gui = {
     enable = lib.mkEnableOption "GUI";
