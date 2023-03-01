@@ -21,7 +21,7 @@ in {
       # exiting
       "${modifier}+Shift+e" = "exec i3-msg exit";
       "${modifier}+l" =
-        "exec ${config.personal.home.lockscreen}/bin/lockscreen.sh";
+        "exec ${config.personal.home.lockscreen}";
 
       # media keys
       "XF86MonBrightnessUp" = "exec ${brightnessctl} set 5%+";
