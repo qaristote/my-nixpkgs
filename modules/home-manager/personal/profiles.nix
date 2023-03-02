@@ -37,11 +37,6 @@ in {
         '';
       };
 
-      services.gpg-agent = {
-        enable = true;
-        enableSshSupport = true;
-      };
-
       home.file = {
         ".config/latexmkrc".text =
           builtins.readFile config.personal.home.dotfiles.latexmkrc;
@@ -89,6 +84,11 @@ in {
         (config.personal.gui.enable && cfg.social.identities.personal)
         [ signal-desktop ];
       programs.thunderbird.enable = lib.mkDefault config.personal.gui.enable;
+      services.gpg-agent = {
+        enable = true;
+        enableSshSupport = true;
+      };
+
       accounts.email.accounts = let
         gpg = {
           key = "DFC1660846EEA97C059F18534EF515441E635D36";
