@@ -20,7 +20,7 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.dev {
-      home.packages = with pkgs; [ gnupg python3 ];
+      home.packages = with pkgs; [ python3 ];
       programs = {
         alacritty.enable = lib.mkDefault config.personal.gui.enable;
         direnv.enable = lib.mkDefault true;
@@ -43,6 +43,8 @@ in {
         ".config/venv-manager/config/default.nix".source =
           lib.mkDefault config.personal.home.dotfiles.venv-manager;
       };
+
+      services.gpg-agent.enableSshSupport = true;
     })
 
     (lib.mkIf cfg.multimedia {
@@ -84,10 +86,8 @@ in {
         (config.personal.gui.enable && cfg.social.identities.personal)
         [ signal-desktop ];
       programs.thunderbird.enable = lib.mkDefault config.personal.gui.enable;
-      services.gpg-agent = {
-        enable = true;
-        enableSshSupport = true;
-      };
+      programs.gpg.enable = true;
+      services.gpg-agent.enable = true;
 
       accounts.email.accounts = let
         gpg = {
@@ -160,12 +160,12 @@ in {
           thunderbird = {
             enable = true;
             profiles = [ "default" ];
-            settings = id: thunderbirdSettings id // {
+            settings = id:
+              thunderbirdSettings id // {
                 "mail.identity.id_${id}.archive_folder" =
                   "imap://qaristote@clipper.ens.fr/Archive";
-                "mail.server.server_${id}.trash_folder_name" =
-                  "Trash";
-            };
+                "mail.server.server_${id}.trash_folder_name" = "Trash";
+              };
           };
         };
       };

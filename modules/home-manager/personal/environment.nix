@@ -16,4 +16,12 @@
     };
     sessionVariables = { CDPATH = "~"; };
   };
+
+  services.gpg-agent = {
+    enableBashIntegration = lib.mkDefault config.programs.bash.enable;
+    pinentryFlavor =
+      lib.mkDefault (if config.personal.gui.enable then "gtk2" else "tty");
+    grabKeyboardAndMouse =
+      lib.mkDefault false; # insecure, but necessary with keepass auto-type
+  };
 }
