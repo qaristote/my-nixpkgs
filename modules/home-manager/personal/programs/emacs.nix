@@ -47,7 +47,7 @@ in {
         Service = {
           Type = "oneshot";
           WorkingDirectory = "${config.home.homeDirectory}/.emacs.d/";
-          ExecStart = "${spacemacs-update-script}";
+          ExecStart = "${spacemacs-update-script}/bin/spacemacs-update";
         };
         Timer = {
           Persistent = true;
