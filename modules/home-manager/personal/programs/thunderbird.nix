@@ -17,6 +17,10 @@ let
       "extensions.cardbook.useOnlyEmail" = false;
       # 9312
       "calendar.timezone.local" = "Europe/Paris";
+      # Personal
+      ## Default sorting
+      "mailnews.default_sort_order" = 2; # Descending
+      "mailnews.default_sort_type" = 22; # By thread
     };
   profiles = {
     all = { };
