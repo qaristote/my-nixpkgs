@@ -22,18 +22,18 @@ let
       "mailnews.default_sort_order" = 2; # Descending
       "mailnews.default_sort_type" = 22; # By thread
     };
-  profiles = {
-    all = { };
-    personal = { };
-    work = { };
-  };
 in {
   config = lib.mkMerge [
-    { programs.thunderbird = { inherit profiles; }; }
+    {
+      programs.thunderbird = {
+        profiles.default = {
+          isDefault = true;
+          withExternalGnupg = true;
+        };
+      };
+    }
     (lib.mkIf config.programs.thunderbird.enable {
-      home.file = lib.concatMapAttrs
-        (name: _: { ".thunderbird/${name}/user.js".text = configDefault; })
-        profiles;
+      home.file.".thunderbird/default/user.js".text = configDefault;
     })
   ];
 }

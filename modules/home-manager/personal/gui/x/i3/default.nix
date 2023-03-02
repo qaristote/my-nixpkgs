@@ -25,12 +25,12 @@ in {
               { class = "MUBI"; }
               { class = "Deezer"; }
             ];
-          } // lib.optionalAttrs config.personal.profiles.social {
-            "9: social" = [
-              { class = "^Mail$"; }
-              { class = "^thunderbird$"; }
-              { class = "^Signal$"; }
-            ];
+          } // lib.optionalAttrs config.personal.profiles.social.enable {
+            "9: social" = [ { class = "^Mail$"; } { class = "^thunderbird$"; } ]
+              ++ lib.optional
+              config.personal.profiles.social.identities.personal {
+                class = "^signal-desktop$";
+              };
           } // {
             "10: passwords" = [{
               # matches <some db>.kbdx [Locked] - KeePassXC

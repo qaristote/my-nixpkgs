@@ -3,10 +3,17 @@
 let
   cfg = config.personal.profiles;
   mkEnableProfileOption = name: lib.mkEnableOption "${name} profile";
+  mkEnableIdentityOption = name: lib.mkEnableOption "${name} identity";
 in {
   options.personal.profiles = {
     dev = mkEnableProfileOption "development";
-    social = mkEnableProfileOption "social";
+    social = {
+      enable = mkEnableProfileOption "social";
+      identities = {
+        personal = mkEnableIdentityOption "personal";
+        work = mkEnableIdentityOption "work";
+      };
+    };
     syncing = mkEnableProfileOption "syncing";
     multimedia = mkEnableProfileOption "video";
   };
@@ -76,9 +83,11 @@ in {
       };
     })
 
-    (lib.mkIf cfg.social {
+    (lib.mkIf cfg.social.enable {
       home.packages = with pkgs;
-        lib.optionals config.personal.gui.enable [ signal-desktop ];
+        lib.optionals
+        (config.personal.gui.enable && cfg.social.identities.personal)
+        [ signal-desktop ];
       programs.thunderbird.enable = lib.mkDefault config.personal.gui.enable;
       accounts.email.accounts = let
         gpg = {
@@ -89,7 +98,7 @@ in {
           "mail.identity.id_${id}.fcc_folder_picker_mode" = 0;
         };
       in {
-        personal = {
+        personal = lib.mkIf cfg.social.identities.personal {
           inherit gpg;
           address = "quentin@aristote.fr";
           userName = "quentin@aristote.fr";
@@ -110,11 +119,11 @@ in {
           };
           thunderbird = {
             enable = true;
-            profiles = [ "all" "personal" ];
+            profiles = [ "default" ];
             settings = thunderbirdSettings;
           };
         };
-        work = {
+        work = lib.mkIf cfg.social.identities.work {
           inherit gpg;
           address = "quentin.aristote@ens.fr";
           userName = "qaristote";
@@ -140,7 +149,7 @@ in {
           };
           thunderbird = {
             enable = true;
-            profiles = [ "all" "work" ];
+            profiles = [ "default" ];
             settings = thunderbirdSettings;
           };
         };
