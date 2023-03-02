@@ -21,6 +21,10 @@ let
       ## Default sorting
       "mailnews.default_sort_order" = 2; # Descending
       "mailnews.default_sort_type" = 22; # By thread
+      ## Calendar
+      "calendar.week.start" = 1;
+      "calendar.view.visiblehours" = 16;
+      "calendar.dayendhour" = 24;
     };
 in {
   config = lib.mkMerge [
