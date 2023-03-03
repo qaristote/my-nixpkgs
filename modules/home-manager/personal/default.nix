@@ -1,7 +1,14 @@
 { ... }:
 
 {
-  imports = [ ./dotfiles ./environment.nix ./gui ./profiles.nix ./programs ];
+  imports = [
+    ./dotfiles
+    ./environment.nix
+    ./gui
+    ./identities.nix
+    ./profiles.nix
+    ./programs
+  ];
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -25,10 +25,10 @@ in {
               { class = "MUBI"; }
               { class = "Deezer"; }
             ];
-          } // lib.optionalAttrs config.personal.profiles.social.enable {
+          } // lib.optionalAttrs config.personal.profiles.social {
             "9: social" = [ { class = "^Mail$"; } { class = "^thunderbird$"; } ]
               ++ lib.optional
-              config.personal.profiles.social.identities.personal {
+              config.personal.identities.personal {
                 class = "^signal-desktop$";
               };
           } // {
