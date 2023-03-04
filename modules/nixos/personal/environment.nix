@@ -13,6 +13,8 @@ in {
         systemPackages = with pkgs; [ vim gitMinimal busybox coreutils ];
         variables.EDITOR = "vim";
       };
+
+      programs.starship.enable = true;
     }
     (lib.mkIf cfg.locale.enable {
       time.timeZone = "Europe/Paris";
