@@ -29,7 +29,7 @@ in {
             "9: social" = [ { class = "^Mail$"; } { class = "^thunderbird$"; } ]
               ++ lib.optional
               config.personal.identities.personal {
-                class = "^signal-desktop$";
+                class = "^signal";
               };
           } // {
             "10: passwords" = [{
