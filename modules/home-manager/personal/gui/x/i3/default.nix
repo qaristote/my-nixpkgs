@@ -27,10 +27,11 @@ in {
             ];
           } // lib.optionalAttrs config.personal.profiles.social {
             "9: social" = [ { class = "^Mail$"; } { class = "^thunderbird$"; } ]
-              ++ lib.optional
-              config.personal.identities.personal {
-                class = "^signal";
-              };
+              ++ lib.optionals config.personal.identities.personal [
+                { class = "^signal$"; }
+                { class = "^Signal$"; }
+                { title = "^Signal"; }
+              ];
           } // {
             "10: passwords" = [{
               # matches <some db>.kbdx [Locked] - KeePassXC
