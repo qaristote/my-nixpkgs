@@ -7,7 +7,7 @@ let
     inherit (pkgs.personal.static.userjs) arkenfox;
     inherit (pkgs.lib.personal) toUserJS;
   };
-  engines = import ./engines.nix;
+  engines = import ./engines.nix { inherit lib pkgs; };
   userchrome-treestyletabs = ''
     /* Hide main tabs toolbar */
     #TabsToolbar {
@@ -23,19 +23,6 @@ let
       visibility: collapse;
     }
   '';
-  extensions = with pkgs.personal.firefoxAddons; [
-    canvasblocker
-    clearurls
-    darkreader
-    neat-url
-    redirector
-    smart-referer
-    temporary-containers
-    tree-style-tab
-    ublock-origin
-    unpaywall
-    url-in-title
-  ];
   webappsWithIds = (builtins.foldl' ({ counter, value }:
     { name, ... }@next: {
       counter = counter + 1;
@@ -75,34 +62,75 @@ in {
         { name, id, profileName, extraUserJS, ... }:
         prev // {
           "${profileName}" = {
-            inherit extensions;
             id = id + 2;
+            extensions = with pkgs.personal.firefoxAddons; [
+              clearurls
+              neat-url
+              redirector
+              smart-referer
+              ublock-origin
+              unpaywall
+              url-in-title
+            ];
+            search = {
+              force = true;
+              engines = with engines; disableDefault // { inherit Searx; };
+              default = "Searx";
+            };
             extraConfig = userjs.streaming + extraUserJS;
           };
         }) {
           default = {
-            inherit extensions;
             id = 0; # isDefault = true
 
-            extraConfig = userjs.default;
-            userChrome = userchrome-treestyletabs;
+            extensions = with pkgs.personal.firefoxAddons; [
+              canvasblocker
+              clearurls
+              darkreader
+              neat-url
+              redirector
+              smart-referer
+              temporary-containers
+              tree-style-tab
+              ublock-origin
+              unpaywall
+              url-in-title
+            ];
             search = {
               force = lib.mkDefault true;
-              engines = {
-                inherit (engines) Searx;
-                "Bing".metaData.hidden = true;
-                "Google".metaData.hidden = true;
-                "Amazon.fr".metaData.hidden = true;
-              };
+              engines = with engines;
+                disableDefault // {
+                  inherit Searx;
+                } // lib.optionalAttrs config.personal.identities.personal
+                personal
+                // lib.optionalAttrs config.personal.identities.work work
+                // lib.optionalAttrs config.personal.profiles.dev dev;
               default = "Searx";
               order = [ "Searx" "Wikipedia" ];
             };
+            extraConfig = userjs.default;
+            userChrome = userchrome-treestyletabs;
           };
 
           videoconferencing = {
-            inherit extensions;
             id = 1;
-
+            extensions = with pkgs.personal.firefoxAddons; [
+              clearurls
+              darkreader
+              neat-url
+              redirector
+              smart-referer
+              multi-account-containers
+              tree-style-tab
+              ublock-origin
+              unpaywall
+              url-in-title
+            ];
+            search = {
+              force = true;
+              engines = with engines; disableDefault // { inherit Searx; };
+              default = "Searx";
+            };
             extraConfig = userjs.videoconferencing;
             userChrome = userchrome-treestyletabs;
           };
