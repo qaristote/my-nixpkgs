@@ -17,7 +17,7 @@ let
     Emojipedia = {
       urls = [{
         template = "https://emojipedia.org/search/?";
-        parameters = [ (lib.nameValuePair "q" "{searchTerms}") ];
+        params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
 
       iconUpdateURL =
@@ -30,7 +30,7 @@ let
     AlternativeTo = {
       urls = [{
         template = "https://alternativeto.net/browse/search/?";
-        parameters = [ (lib.nameValuePair "q" "{searchTerms}") ];
+        params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
 
       iconUpdateURL =
@@ -55,7 +55,7 @@ let
     "NixOS Options" = {
       urls = [{
         template = "https://search.nixos.org/options";
-        parameters = [
+        params = [
           (lib.nameValuePair "channel" "unstable")
           (lib.nameValuePair "query" "{searchTerms}")
         ];
@@ -69,7 +69,7 @@ let
     "NixOS Wiki" = {
       urls = [{
         template = "https://nixos.wiki/index.php?";
-        parameters = [ (lib.nameValuePair "search" "{searchTerms}") ];
+        params = [ (lib.nameValuePair "search" "{searchTerms}") ];
       }];
       iconUpdateURL = "https://nixos.wiki/favicon.png";
       updateInterval = everyday;
@@ -79,7 +79,7 @@ let
     "Nix Packages" = {
       urls = [{
         template = "https://search.nixos.org/packages";
-        parameters = [
+        params = [
           (lib.nameValuePair "channel" "unstable")
           (lib.nameValuePair "query" "{searchTerms}")
         ];
@@ -93,7 +93,7 @@ let
     nLab = {
       urls = {
         template = "https://ncatlab.org/nlab/search?";
-        parameters = [ (lib.nameValuePair "query" "{searchTerms}") ];
+        params = [ (lib.nameValuePair "query" "{searchTerms}") ];
       };
 
       iconUpdateURL = "https://ncatlab.org/favicon.ico";
@@ -105,7 +105,7 @@ let
     Searx = {
       urls = [{
         template = "https://searx.aristote.fr/search?";
-        parameters = [ (lib.nameValuePair "q" "{searchTerms}") ];
+        params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
       iconUpdateURL =
         "https://searx.aristote.fr/static/themes/oscar/img/favicon.png";
