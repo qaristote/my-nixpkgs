@@ -31,7 +31,7 @@ in {
 
     # add some packages necessary in spacemacs
     programs.emacs.extraPackages =
-      lib.mkDefault (ep: with ep; [ emacsql-sqlite emacsql-sqlite3 ]);
+      lib.mkDefault (ep: with ep; [ emacsql-sqlite emacsql-sqlite-builtin ]);
     home.packages = with pkgs; [ gnutar source-code-pro ];
 
     # spacemacs dotfile
