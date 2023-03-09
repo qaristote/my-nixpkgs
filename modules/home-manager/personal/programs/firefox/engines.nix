@@ -2,6 +2,7 @@
 
 let
   everyday = 24 * 60 * 60 * 1000;
+  nixosIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
   self = {
     disable = engines: lib.genAttrs engines (name: { metaData.hidden = true; });
     disableDefault = self.disable [ "Google" "Amazon.fr" "Bing" ];
@@ -16,27 +17,23 @@ let
 
     Emojipedia = {
       urls = [{
-        template = "https://emojipedia.org/search/?";
+        template = "https://emojipedia.org/search/";
         params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
-
       iconUpdateURL =
         "https://emojipedia.org/static/img/favicons/favicon-16x16.png";
       updateInterval = everyday;
-
       definedAliases = [ "@emojipedia" "@emoji" "@em" ];
     };
 
     AlternativeTo = {
       urls = [{
-        template = "https://alternativeto.net/browse/search/?";
+        template = "https://alternativeto.net/browse/search/";
         params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
-
       iconUpdateURL =
         "https://alternativeto.net/static/icons/a2/favicon-16x16.png";
       updateInterval = everyday;
-
       definedAliases = [ "@alternativeto" "@a2" ];
     };
 
@@ -45,10 +42,7 @@ let
         template =
           "https://mipmip.github.io/home-manager-option-search/?{searchTerms}";
       }];
-
-      icon =
-        "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-
+      icon = nixosIcon;
       definedAliases = [ "@homemanager" "@hm" ];
     };
 
@@ -59,20 +53,17 @@ let
           (lib.nameValuePair "channel" "unstable")
           (lib.nameValuePair "query" "{searchTerms}")
         ];
-
-        icon =
-          "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-        definedAliases = [ "@nixos" "@no" ];
       }];
+      icon = nixosIcon;
+      definedAliases = [ "@nixos" "@no" ];
     };
 
     "NixOS Wiki" = {
       urls = [{
-        template = "https://nixos.wiki/index.php?";
+        template = "https://nixos.wiki/index.php";
         params = [ (lib.nameValuePair "search" "{searchTerms}") ];
       }];
-      iconUpdateURL = "https://nixos.wiki/favicon.png";
-      updateInterval = everyday;
+      icon = nixosIcon;
       definedAliases = [ "@nixoswiki" "@nw" ];
     };
 
@@ -83,28 +74,24 @@ let
           (lib.nameValuePair "channel" "unstable")
           (lib.nameValuePair "query" "{searchTerms}")
         ];
-
-        icon =
-          "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-        definedAliases = [ "@nixpkgs" "@np" ];
       }];
+      icon = nixosIcon;
+      definedAliases = [ "@nixpkgs" "@np" ];
     };
 
     nLab = {
-      urls = {
-        template = "https://ncatlab.org/nlab/search?";
+      urls = [{
+        template = "https://ncatlab.org/nlab/search";
         params = [ (lib.nameValuePair "query" "{searchTerms}") ];
-      };
-
+      }];
       iconUpdateURL = "https://ncatlab.org/favicon.ico";
       updateInterval = everyday;
-
       definedAliases = [ "@ncatlab" "@nlab" ];
     };
 
     Searx = {
       urls = [{
-        template = "https://searx.aristote.fr/search?";
+        template = "https://searx.aristote.fr/search";
         params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
       iconUpdateURL =
