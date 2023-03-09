@@ -21,9 +21,9 @@ in {
           && (extraArgs.osConfig.programs.steam.enable or true)) {
             "8: multimedia" = [
               { class = "^Steam$"; }
-              { class = "Netflix"; }
-              { class = "MUBI"; }
-              { class = "Deezer"; }
+              { title = "Netflix"; }
+              { title = "MUBI"; }
+              { title = "Deezer"; }
             ];
           } // lib.optionalAttrs config.personal.profiles.social {
             "9: social" = [ { class = "^Mail$"; } { class = "^thunderbird$"; } ]
