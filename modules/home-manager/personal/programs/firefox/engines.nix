@@ -3,7 +3,7 @@
 let
   everyday = 24 * 60 * 60 * 1000;
   self = {
-    disable = engines: lib.genAttrs engines (name: { metadata.hidden = true; });
+    disable = engines: lib.genAttrs engines (name: { metaData.hidden = true; });
     disableDefault = self.disable [ "Google" "Amazon.fr" "Bing" ];
 
     nix = {
