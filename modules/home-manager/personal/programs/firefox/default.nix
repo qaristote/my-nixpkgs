@@ -8,20 +8,16 @@ let
     inherit (pkgs.lib.personal) toUserJS;
   };
   engines = import ./engines.nix { inherit lib pkgs; };
-  userchrome-treestyletabs = ''
-    /* Hide main tabs toolbar */
-    #TabsToolbar {
-      visibility: collapse;
-    }
-    /* Sidebar min and max width removal */
-    #sidebar {
-      max-width: none !important;
-      min-width: 0px !important;
-    }
-    /* Hide sidebar header, when using Tree Style Tab. */
-    #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
-      visibility: collapse;
-    }
+  userchrome = let
+    userchromeTST = ./userchrome/treestyletabs.css;
+    userchromeTSTColors = config.lib.stylix.colors {
+      template = builtins.readFile ./userchrome/treestyletabs-colors.css;
+      extension = ".css";
+    };
+  in ''
+    @import "${userchromeTST}";
+  '' + lib.optionalString (config.lib ? stylix) ''
+    @import "${userchromeTSTColors}";
   '';
   webappsWithIds = (builtins.foldl' ({ counter, value }:
     { name, ... }@next: {
@@ -109,7 +105,7 @@ in {
               order = [ "Searx" "Wikipedia" ];
             };
             extraConfig = userjs.default;
-            userChrome = userchrome-treestyletabs;
+            userChrome = userchrome;
           };
 
           videoconferencing = {
@@ -132,7 +128,7 @@ in {
               default = "Searx";
             };
             extraConfig = userjs.videoconferencing;
-            userChrome = userchrome-treestyletabs;
+            userChrome = userchrome;
           };
         } webappsWithIds;
     }
