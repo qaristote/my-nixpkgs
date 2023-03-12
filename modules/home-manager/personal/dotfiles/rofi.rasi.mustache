@@ -1,0 +1,147 @@
+/**
+ * Base16 {{scheme-name}} ROFI Color theme
+ *
+ * Authors
+ *  Scheme: {{scheme-author}}
+ */
+
+* {
+    red:                         rgba ( {{base08-rgb-r}}, {{base08-rgb-g}}, {{base08-rgb-b}}, 100 % );
+    green:                       rgba ( {{base0B-rgb-r}}, {{base0B-rgb-g}}, {{base0B-rgb-b}}, 100 % );
+    background:                  rgba ( {{base00-rgb-r}}, {{base00-rgb-g}}, {{base00-rgb-b}}, 100 % );
+    background-color:            rgba ( {{base00-rgb-r}}, {{base00-rgb-g}}, {{base00-rgb-b}}, 100 % );
+    background-light:            rgba ( {{base01-rgb-r}}, {{base01-rgb-g}}, {{base01-rgb-b}}, 100 % );
+    foreground-dark:             rgba ( {{base04-rgb-r}}, {{base04-rgb-g}}, {{base04-rgb-b}}, 100 % );
+    foreground:                  rgba ( {{base05-rgb-r}}, {{base05-rgb-g}}, {{base05-rgb-b}}, 100 % );
+    separatorcolor:              @foreground;
+    border-color:                @foreground;
+    selected-normal-foreground:  @background;
+    selected-normal-background:  @foreground;
+    selected-active-foreground:  @background;
+    selected-active-background:  @green;
+    selected-urgent-foreground:  @background;
+    selected-urgent-background:  @red;
+    normal-foreground:           @foreground;
+    normal-background:           @background;
+    active-foreground:           @green;
+    active-background:           @background;
+    urgent-foreground:           @red;
+    urgent-background:           @background;
+    spacing:                     2;
+}
+window {
+    background-color: @background;
+    border:           0;
+    padding:          0;
+}
+mainbox {
+    border:           0;
+    padding:          0;
+}
+message {
+    border:           1px dash 0px 0px ;
+    border-color:     @separatorcolor;
+    padding:          1px ;
+}
+textbox {
+    text-color:       @foreground;
+}
+listview {
+    fixed-height:     0;
+    border-color:     @separatorcolor;
+    spacing:          2px ;
+    scrollbar:        true;
+    padding:          2px 5px ;
+}
+element-text, element-icon {
+    background-color: inherit;
+    text-color:       inherit;
+}
+element {
+    border:           0;
+    padding:          2px ;
+}
+element normal.normal {
+    background-color: @normal-background;
+    text-color:       @normal-foreground;
+}
+element alternate.normal {
+    background-color: @normal-background;
+    text-color:       @normal-foreground;
+}
+element normal.urgent {
+    background-color: @urgent-background;
+    text-color:       @urgent-foreground;
+}
+element alternate.urgent {
+    background-color: @urgent-background;
+    text-color:       @urgent-foreground;
+}
+element normal.active {
+    background-color: @active-background;
+    text-color:       @active-foreground;
+}
+element alternate.active {
+    background-color: @active-background;
+    text-color:       @active-foreground;
+}
+element selected.normal {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+element selected.urgent {
+    background-color: @selected-urgent-background;
+    text-color:       @selected-urgent-foreground;
+}
+element selected.active {
+    background-color: @selected-active-background;
+    text-color:       @selected-active-foreground;
+}
+scrollbar {
+    width:            4px ;
+    border:           0;
+    handle-color:     @normal-foreground;
+    handle-width:     8px ;
+    padding:          0;
+}
+sidebar {
+    border:           2px dash 0px 0px ;
+    border-color:     @separatorcolor;
+}
+button {
+    spacing:          0;
+    text-color:       @normal-foreground;
+}
+button selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+inputbar {
+    background-color: @background-light;
+    spacing:          0px;
+    text-color:       @foreground-dark;
+    padding:          5px ;
+    children:         [ prompt,textbox-prompt-colon,entry,case-indicator ];
+}
+case-indicator {
+    background-color: inherit;
+    text-color:       inherit;
+    spacing:          0;
+}
+entry {
+    background-color: inherit;
+    text-color:       inherit;
+    spacing:          0;
+}
+prompt {
+    background-color: inherit;
+    text-color:       inherit;
+    spacing:          0;
+}
+textbox-prompt-colon {
+    background-color: inherit;
+    text-color:       inherit;
+    expand:           false;
+    str:              ":";
+    margin:           0px 0.3000em 0.0000em 0.0000em ;
+}
