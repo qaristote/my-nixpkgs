@@ -21,8 +21,4 @@ in {
       material-design-icons
       roboto
     ];
-
-  # (Miscellaneous) Tray icons
-  services.blueman-applet.enable =
-    lib.mkDefault (extraArgs.osConfig.services.blueman.enable);
 }

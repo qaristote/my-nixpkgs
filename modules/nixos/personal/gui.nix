@@ -44,7 +44,6 @@ in {
         layout = config.personal.hardware.keyboard.keyMap;
         autoRepeatDelay = 200;
       };
-      services.blueman.enable = config.hardware.bluetooth.enable;
     }
     (lib.mkIf cfg.i3.enable {
       services.xserver = {
