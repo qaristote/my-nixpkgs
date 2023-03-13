@@ -63,7 +63,10 @@ This function should only modify configuration layer settings."
      latex
      markdown
      nixos
-     org
+     (org :variables
+          org-enable-roam-support t
+          ;; org-enable-roam-ui t
+          )
      ocaml coq
      php
      python
