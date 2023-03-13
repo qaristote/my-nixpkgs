@@ -29,11 +29,6 @@ in {
     home.sessionVariables.EDITOR = "emacsclient --tty";
     home.shellAliases.editor = "emacsclient --create-frame";
 
-    # add some packages necessary in spacemacs
-    programs.emacs.extraPackages =
-      lib.mkDefault (ep: with ep; [ emacsql-sqlite emacsql-sqlite-builtin ]);
-    home.packages = with pkgs; [ gnutar source-code-pro ];
-
     # spacemacs dotfile
     home.file.".spacemacs.d/init.el".source =
       lib.mkDefault config.personal.home.dotfiles.spacemacs;
@@ -55,6 +50,9 @@ in {
           OnCalendar = "daily";
         };
         Install = { WantedBy = [ "default.target" ]; };
-      });
+      }) // {
+        services.emacs.Service.Environment = with pkgs;
+          [ "PATH=${gnutar}/bin:${gcc}/bin:$PATH" ];
+      };
   };
 }
