@@ -620,12 +620,12 @@ before packages are loaded."
   ;; Key bindings
   (defun my-ediff-dotfile-and-template ()
     (interactive)
-    (ediff-files "~/code/nix/latitude-7490/home/config/dotfiles/spacemacs"
+    (ediff-files "~/code/nix/my-nixpkgs/modules/home-manager/personal/dotfiles/spacemacs.el"
                  (concat dotspacemacs-template-directory ".spacemacs.template")))
   (spacemacs/set-leader-keys "feD" 'my-ediff-dotfile-and-template)
   (defun my-open-dotfile ()
     (interactive)
-    (find-file "~/code/nix/latitude-7490/home/config/dotfiles/spacemacs"))
+    (find-file "~/code/nix/my-nixpkgs/modules/home-manager/personal/dotfiles/spacemacs.el"))
   (spacemacs/set-leader-keys "fed" 'my-open-dotfile)
 
   (spacemacs/set-leader-keys-for-major-mode 'magit-mode "b" 'magit-branch)
