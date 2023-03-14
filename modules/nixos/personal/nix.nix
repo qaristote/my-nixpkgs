@@ -45,5 +45,13 @@ in {
         wantedBy = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
       };
     };
+    programs.git = lib.mkIf (cfg.flake != null 
+                            && lib.hasPrefix "git+file" cfg.flake) {
+      enable = true;
+      config.user =  {
+        name = "Root user of ${config.networking.hostName}";
+        email = "root@${config.networking.hostName}";
+      };
+    };
   };
 }

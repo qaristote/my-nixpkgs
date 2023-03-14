@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }@extraArgs:
 
 let
   primaryEmail = let
@@ -28,5 +28,14 @@ in {
           result
         ''
       ];
+
+    extraConfig = {
+      safe.directory = lib.mkIf (extraArgs ? osConfig) (
+        let 
+          flake = extraArgs.osConfig.system.autoUpgrade.flake;
+          flakeIsValid = flake != null && lib.hasPrefix "git+file://" flake;
+          flakePath = lib.removePrefix "git+file://" flake;
+         in lib.optional flakeIsValid flakePath);
+    };
   };
 }
