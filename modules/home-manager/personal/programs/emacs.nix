@@ -21,10 +21,23 @@ let
     }) { emacs = cfg.package; };
 in {
   config = lib.mkIf cfg.enable {
+
     services.emacs = {
       enable = lib.mkDefault true;
       client.enable = lib.mkDefault true;
       startWithUserSession = lib.mkDefault true;
+      package = let emacs = config.programs.emacs.finalPackage; in
+        pkgs.runCommand "emacsWrapped" {
+          nativeBuildInputs = with pkgs; [ makeWrapper ];
+        } ''
+          mkdir "$out"
+          ln -s ${emacs}/share "$out"
+          for binary in ${emacs}/bin/*
+          do
+            makeWrapper "$binary" "$out"/bin/$(basename "$binary")\
+                        --prefix PATH : ${lib.makeBinPath (with pkgs; [ gnutar gcc ])}
+          done
+          '';
     };
     home.sessionVariables.EDITOR = "emacsclient --tty";
     home.shellAliases.editor = "emacsclient --create-frame";
@@ -50,9 +63,6 @@ in {
           OnCalendar = "daily";
         };
         Install = { WantedBy = [ "default.target" ]; };
-      }) // {
-        services.emacs.Service.Environment = with pkgs;
-          [ "PATH=${gnutar}/bin:${gcc}/bin:$PATH" ];
-      };
+      });
   };
 }
