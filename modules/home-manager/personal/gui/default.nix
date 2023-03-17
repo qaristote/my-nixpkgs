@@ -13,6 +13,8 @@ in {
   config = lib.mkIf cfg.enable {
     services.kdeconnect.indicator = lib.mkDefault true;
 
+    services.safeeyes.enable = true;
+
     home.pointerCursor = lib.mkDefault {
       name = "Numix-Cursor-Light";
       package = pkgs.numix-cursor-theme;
