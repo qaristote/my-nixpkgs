@@ -67,6 +67,10 @@ in {
       stylix = {
         image = lib.mkDefault wallpaper;
         polarity = lib.mkDefault "dark";
+        fonts.sizes = {
+          applications = 10;
+          desktop = 12;
+        };
       };
     }))
   ]);

@@ -13,7 +13,7 @@
         };
       };
 
-      font = { size = 8.0; };
+      font = lib.mkForce { size = 8.0; };
   };
 
   xsession.windowManager.i3.config.terminal = lib.mkIf config.programs.alacritty.enable "alacritty";
