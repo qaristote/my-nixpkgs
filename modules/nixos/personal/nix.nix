@@ -44,18 +44,14 @@ in {
         before = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
         wantedBy = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
       };
-      nixos-upgrade = {
-        wants = lib.optional config.networking.networkmanager.enable
-          "NetworkManager-wait-online.service";
+    };
+    programs.git = lib.mkIf (cfg.flake != null 
+                            && lib.hasPrefix "git+file" cfg.flake) {
+      enable = true;
+      config.user =  {
+        name = "Root user of ${config.networking.hostName}";
+        email = "root@${config.networking.hostName}";
       };
     };
-    programs.git =
-      lib.mkIf (cfg.flake != null && lib.hasPrefix "git+file" cfg.flake) {
-        enable = true;
-        config.user = {
-          name = "Root user of ${config.networking.hostName}";
-          email = "root@${config.networking.hostName}";
-        };
-      };
   };
 }
