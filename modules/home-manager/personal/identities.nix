@@ -55,13 +55,11 @@ in {
       };
       work = lib.mkIf config.personal.identities.work {
         inherit gpg;
-        address = "quentin.aristote@ens.fr";
-        userName = "qaristote";
+        address = "quentin.aristote@irif.fr";
+        userName = "aristote";
         realName = "Quentin Aristote";
         aliases = [
-          "quentin.aristote@ens.psl.eu"
-          "qaristote@clipper.ens.fr"
-          "qaristote@clipper.ens.psl.eu"
+          "aristote@irif.fr"
         ];
         folders = {
           drafts = "Drafts";
@@ -70,11 +68,11 @@ in {
           trash = "Trash";
         };
         imap = {
-          host = "clipper.ens.fr";
+          host = "imap.irif.fr";
           port = 993;
         };
         smtp = {
-          host = "clipper.ens.fr";
+          host = "smtp.irif.fr";
           port = 465;
         };
         thunderbird = {
@@ -83,7 +81,7 @@ in {
           settings = id:
             thunderbirdSettings id // {
               "mail.identity.id_${id}.archive_folder" =
-                "imap://qaristote@clipper.ens.fr/Archive";
+                "imap://aristote@imap.irif.fr/Archive";
               "mail.server.server_${id}.trash_folder_name" = "Trash";
             };
         };
