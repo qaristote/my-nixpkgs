@@ -88,7 +88,9 @@ in {
       };
     };
 
-    home.packages = lib.optionals cfg.personal (with pkgs; [ ])
-      ++ lib.optionals cfg.work (with pkgs; [ zotero ]);
+    home = lib.mkIf cfg.work {
+      packages = with pkgs; [ zotero evince ];
+      shellAliases.VIEWER = "evince";
+    };
   };
 }
