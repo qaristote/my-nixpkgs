@@ -58,9 +58,7 @@ in {
         address = "quentin.aristote@irif.fr";
         userName = "aristote";
         realName = "Quentin Aristote";
-        aliases = [
-          "aristote@irif.fr"
-        ];
+        aliases = [ "aristote@irif.fr" ];
         folders = {
           drafts = "Drafts";
           inbox = "Inbox";
@@ -90,7 +88,8 @@ in {
 
     home = lib.mkIf cfg.work {
       packages = with pkgs; [ zotero evince ];
-      sessionVariables.VIEWER = "evince";
+      file.".latexmkrc".source =
+        lib.mkDefault config.personal.home.dotfiles.latexmkrc;
     };
   };
 }
