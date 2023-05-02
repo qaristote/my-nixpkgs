@@ -19,7 +19,7 @@ in {
         "mail.identity.id_${id}.fcc_folder_picker_mode" = 0;
       };
     in {
-      personal = lib.mkIf config.personal.identities.personal {
+      personal = lib.mkIf cfg.personal {
         inherit gpg;
         address = "quentin@aristote.fr";
         userName = "quentin@aristote.fr";
@@ -53,7 +53,7 @@ in {
             };
         };
       };
-      work = lib.mkIf config.personal.identities.work {
+      work = lib.mkIf cfg.work {
         inherit gpg;
         address = "quentin.aristote@irif.fr";
         userName = "aristote";
@@ -90,7 +90,7 @@ in {
 
     home = lib.mkIf cfg.work {
       packages = with pkgs; [ zotero evince ];
-      shellAliases.VIEWER = "evince";
+      sessionVariables.VIEWER = "evince";
     };
   };
 }
