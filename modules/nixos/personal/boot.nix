@@ -11,7 +11,6 @@ in {
     (lib.mkIf cfg.grub.enable {
       grub = {
         enable = true;
-        version = 2;
         enableCryptodisk = config.boot.initrd.luks.devices != { };
         device = lib.mkDefault "nodev";
       };
