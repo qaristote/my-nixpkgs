@@ -95,7 +95,7 @@ let
         params = [ (lib.nameValuePair "q" "{searchTerms}") ];
       }];
       iconUpdateURL =
-        "https://searx.aristote.fr/static/themes/oscar/img/favicon.png";
+        "https://searx.aristote.fr/static/themes/simple/img/favicon.svg";
       updateInterval = everyday;
     };
   };
