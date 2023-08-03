@@ -3,11 +3,11 @@
 /* Apply system-wide theme */
 :root {
     --tab-surface-active: rgb( {{base02-rgb-r}}, {{base02-rgb-g}}, {{base02-rgb-b}}, 50%);
-    --tab-text-active: {{base05-hex}};
-    --tab-surface-regular: {{base00-hex}};
-    --tab-text-regular: {{base05-hex}};
+    --tab-text-active: #{{base05-hex}};
+    --tab-surface-regular: #{{base00-hex}};
+    --tab-text-regular: #{{base05-hex}};
     --tab-surface-hover: rgb( {{base02-rgb-r}}, {{base02-rgb-g}}, {{base02-rgb-b}}, 50%);
     --tab-surface-active-hover: rgb( {{base02-rgb-r}}, {{base02-rgb-g}}, {{base02-rgb-b}}, 50%);
-    --tab-border: {{base05-hex}};
+    --tab-border: #{{base00-hex}};
 }
 }
