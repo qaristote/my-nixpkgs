@@ -1,21 +1,12 @@
 /* Not working. Paste this inside TST's extra CSS rules. */
 @-moz-document regexp("moz-extension://.+/sidebar/sidebar.html.*") {
-    /* Apply system-wide theme */
-    :root {
-        --toolbar-non-lwt-bgcolor: rgba( {{base00-rgb-r}}, {{base00-rgb-g}}, {{base00-rgb-b}}, 0% );
-        --toolbar-non-lwt-textcolor: rgba( {{base05-rgb-r}}, {{base05-rgb-g}}, {{base05-rgb-b}}, 100% );
-    }
-    :root[color-scheme="system-color"][data-user-agent*="Linux"]
-         tab-item:not(.active):not(.bundled-active):not(.highlighted),
-    :root[color-scheme="system-color"][data-user-agent*="Linux"]
-         .after-tabs button,
-    :root[color-scheme="system-color"][data-user-agent*="Linux"]
-         .after-tabs [role="button"],
-    :root[color-scheme="system-color"][data-user-agent*="Linux"]
-         #subpanel-selector-anchor,
-    :root[color-scheme="system-color"][data-user-agent*="Linux"]
-         #background {
-        --toolbar-non-lwt-bgcolor: rgba( {{base00-rgb-r}}, {{base00-rgb-g}}, {{base00-rgb-b}}, 100% );
-        --toolbar-non-lwt-textcolor: rgba( {{base05-rgb-r}}, {{base05-rgb-g}}, {{base05-rgb-b}}, 100% );
-    }
+/* Apply system-wide theme */
+:root {
+    --tab-surface-active: rgb( {{base02-rgb-r}}, {{base02-rgb-g}}, {{base02-rgb-b}}, 50%);
+    --tab-text-active: {{base05-hex}};
+    --tab-surface-regular: {{base00-hex}};
+    --tab-text-regular: {{base05-hex}};
+    --tab-surface-hover: rgb( {{base02-rgb-r}}, {{base02-rgb-g}}, {{base02-rgb-b}}, 50%);
+    --tab-surface-active-hover: rgb( {{base02-rgb-r}}, {{base02-rgb-g}}, {{base02-rgb-b}}, 50%);
+}
 }
