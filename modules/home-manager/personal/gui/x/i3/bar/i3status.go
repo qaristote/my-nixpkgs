@@ -132,7 +132,7 @@ func main() {
 	wifiOffIcon := pango.Icon("mdi-wifi-off")
 	wifiRefreshIcon := pango.Icon("mdi-wifi-refresh")
 	wifiOnIcon := pango.Icon("mdi-wifi")
-	barista.Add(wlan.Named("wlp2s0").Output(func(w wlan.Info) bar.Output {
+	barista.Add(wlan.Any().Output(func(w wlan.Info) bar.Output {
 		var output *pango.Node
 		var colorScheme string
 		switch {
