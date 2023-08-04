@@ -77,6 +77,21 @@ func main() {
 			}
 			return outputs.Pango(output).Color(colors.Scheme(colorScheme))
 		})))
+	emacsIcon := pango.Icon("mdi-alpha-e-circle")
+	barista.Add(systemd.UserService("emacs").Output(func(i systemd.ServiceInfo) bar.Output {
+		state := i.UnitInfo.State
+		var colorScheme string
+		switch {
+		case state == systemd.StateActive:
+			colorScheme = "good"
+		case state == systemd.StateActivating:
+			colorScheme = "degraded"
+		default:
+			colorScheme = "bad"
+		}
+		return outputs.Pango(emacsIcon).Color(colors.Scheme(colorScheme))
+	}))
+
 
 	// Display space left on /
 	storageIcon := pango.Icon("mdi-database")
