@@ -8,8 +8,8 @@ in buildGoModule {
   src = fetchFromGitHub {
     owner = "soumya92";
     repo = "barista";
-    rev = "49c89827137e54835127183bf218bed1743e30a8";
-    sha256 = "/GSiXgfTPJU2dJCZAUxiYknqsi/8loBQzzru02M2Ylg=";
+    rev = "ce8f4953e9ccf194b769f3d9ddb6806a1f7677d7";
+    sha256 = "sha256-SzB4Zf9qW0ylob4iLTHR3tZpUl9Ns/F3gaUjuU+Ys1k=";
   };
 
   patchPhase = ''
@@ -31,6 +31,6 @@ in buildGoModule {
 
   subPackages = [ "main/i3status.go" ];
 
-  vendorSha256 = "6dxBubWcBwS4+QX2Yi38GvTXgWxS00WemHmIbJI8JUQ=";
+  vendorSha256 = "sha256-gpzxwtGxHcidRYY8o1Lz0iboU5aNnwsWfOoGo6Lvefo=";
 }
 
