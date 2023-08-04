@@ -10,6 +10,7 @@ import (
 
 	"barista.run"
 	"barista.run/bar"
+	"barista.run/base/click"
 	"barista.run/colors"
 	"barista.run/group"
 	"barista.run/modules/battery"
@@ -37,61 +38,37 @@ func main() {
 	mdi.Load() // repo path will be inserted at build time
 
 	// Display status of several services
+	outputServiceStatus := func(goodState systemd.State, degradedState systemd.State, goodIcon *pango.Node, degradedIcon *pango.Node, badIcon *pango.Node) func(systemd.ServiceInfo) bar.Output {
+		return func(i systemd.ServiceInfo) bar.Output {
+			state := i.UnitInfo.State
+			var colorScheme string
+			var output *pango.Node
+			switch {
+			case state == goodState:
+				colorScheme = "good"
+				output = goodIcon
+			case state == degradedState:
+				colorScheme = "degraded"
+				output = degradedIcon
+			default:
+				colorScheme = "bad"
+				output = badIcon
+			}
+			return outputs.Pango(output).Color(colors.Scheme(colorScheme)).OnClick(click.Right(func() {
+				i.Restart()
+			}))
+		}
+	}
 	updateSuccessIcon := pango.Icon("mdi-reload")
 	updatingIcon := pango.Icon("mdi-update")
 	updateFailIcon := pango.Icon("mdi-reload-alert")
 	garbageFullIcon := pango.Icon("mdi-delete")
 	garbageEmptyingIcon := pango.Icon("mdi-delete-restore")
 	garbageEmptyIcon := pango.Icon("mdi-delete-outline")
-	barista.Add(group.Simple(systemd.Service("nixos-upgrade").Output(func(i systemd.ServiceInfo) bar.Output {
-		state := i.UnitInfo.State
-		var colorScheme string
-		var output *pango.Node
-		switch {
-		case state == systemd.StateInactive:
-			colorScheme = "good"
-			output = updateSuccessIcon
-		case state == systemd.StateActivating:
-			colorScheme = "degraded"
-			output = updatingIcon
-		default:
-			colorScheme = "bad"
-			output = updateFailIcon
-		}
-		return outputs.Pango(output).Color(colors.Scheme(colorScheme))
-	}),
-		systemd.Service("nix-gc").Output(func(i systemd.ServiceInfo) bar.Output {
-			state := i.UnitInfo.State
-			var colorScheme string
-			var output *pango.Node
-			switch {
-			case state == systemd.StateInactive:
-				colorScheme = "good"
-				output = garbageEmptyIcon
-			case state == systemd.StateActivating:
-				colorScheme = "degraded"
-				output = garbageEmptyingIcon
-			default:
-				colorScheme = "bad"
-				output = garbageFullIcon
-			}
-			return outputs.Pango(output).Color(colors.Scheme(colorScheme))
-		})))
+	barista.Add(group.Simple(systemd.Service("nixos-upgrade").Output(outputServiceStatus(systemd.StateInactive, systemd.StateActivating, updateSuccessIcon, updatingIcon, updateFailIcon)),
+		systemd.Service("nix-gc").Output(outputServiceStatus(systemd.StateInactive, systemd.StateActivating, garbageEmptyIcon, garbageEmptyingIcon, garbageFullIcon))))
 	emacsIcon := pango.Icon("mdi-alpha-e-circle")
-	barista.Add(systemd.UserService("emacs").Output(func(i systemd.ServiceInfo) bar.Output {
-		state := i.UnitInfo.State
-		var colorScheme string
-		switch {
-		case state == systemd.StateActive:
-			colorScheme = "good"
-		case state == systemd.StateActivating:
-			colorScheme = "degraded"
-		default:
-			colorScheme = "bad"
-		}
-		return outputs.Pango(emacsIcon).Color(colors.Scheme(colorScheme))
-	}))
-
+	barista.Add(systemd.UserService("emacs").Output(outputServiceStatus(systemd.StateActive, systemd.StateActivating, emacsIcon, emacsIcon, emacsIcon)))
 
 	// Display space left on /
 	storageIcon := pango.Icon("mdi-database")
