@@ -20,8 +20,8 @@ in {
         tls_starttls = false;
         host = "ssl0.ovh.net";
         port = 465;
-        from = "quentin@aristote.fr";
-        user = "quentin@aristote.fr";
+        from = "quentin-machines@aristote.fr";
+        user = "quentin-machines@aristote.fr";
         passwordeval = "cat /etc/msmtp/secrets";
       };
     };
