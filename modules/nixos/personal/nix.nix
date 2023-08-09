@@ -34,8 +34,11 @@ in {
         [ "--commit-lock-file" ] ++ pkgs.personal.lib.updateInputFlag "nixpkgs";
     };
     systemd.services = {
-      nix-gc.after =
-        lib.optional (cfg.autoUpgrade && cfg.gc.enable) "nixos-upgrade.service";
+      nix-gc = {
+        after = lib.optional (cfg.autoUpgrade && cfg.gc.enable)
+          "nixos-upgrade.service";
+        personal.monitor = true;
+      };
       nix-gc-remove-dead-roots = {
         enable = cfg.gc.enable;
         description = "Remove dead symlinks in /nix/var/nix/gcroots";
@@ -43,9 +46,9 @@ in {
         script = "find /nix/var/nix/gcroots -xtype l -delete";
         before = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
         wantedBy = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
+        personal.monitor = true;
       };
     };
-    personal.monitoring.services = [ "nixos-upgrade" "nix-gc" ];
     programs.git =
       lib.mkIf (cfg.flake != null && lib.hasPrefix "git+file" cfg.flake) {
         enable = true;
