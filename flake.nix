@@ -4,6 +4,11 @@
     inputs.nixpkgs.url = "nixpkgs";
   };
 
+  nixConfig = {
+    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
+    extra-trusted-substituters = "https://devenv.cachix.org";
+  };
+
   outputs = {
     self,
     nur,
@@ -21,6 +26,25 @@
         nixosModules.personal = import ./modules/nixos;
         homeModules.personal = import ./modules/home-manager;
         overlays.personal = self.overlays.default;
+
+        lib = import ./lib;
+
+        templates = let
+          welcomeText = ''
+            # `.devenv` should be added to `.gitignore`
+            ```sh
+              echo .devenv >> .gitignore
+            ```
+          '';
+          mkDevenvTemplate = path: {
+            inherit welcomeText path;
+          };
+          devenv = mkDevenvTemplate ./templates/devenv/simple;
+          devenvModular = mkDevenvTemplate ./templates/devenv/flake-parts;
+        in {
+          inherit devenv devenvModular;
+          default = devenv;
+        };
       };
 
       perSystem = {
