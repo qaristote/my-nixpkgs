@@ -1,24 +1,40 @@
 {
-  outputs = { self, flake-utils, nur, nixpkgs, ... }:
-    {
+  inputs.devenv = {
+    url = "github:cachix/devenv";
+    inputs.nixpkgs.url = "nixpkgs";
+  };
+
+  outputs = { self, nur, nixpkgs, flake-parts, devenv, ... }@inputs: flake-parts.lib.mkFlake { inherit inputs; } {
+    imports = [ flake-parts.flakeModules.easyOverlay devenv.flakeModule ];
+    systems = [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin" ];
+
+    flake = {
+      devenvModules.personal = import ./modules/devenv;
       nixosModules.personal = import ./modules/nixos;
       homeModules.personal = import ./modules/home-manager;
-      overlays = {
-        default = self.overlays.personal;
-        personal = self: super:
-          let personalPackages = import ./pkgs (super.extend nur.overlay);
-          in {
-            personal = (super.personal or { }) // personalPackages;
-            lib = (super.lib or { }) // {
-              personal = (super.lib.personal or { }) // personalPackages.lib;
-            };
-          };
+      # overlays.personal = self.overlays.default;
+    };
+
+    perSystem = { config, system, pkgs, lib, ... }: {
+      _module.args.pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ nur.overlay ];
+        config = {};
       };
-    } // flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ nur.overlay ];
+
+        overlayAttrs = {
+          inherit (lib.recursiveUpdate pkgs { personal = config.packages; lib.personal = config.packages.lib; }) personal lib;
         };
-      in { packages = import ./pkgs pkgs; });
+        packages = import ./pkgs pkgs;
+
+        devenv.shells.default = {
+          name = "my-nixpkgs";
+
+          imports = [ self.devenvModules.personal ];
+
+          languages.nix.enable = true;
+        };
+    };
+  };
+>>>>>>> Stashed changes
 }
