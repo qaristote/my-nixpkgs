@@ -1,3 +1,3 @@
 {
-  imports = [ ./languages ];
+  imports = [./dotfiles.nix ./integrations ./languages];
 }
