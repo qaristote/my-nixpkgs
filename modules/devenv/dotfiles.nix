@@ -40,15 +40,15 @@ in {
           let
             content =
               text
-              + lib.optionalString (name == ".gitignore") ''
-                # dotfiles
+              + lib.optionalString (name == ".gitignore" && dotfilesToIgnore != []) ''
+                ### dotfiles
                 ${lib.concatStringsSep "\n" dotfilesToIgnore}
               '';
           in ''
             ${
               if gitignore
-              then "ln -s"
-              else "cp"
+              then "ln --symbolic --force"
+              else "install --mode=644"
             } "${builtins.toFile name content}" "${name}"
           ''
         )
