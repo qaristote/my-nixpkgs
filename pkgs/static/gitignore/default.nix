@@ -22,6 +22,7 @@ stdenvNoCC.mkDerivation {
     do
       echo "### $(basename "$file" .gitignore)" >> $out
       cat "$file" >> $out
+      echo >> $out
     done
     substituteInPlace $out ${lib.concatStringsSep " " (builtins.map (line: "--replace ${lib.escapeShellArg "# ${line}"} ${lib.escapeShellArg line}") toUncomment)}
   '';

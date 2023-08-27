@@ -25,7 +25,18 @@
         devenvModules.personal = import ./modules/devenv;
         nixosModules.personal = import ./modules/nixos;
         homeModules.personal = import ./modules/home-manager;
-        overlays.personal = self.overlays.default;
+        overlays.personal = _: super: let
+          my-packages = import ./pkgs super;
+        in {
+          inherit
+            (super.lib.recursiveUpdate super {
+              personal = my-packages;
+              lib.personal = my-packages.lib;
+            })
+            personal
+            lib
+            ;
+        };
 
         lib = import ./lib;
 
@@ -53,28 +64,34 @@
         pkgs,
         lib,
         ...
-      }: {
+      }: let
+        flatten = let
+          aux = path: attrs:
+            if lib.isAttrs attrs && ! lib.isDerivation attrs
+            then lib.foldlAttrs (prev: name: value: prev // aux (path ++ [name]) value) {} attrs
+            else
+              (
+                if lib.isDerivation attrs
+                then {"${lib.concatStringsSep "_" path}" = attrs;}
+                else {}
+              );
+        in
+          aux [];
+      in {
         _module.args.pkgs = import nixpkgs {
           inherit system;
-          overlays = [nur.overlay];
+          overlays = [nur.overlay self.overlays.personal];
           config = {};
         };
 
-        overlayAttrs = {
-          inherit
-            (lib.recursiveUpdate pkgs {
-              personal = config.packages;
-              lib.personal = config.packages.lib;
-            })
-            personal
-            lib
-            ;
-        };
-        packages = import ./pkgs pkgs;
+        packages = flatten pkgs.personal;
 
         devenv.shells.default = {
           imports = [self.devenvModules.personal];
-          languages.nix.enable = true;
+          languages.nix = {
+            enable = true;
+            packaging.enable = true;
+          };
         };
       };
     };
