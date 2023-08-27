@@ -46,8 +46,8 @@ in {
     };
   };
 
-  config.dotfiles.".dir-locals.el" = lib.mkIf (cfg.dirLocals != {}) {
-    gitignore = lib.mkDefault true;
-    text = attrs2alist cfg.dirLocals;
-  };
+  config.dotfiles.".dir-locals.el".text =
+    lib.mkIf (cfg.dirLocals != {})
+    (attrs2alist
+      cfg.dirLocals);
 }

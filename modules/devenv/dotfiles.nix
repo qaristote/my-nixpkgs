@@ -14,8 +14,11 @@ in {
           gitignore =
             lib.mkEnableOption ""
             // {
-              default = true;
-              description = "Whether git should ignore this dotfile, typically if it is generated to contain absolute paths.";
+              description = ''
+                Whether git should ignore this dotfile, typically if it is
+                generated to contain absolute paths and is specific to this
+                project (and may not be ignored system-wide by the user).
+              '';
             };
           text = lib.mkOption {
             type = lib.types.lines;

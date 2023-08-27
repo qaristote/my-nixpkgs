@@ -18,12 +18,15 @@ in {
     packaging.enable = lib.mkEnableOption "tools for writing nix derivations";
   };
 
-  config = {
-    packages = lib.mkIf cfg.enable (with pkgs; [cfg.formatter deadnix] ++ lib.optionals cfg.packaging.enable [nix-prefetch-scripts nix-prefetch-github]);
+  config = lib.mkIf cfg.enable {
+    packages = with pkgs; [cfg.formatter deadnix] ++ lib.optionals cfg.packaging.enable [nix-prefetch-scripts nix-prefetch-github];
 
     pre-commit.hooks = {
       deadnix.enable = lib.mkDefault true;
       "${cfg.formatter.pname}".enable = lib.mkDefault true;
     };
+
+    scripts."${cfg.formatter.pname}-emacs".exec = "${cfg.formatter.pname} " + lib.optionalString (cfg.formatter.pname == "alejandra") "--quiet" + " $@";
+    emacs.dirLocals.nix-mode.nix-nixfmt-bin = ''"${cfg.formatter.pname}-emacs"'';
   };
 }

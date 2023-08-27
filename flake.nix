@@ -19,7 +19,13 @@
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
       imports = [flake-parts.flakeModules.easyOverlay devenv.flakeModule];
-      systems = ["x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
+      systems = [
+        "x86_64-linux"
+        "i686-linux"
+        "x86_64-darwin"
+        "aarch64-linux"
+        "aarch64-darwin"
+      ];
 
       flake = {
         devenvModules.personal = import ./modules/devenv;
@@ -47,9 +53,7 @@
               echo .devenv >> .gitignore
             ```
           '';
-          mkDevenvTemplate = path: {
-            inherit welcomeText path;
-          };
+          mkDevenvTemplate = path: {inherit welcomeText path;};
           devenv = mkDevenvTemplate ./templates/devenv/simple;
           devenvModular = mkDevenvTemplate ./templates/devenv/flake-parts;
         in {
@@ -67,12 +71,17 @@
       }: let
         flatten = let
           aux = path: attrs:
-            if lib.isAttrs attrs && ! lib.isDerivation attrs
-            then lib.foldlAttrs (prev: name: value: prev // aux (path ++ [name]) value) {} attrs
+            if lib.isAttrs attrs && !lib.isDerivation attrs
+            then
+              lib.foldlAttrs
+              (prev: name: value: prev // aux (path ++ [name]) value) {}
+              attrs
             else
               (
                 if lib.isDerivation attrs
-                then {"${lib.concatStringsSep "_" path}" = attrs;}
+                then {
+                  "${lib.concatStringsSep "_" path}" = attrs;
+                }
                 else {}
               );
         in
