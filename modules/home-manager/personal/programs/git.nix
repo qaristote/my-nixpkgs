@@ -1,14 +1,20 @@
-{ config, lib, pkgs, ... }@extraArgs:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} @ extraArgs: let
   primaryEmail = let
-    primaryEmailList = builtins.filter (account: account.primary)
+    primaryEmailList =
+      builtins.filter (account: account.primary)
       (lib.attrValues config.accounts.email.accounts);
-  in if primaryEmailList == [ ] then {
-    userName = lib.mkDefault "Quentin Aristote";
-    address = lib.mkDefault "quentin@aristote.fr";
-  } else
-    builtins.head primaryEmailList;
+  in
+    if primaryEmailList == []
+    then {
+      userName = lib.mkDefault "Quentin Aristote";
+      address = lib.mkDefault "quentin@aristote.fr";
+    }
+    else builtins.head primaryEmailList;
 in {
   programs.git = {
     userName = primaryEmail.userName;
@@ -17,8 +23,12 @@ in {
       inherit (primaryEmail.gpg) key signByDefault;
     };
 
-    ignores = builtins.map builtins.readFile
-      (with pkgs.personal.static.gitignore; [ direnv emacs linux ]) ++ [
+    ignores =
+      [
+        (builtins.readFile
+          (pkgs.personal.gitignore.override {templates = ["direnv" "Emacs" "Linux"];}))
+      ]
+      ++ [
         # Personal rules
         ''
           # Nix
@@ -31,11 +41,13 @@ in {
 
     extraConfig = {
       safe.directory = lib.mkIf (extraArgs ? osConfig) (
-        let 
+        let
           flake = extraArgs.osConfig.system.autoUpgrade.flake;
           flakeIsValid = flake != null && lib.hasPrefix "git+file://" flake;
           flakePath = lib.removePrefix "git+file://" flake;
-         in lib.optional flakeIsValid flakePath);
+        in
+          lib.optional flakeIsValid flakePath
+      );
     };
   };
 }
