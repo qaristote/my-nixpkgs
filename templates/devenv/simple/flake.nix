@@ -2,6 +2,8 @@
   inputs = {
     devenv.url = "github:cachix/devenv";
     my-nixpkgs.url = "github:qaristote/my-nixpkgs";
+    nixpkgs = {};
+    flake-parts = {};
   };
 
   nixConfig = {
@@ -9,8 +11,8 @@
     extra-trusted-substituters = "https://devenv.cachix.org";
   };
 
-  outputs = {my-nixpkgs, ...} @ inputs:
-    my-nixpkgs.lib.mkDevenv inputs
+  outputs = inputs:
+    inputs.my-nixpkgs.lib.mkDevenv inputs
     # this function has the same arguments flake-parts' perSystem does:
     # config, lib, pkgs, system, etc.
     ({...}: {

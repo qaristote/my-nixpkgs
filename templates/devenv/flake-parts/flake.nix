@@ -2,6 +2,7 @@
   inputs = {
     devenv.url = "github:cachix/devenv";
     my-nixpkgs.url = "github:qaristote/my-nixpkgs";
+    nixpkgs = {};
   };
 
   nixConfig = {
