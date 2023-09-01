@@ -26,7 +26,7 @@ in {
     ignores =
       [
         (builtins.readFile
-          (pkgs.personal.gitignore.override {templates = ["direnv" "Emacs" "Linux"];}))
+          (pkgs.personal.static.gitignore.override {templates = ["direnv" "Emacs" "Linux"];}))
       ]
       ++ [
         # Personal rules
