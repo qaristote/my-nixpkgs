@@ -32,7 +32,7 @@
         nixosModules.personal = import ./modules/nixos;
         homeModules.personal = import ./modules/home-manager;
         overlays.personal = _: super: let
-          my-packages = import ./pkgs super;
+          my-packages = import ./pkgs (super.extend nur.overlay);
         in {
           inherit
             (super.lib.recursiveUpdate super {
@@ -89,7 +89,7 @@
       in {
         _module.args.pkgs = import nixpkgs {
           inherit system;
-          overlays = [nur.overlay self.overlays.personal];
+          overlays = [self.overlays.personal];
           config = {};
         };
 
