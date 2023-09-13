@@ -609,6 +609,9 @@ before packages are loaded."
 
    ;; restrict which warnings are shown
    '(warning-minimum-level :emergency)
+
+   ;; truncate all lines
+   '(truncate-lines nil)
    )
 
   ;; auto-completion
