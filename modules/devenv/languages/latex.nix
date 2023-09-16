@@ -17,7 +17,7 @@
     "latex" = "1";
     "lualatex" = "2";
   };
-  latexmkrc = with latexmkrc; let
+  latexmkrc = with cfg.latexmkrc; let
     pdfMode = with output.pdf;
       if enable
       then pdfModes."${mode}"
@@ -103,25 +103,30 @@ in {
     };
   };
 
-  config = lib.mkMerge [
+  config = lib.mkIf cfg.enable (lib.mkMerge [
     {
+      packages = [texlive];
+      gitignore.LaTeX.enable = true;
+    }
+    (lib.mkIf cfg.latexmk.enable {
       languages.texlive = {
+        packages = tl: [{inherit (tl) latexmk;}];
         latexmk = {
           shellEscape.enable = lib.mkIf (lib.mkDefault packagesRequireShellEscape true);
           extraFlags = lib.optional cfg.latexmkrc.shellEscape.enable "-shell-escape";
         };
-        packages = tl: lib.optionalAttrs cfg.latexmk.enable {inherit (tl) latexmk;};
       };
-      packages = lib.optional cfg.enable texlive;
-    }
-    (lib.mkIf cfg.latexmk.enable {
+
       scripts.latexmk.exec = ''
         ${texlive}/bin/latexmk -r ${devenv.root}/.latexmkrc
       '';
+
+      gitignore.LaTeX.uncomment = with cfg.latexmk.output; lib.optional pdf "*.pdf" ++ lib.optional dvi "*.dvi" ++ lib.optional ps "*.ps";
+
       dotfiles.".latexmkrc" = {
         gitignore = lib.mkDefault false;
         text = latexmkrc;
       };
     })
-  ];
+  ]);
 }
