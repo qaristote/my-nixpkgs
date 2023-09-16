@@ -16,16 +16,10 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [
-        inputs.devenv.flakeModule
-      ];
-      systems = ["x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" "aarch64-darwin"];
+      imports = with my-nixpkgs.flakeModules; [personal devenv];
       perSystem = {...}: {
         devenv.shells.default = {
-          imports = [my-nixpkgs.devenvModules.personal];
-
           ######################## PUT YOUR CONFIG HERE ########################
-          # for this flake
           languages.nix.enable = true;
         };
       };

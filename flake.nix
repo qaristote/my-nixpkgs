@@ -16,19 +16,17 @@
     flake-parts,
     devenv,
     ...
-  } @ inputs:
+  } @ inputs: let
+    devenvModules.personal = import ./modules/devenv;
+    flakeModules = {
+      personal = import ./modules/flake-parts/personal.nix;
+      devenv = import ./modules/flake-parts/devenv.nix devenvModules;
+    };
+  in
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = [flake-parts.flakeModules.easyOverlay devenv.flakeModule];
-      systems = [
-        "x86_64-linux"
-        "i686-linux"
-        "x86_64-darwin"
-        "aarch64-linux"
-        "aarch64-darwin"
-      ];
-
+      imports = builtins.attrValues flakeModules;
       flake = {
-        devenvModules.personal = import ./modules/devenv;
+        inherit devenvModules flakeModules;
         nixosModules.personal = import ./modules/nixos;
         homeModules.personal = import ./modules/home-manager;
         overlays.personal = _: super: let
@@ -96,7 +94,6 @@
         packages = flatten pkgs.personal;
 
         devenv.shells.default = {
-          imports = [self.devenvModules.personal];
           languages.nix = {
             enable = true;
             packaging.enable = true;
