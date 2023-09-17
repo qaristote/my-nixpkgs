@@ -16,7 +16,7 @@
     ...
   } @ inputs:
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = with my-nixpkgs.flakeModules; [personal devenv];
+      imports = builtins.attrValues {inherit (my-nixpkgs.flakeModules) personal devenv;};
       perSystem = {...}: {
         devenv.shells.default = {
           ######################## PUT YOUR CONFIG HERE ########################

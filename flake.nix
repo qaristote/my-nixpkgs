@@ -45,18 +45,11 @@
         lib = import ./lib;
 
         templates = let
-          welcomeText = ''
-            # `.devenv` should be added to `.gitignore`
-            ```sh
-              echo .devenv >> .gitignore
-            ```
-          '';
-          mkDevenvTemplate = path: {inherit welcomeText path;};
-          devenv = mkDevenvTemplate ./templates/devenv/simple;
-          devenvModular = mkDevenvTemplate ./templates/devenv/flake-parts;
+          devenv = {path = ./templates/devenv/simple;};
         in {
-          inherit devenv devenvModular;
+          inherit devenv;
           default = devenv;
+          devenvModular = {path = ./templates/devenv/flake-parts;};
         };
       };
 
