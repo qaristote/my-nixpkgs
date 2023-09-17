@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: let
   cfg = config.gitignore;
@@ -37,7 +38,7 @@ in {
     dotfiles.".gitignore" = lib.mkIf (templates != {} || cfg.extra != "") {
       gitignore = lib.mkDefault false;
       text =
-        lib.optionalString (templates != []) (builtins.readFile (pkgs.personal.static.gitignore.override {inherit templates toUncomment;}))
+        lib.optionalString (templates != []) (builtins.readFile ((pkgs.extend inputs.my-nixpkgs.overlays.personal).personal.static.gitignore.override {inherit templates toUncomment;}))
         + lib.optionalString ignoreDevenv ''
           ### devenv
           .devenv/
