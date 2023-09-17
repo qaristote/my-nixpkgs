@@ -10,14 +10,14 @@
     "pdflatex" = "1";
     "ps2pdf" = "2";
     "dvi2pdf" = "3";
-    "lulatex" = "4";
+    "lualatex" = "4";
     "xelatex" = "5";
   };
   dviModes = {
     "latex" = "1";
     "lualatex" = "2";
   };
-  latexmkrc = with cfg.latexmkrc; let
+  latexmkrc = with cfg.latexmk; let
     pdfMode = with output.pdf;
       if enable
       then pdfModes."${mode}"
@@ -31,10 +31,10 @@
       then "1"
       else "0";
   in ''
-    set_tex_cmds('${extraFlags}');
-    $pdf_mode=${pdfMode}
-    $dvi_mode=${dviMode}
-    $ps_mode=${psMode}
+    set_tex_cmds('${lib.concatStringsSep " " extraFlags}');
+    $pdf_mode=${pdfMode};
+    $dvi_mode=${dviMode};
+    $ps_mode=${psMode};
 
     ${extraConfig}
   '';
@@ -46,14 +46,15 @@ in {
 
   options.languages.texlive = {
     enable = lib.mkEnableOption "TeX Live";
-    base = lib.mkPackageOption pkgs "TeX Live" {
-      default = ["texlive"];
+    base = lib.mkOption {
+      default = pkgs.texlive;
+      description = "TeX Live package set to use";
     };
     packages = lib.mkOption {
       type = with lib.types;
         functionTo (attrsOf (submodule {
-          pkgs = lib.mkOption {
-            type = listOf package;
+          options.pkgs = lib.mkOption {
+            type = listOf (either package (attrsOf anything));
           };
         }));
       default = tl: {inherit (tl) scheme-medium;};
@@ -110,18 +111,18 @@ in {
     }
     (lib.mkIf cfg.latexmk.enable {
       languages.texlive = {
-        packages = tl: [{inherit (tl) latexmk;}];
+        packages = tl: {inherit (tl) latexmk;};
         latexmk = {
-          shellEscape.enable = lib.mkIf (lib.mkDefault packagesRequireShellEscape true);
-          extraFlags = lib.optional cfg.latexmkrc.shellEscape.enable "-shell-escape";
+          shellEscape.enable = lib.mkDefault packagesRequireShellEscape;
+          extraFlags = lib.optional cfg.latexmk.shellEscape.enable "-shell-escape";
         };
       };
 
       scripts.latexmk.exec = ''
-        ${texlive}/bin/latexmk -r ${devenv.root}/.latexmkrc
+        ${texlive}/bin/latexmk -r ${config.devenv.root}/.latexmkrc $@
       '';
 
-      gitignore.LaTeX.uncomment = with cfg.latexmk.output; lib.optional pdf "*.pdf" ++ lib.optional dvi "*.dvi" ++ lib.optional ps "*.ps";
+      gitignore.LaTeX.uncomment = with cfg.latexmk.output; lib.optional pdf.enable "*.pdf" ++ lib.optional dvi.enable "*.dvi" ++ lib.optional ps.enable "*.ps";
 
       dotfiles.".latexmkrc" = {
         gitignore = lib.mkDefault false;
