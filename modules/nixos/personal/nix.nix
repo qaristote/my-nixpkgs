@@ -1,6 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-let cfg = config.personal.nix;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.personal.nix;
 in {
   options.personal.nix = {
     enable = lib.mkEnableOption "nix configuration";
@@ -13,11 +17,11 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    nixpkgs.config = { allowUnfree = true; };
+    nixpkgs.config = {allowUnfree = true;};
     nix = {
       settings = {
         auto-optimise-store = true;
-        experimental-features = [ "nix-command" "flakes" ];
+        experimental-features = ["nix-command" "flakes"];
       };
       gc = lib.mkIf cfg.gc.enable {
         automatic = true;
@@ -28,14 +32,16 @@ in {
     system.autoUpgrade = lib.mkIf cfg.autoUpgrade {
       enable = true;
       flake = cfg.flake;
-      flags = if (cfg.flake == null) then
-        [ "--upgrade-all" ]
-      else
-        [ "--commit-lock-file" ] ++ pkgs.personal.lib.updateInputFlag "nixpkgs";
+      flags =
+        if (cfg.flake == null)
+        then ["--upgrade-all"]
+        else ["--commit-lock-file"] ++ pkgs.personal.lib.updateInputFlag "nixpkgs";
     };
     systemd.services = {
+      nixos-upgrade.personal.monitor = true;
       nix-gc = {
-        after = lib.optional (cfg.autoUpgrade && cfg.gc.enable)
+        after =
+          lib.optional (cfg.autoUpgrade && cfg.gc.enable)
           "nixos-upgrade.service";
         personal.monitor = true;
       };
@@ -44,18 +50,17 @@ in {
         description = "Remove dead symlinks in /nix/var/nix/gcroots";
         serviceConfig.Type = "oneshot";
         script = "find /nix/var/nix/gcroots -xtype l -delete";
-        before = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
-        wantedBy = lib.mkIf config.nix.gc.automatic [ "nix-gc.service" ];
+        before = lib.mkIf config.nix.gc.automatic ["nix-gc.service"];
+        wantedBy = lib.mkIf config.nix.gc.automatic ["nix-gc.service"];
         personal.monitor = true;
       };
     };
-    programs.git =
-      lib.mkIf (cfg.flake != null && lib.hasPrefix "git+file" cfg.flake) {
-        enable = true;
-        config.user = {
-          name = "Root user of ${config.networking.hostName}";
-          email = "root@${config.networking.hostName}";
-        };
+    programs.git = lib.mkIf (cfg.flake != null && lib.hasPrefix "git+file" cfg.flake) {
+      enable = true;
+      config.user = {
+        name = "Root user of ${config.networking.hostName}";
+        email = "root@${config.networking.hostName}";
       };
+    };
   };
 }
