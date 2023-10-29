@@ -54,6 +54,17 @@ in {
         wantedBy = lib.mkIf config.nix.gc.automatic ["nix-gc.service"];
         personal.monitor = true;
       };
+      nix-gc-remove-old-hm-gens = let
+        user = config.personal.user;
+      in {
+        enable = cfg.gc.enable && user.enable && user.homeManager.enable;
+        description = "Remove old Home Manager generations for user ${user.name}";
+        serviceConfig.Type = "oneshot";
+        script = "${pkgs.nix}/bin/nix-env --profile /home/${user.name}/.local/state/nix/profiles/home-manager --delete-generations old";
+        before = lib.mkIf config.nix.gc.automatic ["nix-gc.service"];
+        wantedBy = lib.mkIf config.nix.gc.automatic ["nix-gc.service"];
+        personal.monitor = true;
+      };
     };
     programs.git = lib.mkIf (cfg.flake != null && lib.hasPrefix "git+file" cfg.flake) {
       enable = true;
