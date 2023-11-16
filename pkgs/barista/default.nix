@@ -31,6 +31,6 @@ in buildGoModule {
 
   subPackages = [ "main/i3status.go" ];
 
-  vendorSha256 = "sha256-gpzxwtGxHcidRYY8o1Lz0iboU5aNnwsWfOoGo6Lvefo=";
+  vendorHash = "sha256-gpzxwtGxHcidRYY8o1Lz0iboU5aNnwsWfOoGo6Lvefo=";
 }
 
