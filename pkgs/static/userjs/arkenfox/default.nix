@@ -1,7 +1,7 @@
 {fetchurl}: let
-  version = "118.0";
+  version = "119.0";
 in
   fetchurl {
     url = "https://raw.githubusercontent.com/arkenfox/user.js/${version}/user.js";
-    sha256 = "sha256-rWFgnARpraFfuuw6dkWlcoofct1PLFto5rqcbflgQPE=";
+    sha256 = "sha256-q11lngXIypp3EEF2Cgz8t8pMhVYDMvdVSKs1aa7i52s=";
   }
