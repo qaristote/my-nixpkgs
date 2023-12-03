@@ -17,9 +17,9 @@
     devenv,
     ...
   } @ inputs: let
-    devenvModules.personal = import ./modules/devenv;
+    devenvModules.personal = ./modules/devenv;
     flakeModules = {
-      personal = import ./modules/flake-parts/personal.nix;
+      personal = ./modules/flake-parts/personal.nix;
       devenv = import ./modules/flake-parts/devenv.nix devenvModules;
     };
   in
@@ -27,8 +27,8 @@
       imports = builtins.attrValues flakeModules;
       flake = {
         inherit devenvModules flakeModules;
-        nixosModules.personal = import ./modules/nixos;
-        homeModules.personal = import ./modules/home-manager;
+        nixosModules.personal = ./modules/nixos;
+        homeModules.personal = ./modules/home-manager;
         overlays.personal = _: super: let
           my-packages = import ./pkgs (super.extend nur.overlay);
         in {
