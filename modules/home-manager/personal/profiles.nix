@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.personal.profiles;
   mkEnableProfileOption = name: lib.mkEnableOption "${name} profile";
 in {
@@ -13,13 +16,14 @@ in {
 
   config = lib.mkMerge [
     (lib.mkIf cfg.dev {
-      home.packages = with pkgs; [ python3 ];
+      home.packages = with pkgs; [python3];
       programs = {
         alacritty.enable = lib.mkDefault config.personal.gui.enable;
         direnv.enable = lib.mkDefault true;
         emacs.enable = lib.mkDefault true;
         git.enable = lib.mkDefault true;
       };
+      personal.programs.devenv.enable = true;
 
       home.shellAliases = {
         mkenv = ''
@@ -41,7 +45,7 @@ in {
     })
 
     (lib.mkIf cfg.multimedia {
-      home.packages = with pkgs; [ pavucontrol transmission-gtk vlc ];
+      home.packages = with pkgs; [pavucontrol transmission-gtk vlc];
       personal = {
         gui.enable = lib.mkForce true;
         firefox.webapps = [
@@ -51,7 +55,7 @@ in {
             icon = "${pkgs.personal.static.icons.netflix}";
             comment = "Unlimited movies, TV shows, and more.";
             url = "https://www.netflix.com/fr-en/login";
-            categories = [ "AudioVideo" "Video" "Player" ];
+            categories = ["AudioVideo" "Video" "Player"];
           }
           {
             name = "MUBI";
@@ -59,7 +63,7 @@ in {
             icon = "${pkgs.personal.static.icons.mubi}";
             comment = "Watch hand-picked cinema.";
             url = "https://mubi.com";
-            categories = [ "AudioVideo" "Video" "Player" ];
+            categories = ["AudioVideo" "Video" "Player"];
           }
           {
             name = "Deezer";
@@ -67,7 +71,7 @@ in {
             icon = "${pkgs.personal.static.icons.deezer}";
             comment = "Listen to music online";
             url = "https://deezer.com/login";
-            categories = [ "AudioVideo" "Audio" "Player" "Music" ];
+            categories = ["AudioVideo" "Audio" "Player" "Music"];
           }
         ];
       };
@@ -77,7 +81,7 @@ in {
       home.packages = with pkgs;
         lib.optionals
         (config.personal.gui.enable && config.personal.identities.personal)
-        [ signal-desktop ];
+        [signal-desktop];
       programs.thunderbird.enable = lib.mkDefault config.personal.gui.enable;
       programs.gpg.enable = true;
       services.gpg-agent.enable = true;

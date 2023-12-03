@@ -43,7 +43,9 @@ in {
       useGlobalPkgs = lib.mkDefault true;
       useUserPackages = lib.mkDefault true;
       # TODO fix this: only config.personal options seem to be passed (or not ?)
-      extraSpecialArgs.osConfig = lib.mkDefault config;
+      extraSpecialArgs = (extraArgs.homeSpecialArgs or {}) // {
+        osConfig = lib.mkDefault config;
+      };
     };
   });
 }
