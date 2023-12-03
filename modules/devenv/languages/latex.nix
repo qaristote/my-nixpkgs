@@ -42,7 +42,7 @@
   packagesRequireShellEscape = packages ? minted;
   texlive = cfg.base.combine packages;
 in {
-  disabledModules = ["${devenv}/src/modules/languages/texlive.nix"];
+  disabledModules = [(devenv.modules + "/languages/texlive.nix")];
 
   options.languages.texlive = {
     enable = lib.mkEnableOption "TeX Live";

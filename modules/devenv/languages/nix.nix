@@ -8,7 +8,7 @@
 }: let
   cfg = config.languages.nix;
 in {
-  disabledModules = ["${devenv}/src/modules/languages/nix.nix"];
+  disabledModules = [(devenv.modules + "/languages/nix.nix")];
 
   options.languages.nix = {
     enable = lib.mkEnableOption "tools for nix development";
