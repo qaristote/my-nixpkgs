@@ -5,7 +5,7 @@
   ...
 } @ extraArgs: let
   cfg = config.personal.gui;
-  wallpaper = pkgs.personal.static.wallpapers.nga-1973-68-1;
+  wallpaper = pkgs.personal.static.wallpapers.nga-1973-68-1.override {gravity = "north";};
   importedStylix = extraArgs ? stylix;
 in {
   imports = lib.optional importedStylix extraArgs.stylix.nixosModules.stylix;
