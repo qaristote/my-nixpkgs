@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }@extraArgs:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} @ extraArgs: let
   cfg = config.personal.gui;
   wallpaper = pkgs.personal.static.wallpapers.nga-1973-68-1;
   importedStylix = extraArgs ? stylix;
@@ -22,7 +25,7 @@ in {
         displayManager = {
           lightdm = {
             enable = true;
-            background = lib.mkDefault wallpaper;
+            background = lib.mkDefault (config.stylix.image or wallpaper);
             greeters.gtk = {
               enable = true;
               extraConfig = ''
@@ -56,22 +59,22 @@ in {
       };
     })
     (lib.mkIf cfg.stylix.enable ({
-      assertions = let
-        missingArgAssertion = name: {
-          assertion = lib.hasAttr name extraArgs;
-          message =
-            "attribute ${name} missing: add it in lib.nixosSystem's specialArgs, or set config.personal.gui.stylix.enable to false";
+        assertions = let
+          missingArgAssertion = name: {
+            assertion = lib.hasAttr name extraArgs;
+            message = "attribute ${name} missing: add it in lib.nixosSystem's specialArgs, or set config.personal.gui.stylix.enable to false";
+          };
+        in [(missingArgAssertion "stylix")];
+      }
+      // lib.optionalAttrs importedStylix {
+        stylix = {
+          image = lib.mkDefault wallpaper;
+          polarity = lib.mkDefault "dark";
+          fonts.sizes = {
+            applications = 10;
+            desktop = 12;
+          };
         };
-      in [ (missingArgAssertion "stylix") ];
-    } // lib.optionalAttrs importedStylix {
-      stylix = {
-        image = lib.mkDefault wallpaper;
-        polarity = lib.mkDefault "dark";
-        fonts.sizes = {
-          applications = 10;
-          desktop = 12;
-        };
-      };
-    }))
+      }))
   ]);
 }
