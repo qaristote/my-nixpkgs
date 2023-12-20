@@ -34,11 +34,10 @@
         lib = import ./lib;
 
         templates = let
-          devenv = {path = ./templates/devenv/simple;};
+          devenv = {path = ./templates/devenv;};
         in {
           inherit devenv;
           default = devenv;
-          devenvModular = {path = ./templates/devenv/flake-parts;};
         };
       };
 
