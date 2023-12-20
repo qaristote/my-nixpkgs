@@ -1,20 +1,9 @@
 {
-  inputs.devenv = {
-    url = "github:cachix/devenv";
-    inputs.nixpkgs.url = "nixpkgs";
-  };
-
-  nixConfig = {
-    extra-trusted-public-keys = "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=";
-    extra-trusted-substituters = "https://devenv.cachix.org";
-  };
-
   outputs = {
     self,
     nur,
     nixpkgs,
     flake-parts,
-    devenv,
     ...
   } @ inputs: let
     devenvModules.personal = ./modules/devenv;
@@ -24,7 +13,7 @@
     };
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
-      imports = builtins.attrValues flakeModules;
+      imports = [flakeModules.personal];
       flake = {
         inherit devenvModules flakeModules;
         nixosModules.personal = ./modules/nixos;
@@ -85,13 +74,6 @@
         };
 
         packages = flatten pkgs.personal;
-
-        devenv.shells.default = {
-          languages.nix = {
-            enable = true;
-            packaging.enable = true;
-          };
-        };
       };
     };
 }

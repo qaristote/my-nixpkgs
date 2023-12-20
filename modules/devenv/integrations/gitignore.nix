@@ -42,6 +42,7 @@ in {
         + lib.optionalString ignoreDevenv ''
           ### devenv
           .devenv/
+          .devenv.flake.nix
 
         ''
         + lib.optionalString (cfg.extra != "") ''
