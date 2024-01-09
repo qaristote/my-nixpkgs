@@ -61,8 +61,7 @@
         "media.peerconnection.enabled" = true;
         "media.peerconnection.ice.no_host" = false; # may or may not be required
         "webgl.disabled" = false; # required for Zoom
-        "webgl.min_capability_mode" = false;
-        "media.getusermedia.screensharing.enabled" = true; # optional
+        "webgl.min_capability_mode" = true;
         "media.autoplay.blocking_policy" =
           0; # optional (otherwise add site exceptions)
         "javascript.options.wasm" =
