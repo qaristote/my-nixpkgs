@@ -43,6 +43,7 @@ in {
           ### devenv
           .devenv/
           .devenv.flake.nix
+          devenv.local.nix
 
         ''
         + lib.optionalString (cfg.extra != "") ''
