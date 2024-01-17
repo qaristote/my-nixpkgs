@@ -31,6 +31,9 @@ in {
       ++ [
         # Personal rules
         ''
+          # direnv
+          .envrc
+
           # Nix
           shell.nix
           .nix-gc-roots
