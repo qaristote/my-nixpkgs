@@ -30,14 +30,17 @@
       if output.ps.enable
       then "1"
       else "0";
-  in ''
-    set_tex_cmds('${lib.concatStringsSep " " extraFlags}');
-    $pdf_mode=${pdfMode};
-    $dvi_mode=${dviMode};
-    $ps_mode=${psMode};
+  in
+    lib.optionalString (extraFlags != []) ''
+      set_tex_cmds('${lib.concatStringsSep " " extraFlags}');
+    ''
+    + ''
+      $pdf_mode=${pdfMode};
+      $dvi_mode=${dviMode};
+      $ps_mode=${psMode};
 
-    ${extraConfig}
-  '';
+      ${extraConfig}
+    '';
   packages = cfg.packages cfg.base;
   packagesRequireShellEscape = packages ? minted;
   texlive = cfg.base.combine packages;
