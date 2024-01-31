@@ -1,6 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-let cfg = config.personal.hardware;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.personal.hardware;
 in {
   options.personal.hardware = {
     usb.enable = lib.mkEnableOption "usb";
@@ -21,8 +25,7 @@ in {
         lib.mkOption {
           type = with lib.types; nullOr str;
           default = null;
-          description =
-            "Whether to allow all users to change hardware the ${name} brightness.";
+          description = "Whether to allow all users to change hardware the ${name} brightness.";
         };
     in {
       screen = mkBacklightOption "screen";
@@ -49,20 +52,19 @@ in {
       services.udev.extraRules =
         lib.optionalString (cfg.backlights.screen != null) ''
           ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="${cfg.backlights.screen}", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/backlight/%k/brightness"
-        '' + lib.optionalString (cfg.backlights.keyboard != null) ''
+        ''
+        + lib.optionalString (cfg.backlights.keyboard != null) ''
           ACTION=="add", SUBSYSTEM=="leds", KERNEL=="${cfg.backlights.keyboard}", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/leds/%k/brightness"
         '';
     }
 
     (lib.mkIf cfg.sound.enable {
-      sound.enable = true;
-      hardware.pulseaudio = {
+      security.rtkit.enable = true;
+      services.pipewire = {
         enable = true;
-        support32Bit = true;
-        package = pkgs.pulseaudioFull;
-        extraConfig = ''
-          load-module module-dbus-protocol
-        '';
+        alsa.enable = true;
+        alsa.support32Bit = true;
+        pulse.enable = true;
       };
       nixpkgs.config.pulseaudio = true;
     })
