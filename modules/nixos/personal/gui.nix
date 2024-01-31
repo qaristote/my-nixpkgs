@@ -44,7 +44,7 @@ in {
         };
         # Hardware
         libinput.enable = true;
-        layout = config.personal.hardware.keyboard.keyMap;
+        xkb.layout = config.personal.hardware.keyboard.keyMap;
         autoRepeatDelay = 200;
       };
     }
