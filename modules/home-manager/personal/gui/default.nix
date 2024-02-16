@@ -1,13 +1,19 @@
-{ config, lib, pkgs, ... }@extraArgs:
-
-let cfg = config.personal.gui;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} @ extraArgs: let
+  cfg = config.personal.gui;
 in {
-  imports = [ ./redshift.nix ./x ];
+  imports = [./redshift.nix ./x];
 
   options.personal.gui = {
-    enable = lib.mkEnableOption "GUI" // {
-      default = extraArgs.osConfig.personal.gui.enable or false;
-    };
+    enable =
+      lib.mkEnableOption "GUI"
+      // {
+        default = extraArgs.osConfig.personal.gui.enable or false;
+      };
   };
 
   config = lib.mkIf cfg.enable {
@@ -37,8 +43,9 @@ in {
       platformTheme = lib.mkDefault "gtk";
     };
 
-    home.packages = lib.optional config.dconf.enable pkgs.dconf
-      ++ [ pkgs.keepassxc ];
+    home.packages =
+      lib.optional config.dconf.enable pkgs.dconf
+      ++ (with pkgs; [keepassxc pavucontrol]);
     programs.firefox.enable = true;
   };
 }

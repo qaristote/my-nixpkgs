@@ -45,7 +45,7 @@ in {
     })
 
     (lib.mkIf cfg.multimedia {
-      home.packages = with pkgs; [pavucontrol transmission-gtk vlc];
+      home.packages = with pkgs; [transmission-gtk vlc];
       personal = {
         gui.enable = lib.mkForce true;
         firefox.webapps = [
