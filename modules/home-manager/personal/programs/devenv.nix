@@ -3,9 +3,9 @@
   lib,
   pkgs,
   ...
-} @ extraArgs: let
+}: let
   cfg = config.personal.programs.devenv;
-  importedDevenv = extraArgs ? devenv;
+  importedDevenv = pkgs ? devenv; #
 in {
   options.personal.programs.devenv.enable = lib.mkEnableOption "devenv";
 
@@ -13,9 +13,9 @@ in {
     assertions = [
       {
         assertion = importedDevenv;
-        message = "attribute devenv missing: add it in home-manager's special args, or set config.personal.devenv.enable to false";
+        message = "package devenv missing: add it in a nixpkgs overlay, or set config.personal.devenv.enable to false";
       }
     ];
-    home.packages = lib.optional importedDevenv extraArgs.devenv.packages.${pkgs.system}.devenv;
+    home.packages = lib.optional importedDevenv pkgs.devenv;
   };
 }
