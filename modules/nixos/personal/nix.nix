@@ -18,6 +18,9 @@ in {
 
   config = lib.mkIf cfg.enable {
     nixpkgs.config = {allowUnfree = true;};
+    environment.etc."nix/registry.json".text = lib.mkForce (builtins.toJSON {
+      version = 2;
+    });
     nix = {
       package = pkgs.nixVersions.unstable;
       settings = {
