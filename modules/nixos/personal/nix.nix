@@ -19,6 +19,7 @@ in {
   config = lib.mkIf cfg.enable {
     nixpkgs.config = {allowUnfree = true;};
     nix = {
+      package = pkgs.nixVersions.unstable;
       settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
