@@ -10,7 +10,7 @@
   }: {
     "${id}" = {
       connection = {
-        inherit id;
+        id = "${id} (template)";
         type = "wifi";
       };
       wifi = {
