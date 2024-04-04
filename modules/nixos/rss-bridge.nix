@@ -1,6 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-let cfg = config.services.rss-bridge;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.rss-bridge;
 in {
   options.services.rss-bridge = {
     package = lib.mkOption {
@@ -30,27 +34,33 @@ in {
           };
         };
       });
-      default = [ ];
+      default = [];
       description = ''
         A list of additional bridges that aren't already included in RSS-Bridge.
         These bridges are automatically whitelisted'';
     };
   };
 
-  config.services.rss-bridge.whitelist =
-    map (bridge: bridge.name) cfg.extraBridges;
+  config.services.rss-bridge.config.system.enabled_bridges =
+    lib.mkIf cfg.enable
+    (map (bridge: bridge.name) cfg.extraBridges);
   config.services.nginx = lib.mkIf (cfg.virtualHost != null) {
-    virtualHosts.${cfg.virtualHost}.root = lib.mkIf (cfg.extraBridges != [ ])
-      (lib.mkForce (pkgs.runCommand "rss-bridge" { } (''
-        mkdir -p $out/bridges
-        cp -r ${cfg.package}/* $out/
-        pushd $out/bridges
-      '' + lib.concatStrings (map (bridge: ''
-        ln -sf ${bridge.source} "${bridge.name}Bridge.php"
-      '') cfg.extraBridges) + ''
-        popd
-      '' + lib.optionalString cfg.debug ''
-        touch $out/DEBUG
-      '')));
+    virtualHosts.${cfg.virtualHost}.root =
+      lib.mkIf (cfg.extraBridges != [])
+      (lib.mkForce (pkgs.runCommand "rss-bridge" {} (''
+          mkdir -p $out/bridges
+          cp -r ${cfg.package}/* $out/
+          pushd $out/bridges
+        ''
+        + lib.concatStrings (map (bridge: ''
+            ln -sf ${bridge.source} "${bridge.name}Bridge.php"
+          '')
+          cfg.extraBridges)
+        + ''
+          popd
+        ''
+        + lib.optionalString cfg.debug ''
+          touch $out/DEBUG
+        '')));
   };
 }
