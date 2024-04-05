@@ -8,9 +8,9 @@
     id,
     ssid,
   }: {
-    "${id}_template" = {
+    "${id}" = {
       connection = {
-        id = "${id} (template)";
+        id = "${id}";
         type = "wifi";
       };
       wifi = {
