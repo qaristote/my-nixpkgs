@@ -39,6 +39,7 @@
     home = "Quentintranet";
     home-iot = "Quentinternet of Things";
     home-guest = "Quentinvités";
+    hotspot = "Quentinternational";
     aristote = "ARISTOTE";
     aristote-4g = "ARISTOTE 4G";
     stvictoret = "ORBIWAN";
