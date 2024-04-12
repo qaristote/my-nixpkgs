@@ -44,7 +44,7 @@ in {
           .devenv/
           .devenv.flake.nix
           devenv.local.nix
-
+          .pre-commit-config.yaml
         ''
         + lib.optionalString (cfg.extra != "") ''
           ### miscellaneous
