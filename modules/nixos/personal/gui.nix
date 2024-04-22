@@ -49,12 +49,14 @@ in {
       };
     }
     (lib.mkIf cfg.i3.enable {
-      services.xserver = {
-        desktopManager.xfce = {
-          noDesktop = true;
-          enableXfwm = false;
+      services = {
+        xserver = {
+          desktopManager.xfce = {
+            noDesktop = true;
+            enableXfwm = false;
+          };
+          windowManager.i3.enable = true;
         };
-        windowManager.i3.enable = true;
         displayManager.defaultSession = "xfce+i3";
       };
     })
