@@ -40,7 +40,7 @@ in {
     };
     qt = {
       enable = lib.mkDefault true;
-      platformTheme = lib.mkDefault "gtk";
+      platformTheme.name = lib.mkDefault "gtk";
     };
 
     home.packages =
