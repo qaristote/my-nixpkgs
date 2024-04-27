@@ -164,6 +164,7 @@ in {
           ${config.programs.firefox.package}/bin/firefox --profile "${firefoxProfilesDir}/${profile}"'';
       in
         builtins.foldl' (prev: {
+          name,
           profileName,
           url,
           genericName,
