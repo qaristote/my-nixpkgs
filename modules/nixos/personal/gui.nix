@@ -48,18 +48,26 @@ in {
         autoRepeatDelay = 200;
       };
     }
-    (lib.mkIf cfg.i3.enable {
-      services = {
-        xserver = {
-          desktopManager.xfce = {
-            noDesktop = true;
-            enableXfwm = false;
+    (lib.mkIf cfg.i3.enable (
+      lib.mkMerge [
+        {
+          services = {
+            xserver = {
+              desktopManager.xfce = {
+                noDesktop = true;
+                enableXfwm = false;
+              };
+              windowManager.i3.enable = true;
+            };
           };
-          windowManager.i3.enable = true;
-        };
-        displayManager.defaultSession = "xfce+i3";
-      };
-    })
+        }
+        (
+          if (builtins.compareVersions lib.trivial.version "23.11" > 0)
+          then {services.defaultSession = "xfce+i3";}
+          else {services.xserver.displayManager.defaultSession = "xfce+i3";}
+        )
+      ]
+    ))
     (lib.mkIf cfg.stylix.enable ({
         assertions = let
           missingArgAssertion = name: {
