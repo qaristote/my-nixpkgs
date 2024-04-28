@@ -63,7 +63,7 @@ in {
         }
         (
           if (builtins.compareVersions lib.trivial.version "23.11" > 0)
-          then {services.defaultSession = "xfce+i3";}
+          then {services.displayManager.defaultSession = "xfce+i3";}
           else {services.xserver.displayManager.defaultSession = "xfce+i3";}
         )
       ]
