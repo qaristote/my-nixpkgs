@@ -43,11 +43,11 @@ in {
           };
         };
         # Hardware
-        libinput.enable = true;
         xkb.layout = config.personal.hardware.keyboard.keyMap;
         autoRepeatDelay = 200;
       };
     }
+    # fragile conf
     (lib.mkIf cfg.i3.enable (
       lib.mkMerge [
         {
@@ -62,9 +62,15 @@ in {
           };
         }
         (
-          if (builtins.compareVersions lib.trivial.version "23.11" > 0)
-          then {services.displayManager.defaultSession = "xfce+i3";}
-          else {services.xserver.displayManager.defaultSession = "xfce+i3";}
+          let
+            conf = {
+              displayManager.defaultSession = "xfce+i3";
+              libinput.enable = true;
+            };
+          in
+            if (builtins.compareVersions lib.trivial.version "23.11" > 0)
+            then {services = conf;}
+            else {services.xserver = conf;}
         )
       ]
     ))
