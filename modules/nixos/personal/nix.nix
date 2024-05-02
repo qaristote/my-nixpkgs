@@ -22,7 +22,7 @@ in {
       version = 2;
     });
     nix = {
-      package = pkgs.nixVersions.unstable;
+      package = pkgs.nixVersions.latest;
       settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
