@@ -22,7 +22,13 @@ in {
       version = 2;
     });
     nix = {
-      package = pkgs.nixVersions.latest;
+      package =
+        lib.getAttr (
+          if (builtins.compareVersions lib.trivial.version "23.11" > 0)
+          then "latest"
+          else "unstable"
+        )
+        pkgs.nixVersions;
       settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
