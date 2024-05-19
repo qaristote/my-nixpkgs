@@ -3,6 +3,7 @@
   pkgs,
 }: let
   everyday = 24 * 60 * 60 * 1000;
+  searchTerms = "{searchTerms}";
   nixosIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
   self = {
     disable = engines: lib.genAttrs engines (_: {metaData.hidden = true;});
@@ -20,7 +21,7 @@
       urls = [
         {
           template = "https://emojipedia.org/search/";
-          params = [(lib.nameValuePair "q" "{searchTerms}")];
+          params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
       iconUpdateURL = "https://emojipedia.org/static/img/favicons/favicon-16x16.png";
@@ -32,7 +33,7 @@
       urls = [
         {
           template = "https://alternativeto.net/browse/search/";
-          params = [(lib.nameValuePair "q" "{searchTerms}")];
+          params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
       iconUpdateURL = "https://alternativeto.net/static/icons/a2/favicon-16x16.png";
@@ -56,7 +57,7 @@
           template = "https://search.nixos.org/options";
           params = [
             (lib.nameValuePair "channel" "unstable")
-            (lib.nameValuePair "query" "{searchTerms}")
+            (lib.nameValuePair "query" searchTerms)
           ];
         }
       ];
@@ -67,8 +68,8 @@
     "NixOS Wiki" = {
       urls = [
         {
-          template = "https://nixos.wiki/index.php";
-          params = [(lib.nameValuePair "search" "{searchTerms}")];
+          template = "https://wiki.nixos.org/w/index.php";
+          params = [(lib.nameValuePair "search" searchTerms)];
         }
       ];
       icon = nixosIcon;
@@ -81,7 +82,7 @@
           template = "https://search.nixos.org/packages";
           params = [
             (lib.nameValuePair "channel" "unstable")
-            (lib.nameValuePair "query" "{searchTerms}")
+            (lib.nameValuePair "query" searchTerms)
           ];
         }
       ];
@@ -93,7 +94,7 @@
       urls = [
         {
           template = "https://ncatlab.org/nlab/search";
-          params = [(lib.nameValuePair "query" "{searchTerms}")];
+          params = [(lib.nameValuePair "query" searchTerms)];
         }
       ];
       iconUpdateURL = "https://ncatlab.org/favicon.ico";
@@ -105,11 +106,23 @@
       urls = [
         {
           template = "https://searx.aristote.fr/search";
-          params = [(lib.nameValuePair "q" "{searchTerms}")];
+          params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
       iconUpdateURL = "https://searx.aristote.fr/static/themes/simple/img/favicon.svg";
       updateInterval = everyday;
+    };
+
+    Phind = {
+      urls = [
+        {
+          template = "https://phind.com/search";
+          params = [(lib.nameValuePair "q" searchTerms)];
+        }
+      ];
+      iconUpdateURL = "https://www.phind.com/images/favicon.png";
+      updateInterval = everyday;
+      definedAliases = ["@phind" "@ph"];
     };
   };
 in
