@@ -12,7 +12,7 @@
     nix = {
       inherit (self) "Home Manager Options" "NixOS Options" "NixOS Wiki" "Nix Packages";
     };
-    dev = self.nix // {inherit (self) AlternativeTo;};
+    dev = self.nix // {inherit (self) AlternativeTo Phind;};
     personal = {inherit (self) Emojipedia;};
     work = {inherit (self) nLab;};
     all = self.dev // self.personal // self.work // {inherit (self) Searx;};
