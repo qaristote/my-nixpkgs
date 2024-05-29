@@ -2,7 +2,7 @@
 {
 	netflix = fetchurl {
 		url = "https://www.vectorlogo.zone/logos/netflix/netflix-icon.svg";
-		sha256 = "0b4gqhw9y62fm72x61q03yzbllgfxpkjbbsdvj7d5wg3jshjkgdb";
+		sha256 = "0i9211dsc8lrq8bvs9r217nwhfjcg84ja8b7lgqnza9ypv5lrqgs";
 	};
 	mubi = fetchurl {
 		url = "https://mubi.com/MUBI-logo.png";
@@ -10,6 +10,6 @@
 	};
 	deezer = fetchurl {
 		url = "https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/deezer.svg";
-		sha256 = "1h9m9rsg3hdr7w5g8g560rlwyy2wmk5a397cg1vr7gg37v9izh92";
+		sha256 = "0gjh30082jc1yapkccp4fb9y2sr1q26gbqdjh0dkp9ldr00vy0q6";
 	};
 }
