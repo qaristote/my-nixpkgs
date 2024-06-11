@@ -25,7 +25,7 @@ in {
         displayManager = {
           lightdm = {
             enable = true;
-            background = lib.mkDefault (config.stylix.image or wallpaper);
+            background = config.stylix.image or wallpaper;
             greeters.gtk = {
               enable = true;
               extraConfig = ''
