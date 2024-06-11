@@ -84,6 +84,7 @@ in {
       }
       // lib.optionalAttrs importedStylix {
         stylix = {
+          enable = true;
           image = lib.mkDefault wallpaper;
           polarity = lib.mkDefault "dark";
           fonts.sizes = {
