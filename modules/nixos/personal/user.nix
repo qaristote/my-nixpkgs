@@ -24,7 +24,6 @@ in {
         isNormalUser = true;
         extraGroups =
           ["wheel"]
-          ++ lib.optional config.sound.enable "sound"
           ++ lib.optional config.networking.networkmanager.enable
           "networkmanager";
         openssh.authorizedKeys.keys = [
