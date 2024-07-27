@@ -20,6 +20,13 @@
     sessionVariables = {CDPATH = "~";};
   };
 
+  programs.bash.bashrcExtra = ''
+    function set_win_title(){
+      echo -ne "\033]0;$(whoami)@$(hostname):$(dirs)\a"
+    }
+    starship_precmd_user_func="set_win_title"
+  '';
+
   services.gpg-agent = {
     enableBashIntegration = lib.mkDefault config.programs.bash.enable;
     pinentryPackage = lib.mkDefault (

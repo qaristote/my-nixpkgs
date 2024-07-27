@@ -1,6 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-let cfg = config.personal.environment;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.personal.environment;
 in {
   options.personal.environment = {
     enable = lib.mkEnableOption "basic environment";
@@ -10,11 +14,17 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       environment = {
-        systemPackages = with pkgs; [ vim gitMinimal busybox coreutils ];
+        systemPackages = with pkgs; [vim gitMinimal busybox coreutils];
         variables.EDITOR = "vim";
       };
 
       programs.starship.enable = true;
+      programs.bash.shellInit = ''
+        function set_win_title(){
+          echo -ne "\033]0;$(whoami)@$(hostname --long):$(dirs)\a"
+        }
+        starship_precmd_user_func="set_win_title"
+      '';
     }
     (lib.mkIf cfg.locale.enable {
       time.timeZone = "Europe/Paris";
