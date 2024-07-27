@@ -25,21 +25,8 @@ in {
       };
       personal.programs.devenv.enable = true;
 
-      home.shellAliases = {
-        mkenv = ''
-          cp ~/.config/venv-manager/shell-template.nix ./shell.nix ;
-          echo "use_nix" >> .envrc ;
-          direnv allow ;
-          $EDITOR shell.nix ;
-        '';
-      };
-
-      home.file = {
-        ".config/latexmkrc".text =
-          builtins.readFile config.personal.home.dotfiles.latexmkrc;
-        ".config/venv-manager/config/default.nix".source =
-          lib.mkDefault config.personal.home.dotfiles.venv-manager;
-      };
+      home.file.".config/latexmkrc".text =
+        builtins.readFile config.personal.home.dotfiles.latexmkrc;
 
       services.gpg-agent.enableSshSupport = true;
     })
