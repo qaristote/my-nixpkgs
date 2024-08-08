@@ -2,7 +2,7 @@
   config,
   lib,
   ...
-} @ extraArgs: {
+}: {
   xsession.windowManager.i3.config.startup = let
     autostart = {
       command,
@@ -18,7 +18,6 @@
       (autostart {command = "keepassxc";})
     ]
     ++ autostartIf config.programs.thunderbird.enable {command = "thunderbird";}
-    ++ autostartIf (extraArgs.osConfig.networking.networkmanager.enable or false) {command = "nm-applet";}
     ++ autostartIf
     (config.personal.profiles.social && config.personal.identities.personal) {
       command = "signal-desktop";
