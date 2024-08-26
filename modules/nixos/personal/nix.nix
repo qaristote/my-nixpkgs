@@ -76,7 +76,6 @@ in {
             Type = "oneshot"; # Ensure that it finishes before starting nixos-upgrade
           };
           before = ["nixos-upgrade.service"];
-          environment.HOME = "/root";
           path = [pkgs.git];
           personal.monitor = true;
         };
