@@ -48,7 +48,6 @@
         "privacy.clearOnShutdown.cookies" = false;
         "privacy.clearOnShutdown.siteSettings" = false;
         "privacy.clearOnShutdown.offlineApps" = false;
-        "privacy.resistFingerprinting" = false; # Netflix is whining
       };
 
     videoconferencing =
@@ -60,7 +59,6 @@
         # Discord video does not work: it thinks you are FF78: use a separate profile or spoof the user agent
         "media.peerconnection.enabled" = true;
         "media.peerconnection.ice.no_host" = false; # may or may not be required
-        "webgl.disabled" = false; # required for Zoom
         "webgl.min_capability_mode" = true;
         "media.autoplay.blocking_policy" =
           0; # optional (otherwise add site exceptions)
