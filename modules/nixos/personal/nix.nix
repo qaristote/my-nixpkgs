@@ -79,15 +79,20 @@ in {
           path = [pkgs.git];
           personal.monitor = true;
         };
-        nixos-upgrade = {
+        nixos-upgrade = let
+          priorize =
+            if (builtins.compareVersions lib.trivial.version "24.11" > 0)
+            then x: x
+            else lib.mkForce;
+        in {
           preStart = "${pkgs.host}/bin/host firecat53.net"; # Check network connectivity
           serviceConfig = {
             Restart = "on-failure";
-            RestartSec = "120";
+            RestartSec = priorize "120";
           };
           unitConfig = {
-            StartLimitIntervalSec = 600;
-            StartLimitBurst = 2;
+            StartLimitIntervalSec = priorize 600;
+            StartLimitBurst = priorize 2;
           };
           after = ["flake-update.service"];
           wants = ["flake-update.service"];
