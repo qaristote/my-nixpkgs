@@ -86,6 +86,27 @@ in {
         stylix = {
           enable = true;
           image = lib.mkDefault wallpaper;
+          base16Scheme = lib.mkDefault {
+            author = "Stylix";
+            base00 = "212a27";
+            base01 = "3a4a47";
+            base02 = "596e73";
+            base03 = "8ba0b5";
+            base04 = "b0bbb7";
+            base05 = "efe1be";
+            base06 = "efefe5";
+            base07 = "f1f1e5";
+            base08 = "7e93a8";
+            base09 = "92917f";
+            base0A = "5d9c81";
+            base0B = "859394";
+            base0C = "8d9657";
+            base0D = "b38861";
+            base0E = "80977a";
+            base0F = "a19052";
+            scheme = "Stylix";
+            slug = "stylix";
+          };
           polarity = lib.mkDefault "dark";
           fonts.sizes = {
             applications = 10;
