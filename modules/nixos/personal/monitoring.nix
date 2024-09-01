@@ -39,14 +39,14 @@
       scriptArgs = "%i";
       script = let
         netCfg = config.networking;
-        me = "${builtins.toString netCfg.hostName}.${builtins.toString netCfg.domain}";
+        host = "${builtins.toString netCfg.hostName}.${builtins.toString netCfg.domain}";
       in ''
            service="$1"
         echo \
-        "Subject: ${me}: service $service failed
-        Service $service failed on ${me}, with the following status:
+        "Subject: ${host}: service $service failed
+        Service $soervice failed on ${host}, with the following log:
 
-        $(systemctl status $service)
+        $(journalctl --no-pager --unit $service --since -1h)
         " | ${pkgs.msmtp}/bin/msmtp quentin@aristote.fr
       '';
     };
