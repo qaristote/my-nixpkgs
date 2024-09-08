@@ -31,13 +31,7 @@ in {
       };
     };
     nix = {
-      package =
-        lib.getAttr (
-          if (builtins.compareVersions lib.trivial.version "23.11" > 0)
-          then "latest"
-          else "unstable"
-        )
-        pkgs.nixVersions;
+      package = pkgs.lix;
       settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
