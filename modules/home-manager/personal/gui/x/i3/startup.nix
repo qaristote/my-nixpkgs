@@ -21,5 +21,8 @@
     ++ autostartIf
     (config.personal.profiles.social && config.personal.identities.personal) {
       command = "signal-desktop";
+    }
+    ++ autostartIf config.personal.identities.work {
+      command = "zulip";
     };
 }

@@ -90,7 +90,7 @@ in {
     }
     (lib.mkIf cfg.work {
       home = {
-        packages = with pkgs; [zotero evince];
+        packages = with pkgs; [zotero evince zulip];
         file.".latexmkrc".source =
           lib.mkDefault config.personal.home.dotfiles.latexmkrc;
       };
