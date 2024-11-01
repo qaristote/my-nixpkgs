@@ -35,9 +35,12 @@
       set_tex_cmds('${lib.concatStringsSep " " extraFlags}');
     ''
     + ''
-      $pdf_mode=${pdfMode};
-      $dvi_mode=${dviMode};
-      $ps_mode=${psMode};
+      $pdf_mode = ${pdfMode};
+      $dvi_mode = ${dviMode};
+      $ps_mode = ${psMode};
+
+      $clean_ext = '${builtins.concatStringsSep " " cfg.latexmk.cleanExt}';
+      $clean_full_ext = '${builtins.concatStringsSep " " cfg.latexmk.cleanFullExt}';
 
       ${extraConfig}
     '';
@@ -66,6 +69,14 @@ in {
 
     latexmk = {
       enable = lib.mkEnableOption "latexmk";
+      cleanExt = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = ["fdb_latexmk" "fdb_latexmk" "nav" "prv_%R.fmt" "prv_%R.log" "prv/*/*" "prv/*" "prv" "-SAVE-ERROR" "snm" "vrb"];
+      };
+      cleanFullExt = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = ["bbl"];
+      };
       shellEscape.enable = lib.mkEnableOption "shell escaping";
       extraFlags = lib.mkOption {
         type = with lib.types; listOf str;
@@ -110,7 +121,12 @@ in {
   config = lib.mkIf cfg.enable (lib.mkMerge [
     {
       packages = [texlive];
-      gitignore.LaTeX.enable = true;
+      gitignore = {
+        LaTeX.enable = true;
+        extra = ''
+          *-SAVE-ERROR
+        '';
+      };
     }
     (lib.mkIf cfg.latexmk.enable {
       languages.texlive = {
