@@ -71,7 +71,7 @@ in {
       enable = lib.mkEnableOption "latexmk";
       cleanExt = lib.mkOption {
         type = with lib.types; listOf str;
-        default = ["fdb_latexmk" "fdb_latexmk" "nav" "prv_%R.fmt" "prv_%R.log" "prv/*/*" "prv/*" "prv" "-SAVE-ERROR" "snm" "vrb"];
+        default = ["fdb_latexmk" "nav" "prv_%R.fmt" "prv_%R.log" "prv/*/*" "prv/*" "prv" "-SAVE-ERROR" "snm" "vrb"];
       };
       cleanFullExt = lib.mkOption {
         type = with lib.types; listOf str;
