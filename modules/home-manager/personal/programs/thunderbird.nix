@@ -1,7 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  configDefault = builtins.readFile "${pkgs.personal.static.userjs.thunderbird}"
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  configDefault =
+    builtins.readFile "${pkgs.personal.static.userjs.thunderbird}"
     + pkgs.lib.personal.toUserJS {
       # 0391
       "mail.bii.alert.show_preview" = false;
@@ -25,6 +29,8 @@ let
       "calendar.week.start" = 1;
       "calendar.view.visiblehours" = 16;
       "calendar.dayendhour" = 24;
+      ## Duplicates
+      "mail.server.default.dup_action" = 3; # mark as read
     };
 in {
   config = lib.mkMerge [
