@@ -51,6 +51,8 @@ in {
         in
           lib.optional flakeIsValid flakePath
       );
+      init.defaultBranch = "master";
+      pull.rebase = true;
     };
   };
 }
