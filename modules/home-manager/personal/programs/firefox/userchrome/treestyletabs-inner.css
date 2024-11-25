@@ -1,0 +1,6 @@
+/* Not working. Paste this inside TST's extra CSS rules. */
+@-moz-document regexp("moz-extension://.+/sidebar/sidebar.html.*") {
+    :root.sidebar #background {
+        background: #{{base00-hex}};
+    }
+}

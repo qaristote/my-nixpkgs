@@ -12,17 +12,17 @@ with lib; let
   };
   engines = import ./engines.nix {inherit lib pkgs;};
   userchrome = let
-    userchromeTST = ./userchrome/treestyletabs.css;
-    userchromeTSTColors = config.lib.stylix.colors {
-      template = builtins.readFile ./userchrome/treestyletabs-colors.css;
+    userchromeTSTout = ./userchrome/treestyletabs-outer.css;
+    userchromeTSTin = config.lib.stylix.colors {
+      template = builtins.readFile ./userchrome/treestyletabs-inner.css;
       extension = ".css";
     };
   in
     ''
-      @import "${userchromeTST}";
+      @import "${userchromeTSTout}";
     ''
     + lib.optionalString (config.lib ? stylix) ''
-      @import "${userchromeTSTColors}";
+      // @import "${userchromeTSTin}";
     '';
   webappsWithIds =
     (builtins.foldl' ({
