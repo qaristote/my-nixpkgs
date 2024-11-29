@@ -31,6 +31,8 @@
       "calendar.dayendhour" = 24;
       ## Duplicates
       "mail.server.default.dup_action" = 3; # mark as read
+      ## Spam
+      "mail.spam.manualMark" = true; # move manually marked-as-junk to junk folder
     };
 in {
   config = lib.mkMerge [
