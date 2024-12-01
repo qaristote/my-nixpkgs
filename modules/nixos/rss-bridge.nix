@@ -41,14 +41,9 @@ in {
     };
   };
 
-  config.services.rss-bridge = let
-    whitelist =
-      lib.mkIf cfg.enable
-      (map (bridge: bridge.name) cfg.extraBridges);
-  in
-    if builtins.compareVersions lib.trivial.version "23.11" <= 0
-    then {inherit whitelist;}
-    else {config.system.enabled_bridges = whitelist;};
+  config.services.rss-bridge.config.system.enabled_bridges =
+    lib.mkIf cfg.enable
+    (map (bridge: bridge.name) cfg.extraBridges);
   config.services.nginx = lib.mkIf (cfg.virtualHost != null) {
     virtualHosts.${cfg.virtualHost}.root =
       lib.mkIf (cfg.extraBridges != [])

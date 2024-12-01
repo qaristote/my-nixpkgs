@@ -48,32 +48,19 @@ in {
       };
     }
     # fragile conf
-    (lib.mkIf cfg.i3.enable (
-      lib.mkMerge [
-        {
-          services = {
-            xserver = {
-              desktopManager.xfce = {
-                noDesktop = true;
-                enableXfwm = false;
-              };
-              windowManager.i3.enable = true;
-            };
+    (lib.mkIf cfg.i3.enable {
+      services = {
+        displayManager.defaultSession = "xfce+i3";
+        libinput.enable = true;
+        xserver = {
+          desktopManager.xfce = {
+            noDesktop = true;
+            enableXfwm = false;
           };
-        }
-        (
-          let
-            conf = {
-              displayManager.defaultSession = "xfce+i3";
-              libinput.enable = true;
-            };
-          in
-            if (builtins.compareVersions lib.trivial.version "23.11" > 0)
-            then {services = conf;}
-            else {services.xserver = conf;}
-        )
-      ]
-    ))
+          windowManager.i3.enable = true;
+        };
+      };
+    })
     (lib.mkIf cfg.stylix.enable ({
         assertions = let
           missingArgAssertion = name: {
