@@ -72,7 +72,11 @@ in {
             passwordAuthentication = false;
           }
         );
-      fail2ban.enable = true;
+      fail2ban = {
+        enable = true;
+        maxretry = 16;
+        bantime-increment.enable = true;
+      };
     };
     hardware.bluetooth.enable = cfg.bluetooth.enable;
   };
