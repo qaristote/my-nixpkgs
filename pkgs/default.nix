@@ -14,6 +14,8 @@ super: let
       inherit (super.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
     };
 
+    rftg = super.callPackage ./rftg {};
+
     static = {
       css = {lineAwesome = super.callPackage ./static/css/lineAwesome {};};
       fontMetadata = {
