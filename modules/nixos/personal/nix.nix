@@ -75,14 +75,6 @@ in {
         };
         nixos-upgrade = {
           preStart = "${pkgs.host}/bin/host firecat53.net"; # Check network connectivity
-          serviceConfig = {
-            Restart = "on-failure";
-            RestartSec = lib.mkForce "120";
-          };
-          unitConfig = {
-            StartLimitIntervalSec = lib.mkForce 600;
-            StartLimitBurst = lib.mkForce 2;
-          };
           after = ["flake-update.service"];
           wants = ["flake-update.service"];
           personal.monitor = true;
