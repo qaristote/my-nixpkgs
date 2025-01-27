@@ -19,7 +19,7 @@
         nixosModules.personal = ./modules/nixos;
         homeModules.personal = ./modules/home-manager;
         overlays.personal = _: super: let
-          my-packages = import ./pkgs (super.extend nur.overlay);
+          my-packages = import ./pkgs (super.extend nur.overlays.default);
         in {
           inherit
             (super.lib.recursiveUpdate super {
