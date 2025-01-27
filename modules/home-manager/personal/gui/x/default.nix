@@ -21,5 +21,7 @@ in {
       picom.enable = lib.mkDefault true;
       network-manager-applet.enable = extraArgs.osConfig.networking.networkmanager.enable or false;
     };
+
+    xdg.mimeApps.enable = true;
   };
 }

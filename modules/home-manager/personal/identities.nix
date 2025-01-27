@@ -94,6 +94,7 @@ in {
         file.".latexmkrc".source =
           lib.mkDefault config.personal.home.dotfiles.latexmkrc;
       };
+      xdg.mimeApps.defaultApplications."application/pdf" = ["org.gnome.Evince.desktop"];
       programs.firefox.profiles = let
         addFloccus = {
           extensions = [pkgs.personal.firefoxAddons.floccus];
