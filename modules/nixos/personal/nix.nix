@@ -57,7 +57,7 @@ in {
       (lib.mkIf cfg.autoUpgrade.enable {
         # upgrading
         flake-update = lib.mkIf (cfg.flake != null && cfg.autoUpgrade.autoUpdateInputs != []) {
-          preStart = "${pkgs.host}/bin/host firecat53.net"; # Check network connectivity
+          preStart = "${pkgs.host}/bin/host 9.9.9.9"; # Check network connectivity
           unitConfig = {
             Description = "Update flake inputs";
             StartLimitIntervalSec = 300;
@@ -74,7 +74,7 @@ in {
           personal.monitor = true;
         };
         nixos-upgrade = {
-          preStart = "${pkgs.host}/bin/host firecat53.net"; # Check network connectivity
+          preStart = "${pkgs.host}/bin/host 9.9.9.9"; # Check network connectivity
           after = ["flake-update.service"];
           wants = ["flake-update.service"];
           personal.monitor = true;
