@@ -57,7 +57,7 @@ in {
       (lib.mkIf cfg.autoUpgrade.enable {
         # upgrading
         flake-update = lib.mkIf (cfg.flake != null && cfg.autoUpgrade.autoUpdateInputs != []) {
-          preStart = "${pkgs.host}/bin/host 9.9.9.9"; # Check network connectivity
+          preStart = "${pkgs.host}/bin/host 9.9.9.9 || exit 100"; # Check network connectivity
           unitConfig = {
             Description = "Update flake inputs";
             StartLimitIntervalSec = 300;
@@ -65,7 +65,7 @@ in {
           };
           serviceConfig = {
             ExecStart = "${config.nix.package}/bin/nix flake update --commit-lock-file --flake ${cfg.flake} " + lib.concatStringsSep " " cfg.autoUpgrade.autoUpdateInputs;
-            Restart = "on-failure";
+            RestartForceExitCode = "100";
             RestartSec = "30";
             Type = "oneshot"; # Ensure that it finishes before starting nixos-upgrade
           };
@@ -74,7 +74,15 @@ in {
           personal.monitor = true;
         };
         nixos-upgrade = {
-          preStart = "${pkgs.host}/bin/host 9.9.9.9"; # Check network connectivity
+          preStart = "${pkgs.host}/bin/host 9.9.9.9 || exit 100"; # Check network connectivity
+          unitConfig = {
+            StartLimitIntervalSec = 300;
+            StartLimitBurst = 5;
+          };
+          serviceConfig = {
+            RestartForceExitCode = "100";
+            RestartSec = "30";
+          };
           after = ["flake-update.service"];
           wants = ["flake-update.service"];
           personal.monitor = true;
