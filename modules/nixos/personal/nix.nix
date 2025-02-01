@@ -14,7 +14,7 @@
       StartLimitBurst = 5;
     };
     serviceConfig = {
-      RestartForceExitCode = "100";
+      RestartForceExitStatus = "100";
       RestartSec = "30";
     };
   };
