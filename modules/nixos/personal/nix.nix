@@ -14,7 +14,7 @@
       StartLimitBurst = 5;
     };
     serviceConfig = {
-      RestartForceExitStatus = "100";
+      Restart = "on-abort";
       RestartSec = "30";
     };
   };
