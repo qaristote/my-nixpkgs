@@ -8,7 +8,7 @@
   hasFlake = cfg.flake != null;
   hasFlakeInputs = cfg.autoUpgrade.autoUpdateInputs != [];
   checkNetwork = {
-    preStart = "${pkgs.host}/bin/host 9.9.9.9 || exit 100"; # Check network connectivity
+    preStart = "${pkgs.host}/bin/host 9.9.9.9 || kill -s SIGUSR1 $$"; # Check network connectivity
     unitConfig = {
       StartLimitIntervalSec = 300;
       StartLimitBurst = 5;
