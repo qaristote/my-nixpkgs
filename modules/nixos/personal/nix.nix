@@ -8,14 +8,16 @@
   hasFlake = cfg.flake != null;
   hasFlakeInputs = cfg.autoUpgrade.autoUpdateInputs != [];
   checkNetwork = {
-    preStart = "${pkgs.host}/bin/host 9.9.9.9 || kill -s SIGUSR1 $$"; # Check network connectivity
+    path = [pkgs.host];
+    # Check network connectivity
+    preStart = "(${lib.concatMapStringsSep " && " (host: "host ${host}") cfg.autoUpgrade.checkHosts}) || kill -s SIGUSR1 $$";
     unitConfig = {
       StartLimitIntervalSec = 300;
       StartLimitBurst = 5;
     };
     serviceConfig = {
       Restart = "on-abort";
-      RestartSec = "30";
+      RestartSec = 30;
     };
   };
 in {
@@ -26,6 +28,10 @@ in {
       autoUpdateInputs = lib.mkOption {
         type = with lib.types; listOf str;
         default = ["nixpkgs"];
+      };
+      checkHosts = lib.mkOption {
+        type = with lib.types; listOf str;
+        default = ["cache.nixos.org"];
       };
     };
     flake = lib.mkOption {
