@@ -155,22 +155,23 @@ in {
       };
     })
 
-    (lib.mkIf cfg.remoteBuilds.enable {
+    (lib.mkIf cfg.remoteBuilds.enable (with cfg.remoteBuilds.machines.hephaistos; {
       nix = {
         distributedBuilds = true;
         settings.builders-use-substitutes = true;
-        buildMachines = with cfg.remoteBuilds.machines.hephaistos;
-          lib.optional enable {
-            inherit protocol speedFactor;
-            hostName = "hephaistos.${domain}";
-            system = "x86_64-linux";
-            maxJobs = 4;
-            supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
-            mandatoryFeatures = [];
-          };
+        buildMachines = lib.optional enable {
+          inherit protocol speedFactor;
+          hostName = "hephaistos.${domain}";
+          system = "x86_64-linux";
+          maxJobs = 4;
+          supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+          mandatoryFeatures = [];
+        };
       };
 
-      programs.ssh = with cfg.remoteBuilds.machines.hephaistos; {
+      personal.nix.autoUpgrade.checkHosts = ["hephaistos.${domain}"];
+
+      programs.ssh = {
         extraConfig = lib.optionalString enable ''
           Host hephaistos.${domain}
             # Prevent using ssh-agent or another keyfile, useful for testing
@@ -182,6 +183,6 @@ in {
         '';
         knownHosts."hephaistos.${domain}".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHvtqi8tziBuviUV8LDK2ddQQUbHdJYB02dgWTK5Olxq";
       };
-    })
+    }))
   ]);
 }
