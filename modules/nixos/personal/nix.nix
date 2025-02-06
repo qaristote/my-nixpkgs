@@ -8,9 +8,9 @@
   hasFlake = cfg.flake != null;
   hasFlakeInputs = cfg.autoUpgrade.autoUpdateInputs != [];
   checkNetwork = {
-    path = [pkgs.host];
+    path = [pkgs.unixtools.ping];
     # Check network connectivity
-    preStart = "(${lib.concatMapStringsSep " && " (host: "host ${host}") cfg.autoUpgrade.checkHosts}) || kill -s SIGUSR1 $$";
+    preStart = "(${lib.concatMapStringsSep " && " (host: "ping -c 1 ${host}") cfg.autoUpgrade.checkHosts}) || kill -s SIGUSR1 $$";
     unitConfig = {
       StartLimitIntervalSec = 300;
       StartLimitBurst = 5;
