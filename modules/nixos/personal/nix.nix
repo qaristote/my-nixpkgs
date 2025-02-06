@@ -140,7 +140,7 @@ in {
             Type = "oneshot"; # Ensure that it finishes before starting nixos-upgrade
           };
           before = ["nixos-upgrade.service"];
-          wantedBy = ["nixos-upgrade.service"];
+          requiredBy = ["nixos-upgrade.service"];
           path = [pkgs.git];
           personal.monitor = true;
         }
