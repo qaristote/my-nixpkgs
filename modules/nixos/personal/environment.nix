@@ -15,7 +15,10 @@ in {
     {
       environment = {
         systemPackages = with pkgs; [vim gitMinimal busybox coreutils];
-        variables.EDITOR = "vim";
+        variables = {
+          EDITOR = "vim";
+          DO_NOT_TRACK = "1";
+        };
       };
 
       programs.starship.enable = true;

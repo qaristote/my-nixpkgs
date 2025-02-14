@@ -17,7 +17,10 @@
       ssh = "TERM=xterm-256color ssh";
       edit = "$EDITOR";
     };
-    sessionVariables = {CDPATH = "~";};
+    sessionVariables = {
+      CDPATH = "~";
+      DO_NOT_TRACK = "1";
+    };
   };
 
   programs.bash.bashrcExtra = ''
