@@ -79,7 +79,7 @@ in {
           // {
             "${profileName}" = {
               id = id + 2;
-              extensions = with pkgs.personal.firefoxAddons; [
+              extensions.packages = with pkgs.personal.firefoxAddons; [
                 clearurls
                 neat-url
                 redirector
@@ -100,7 +100,7 @@ in {
           default = {
             id = 0; # isDefault = true
 
-            extensions = with pkgs.personal.firefoxAddons; [
+            extensions.packages = with pkgs.personal.firefoxAddons; [
               canvasblocker
               clearurls
               darkreader
@@ -133,7 +133,7 @@ in {
 
           videoconferencing = {
             id = 1;
-            extensions = with pkgs.personal.firefoxAddons; [
+            extensions.packages = with pkgs.personal.firefoxAddons; [
               clearurls
               darkreader
               neat-url

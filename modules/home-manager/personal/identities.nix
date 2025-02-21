@@ -97,7 +97,7 @@ in {
       xdg.mimeApps.defaultApplications."application/pdf" = ["org.gnome.Evince.desktop"];
       programs.firefox.profiles = let
         addFloccus = {
-          extensions = [pkgs.personal.firefoxAddons.floccus];
+          extensions.packages = [pkgs.personal.firefoxAddons.floccus];
         };
       in {
         default = addFloccus;
