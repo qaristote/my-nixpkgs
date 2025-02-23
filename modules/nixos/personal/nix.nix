@@ -123,10 +123,11 @@ in {
         flags = lib.optional (!hasFlake) "--upgrade-all";
       };
       systemd.services.nixos-upgrade = lib.mkMerge [
-        checkNetwork
         {
+          preStart = "${config.system.build.nixos-rebuild}/bin/nixos-rebuild dry-build ${toString config.system.autoUpgrade.flags}";
           personal.monitor = true;
         }
+        checkNetwork # has to come second, so network is checked before the dry-build
       ];
     })
 
