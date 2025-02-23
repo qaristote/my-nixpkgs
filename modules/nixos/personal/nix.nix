@@ -164,7 +164,7 @@ in {
           hostName = "hephaistos.${domain}";
           system = "x86_64-linux";
           maxJobs = 4;
-          supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm"];
+          supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm" "recursive-nix"];
           mandatoryFeatures = [];
         };
       };
