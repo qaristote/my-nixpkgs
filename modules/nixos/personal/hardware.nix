@@ -38,16 +38,7 @@ in {
     {
       hardware.firmware =
         lib.optional cfg.firmwareNonFree.enable pkgs.firmwareLinuxNonfree;
-      boot.initrd = {
-        availableKernelModules = lib.optional cfg.usb.enable "usb_storage";
-        luks.devices = lib.optionalAttrs (cfg.disks.crypted != null) {
-          crypt = {
-            name = "crypt";
-            device = cfg.disks.crypted;
-            preLVM = true;
-          };
-        };
-      };
+      boot.initrd.availableKernelModules = lib.optional cfg.usb.enable "usb_storage";
 
       services.udev.extraRules =
         lib.optionalString (cfg.backlights.screen != null) ''
@@ -57,6 +48,31 @@ in {
           ACTION=="add", SUBSYSTEM=="leds", KERNEL=="${cfg.backlights.keyboard}", MODE="0666", RUN+="${pkgs.coreutils}/bin/chmod a+w /sys/class/leds/%k/brightness"
         '';
     }
+
+    (lib.mkIf (cfg.disks.crypted != null) {
+      boot.initrd.luks.devices.crypt = {
+        device =
+          cfg.disks.crypted;
+        preLVM = true;
+        fallbackToPassword = true;
+        keyFileTimeout = 1;
+        keyfile =
+          config.fileSystems."/boot".device
+          + ":/keyfile";
+        postOpenCommands = ''
+          if [[ -f /boot/keyfile ]]
+          then
+            echo "Detected old LUKS key file."
+            echo "Disabling key file..."
+            cryptsetup --verbose luksRemoveKey ${cfg.disks.crypted} --key-file /boot/keyfile ||
+            echo "Shredding key file..."
+            shred --force --zero --remove /boot/keyfile
+          else
+            echo "No old LUKS keyfile detected."
+          fi
+        '';
+      };
+    })
 
     (lib.mkIf cfg.sound.enable {
       security.rtkit.enable = true;
