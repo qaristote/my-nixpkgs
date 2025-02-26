@@ -56,7 +56,7 @@ in {
         preLVM = true;
         fallbackToPassword = true;
         keyFileTimeout = 1;
-        keyfile =
+        keyFile =
           config.fileSystems."/boot".device
           + ":/keyfile";
         postOpenCommands = ''

@@ -123,11 +123,38 @@ in {
         flags = lib.optional (!hasFlake) "--upgrade-all";
       };
       systemd.services.nixos-upgrade = lib.mkMerge [
+        checkNetwork
         {
-          preStart = "${config.system.build.nixos-rebuild}/bin/nixos-rebuild dry-build ${toString config.system.autoUpgrade.flags}";
+          preStart = lib.mkAfter ''
+            ${config.system.build.nixos-rebuild}/bin/nixos-rebuild dry-build ${toString config.system.autoUpgrade.flags}
+          '';
           personal.monitor = true;
         }
-        checkNetwork # has to come second, so network is checked before the dry-build
+        (let
+          luksCfg = config.boot.initrd.luks.devices;
+          cryptExists = luksCfg ? crypt;
+          cryptCfg = luksCfg.crypt;
+        in
+          lib.mkIf (cryptExists && config.system.autoUpgrade.allowReboot) {
+            script = lib.mkAfter ''
+              # clean previous keyfile
+              # shouldn't do anything, only in case something went wrong
+              ${cryptCfg.postOpenCommands}
+              # Creating temporary LUKS key file for next reboot...
+              if [[ "''${booted}" != "''${built}" && "''${do_reboot}" = true ]]
+              then
+                dd if=/dev/urandom of=/boot/keyfile bs=1024 count=4
+                chmod 400 /boot/keyfile
+                cryptsetup --verbose --key-file /etc/luks/keyfile ${cryptCfg.device} /boot/keyfile
+              fi
+            '';
+            postStop = ''
+              # if a reboot due to nixos-upgrade happens, it should occur within a minute
+              sleep 120
+              # if no reboot has happened, clean any leftover keyfile
+              ${cryptCfg.postOpenCommands}
+            '';
+          })
       ];
     })
 
