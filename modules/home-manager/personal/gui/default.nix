@@ -35,7 +35,7 @@ in {
       };
       iconTheme = lib.mkDefault {
         name = "breeze-dark";
-        package = pkgs.breeze-icons;
+        package = pkgs.kdePackages.breeze-icons;
       };
     };
     qt = {
