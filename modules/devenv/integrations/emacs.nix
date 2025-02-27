@@ -27,7 +27,7 @@ in {
   options.emacs = {
     enable = lib.mkEnableOption "emacs integration";
     dirLocals = lib.mkOption {
-      type = with lib.types; attrsOf (attrsOf str);
+      type = with lib.types; attrsOf (attrsOf anything);
       default = {};
       example =
         # the first example from https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html
@@ -48,6 +48,5 @@ in {
 
   config.dotfiles.".dir-locals.el".text =
     lib.mkIf (cfg.dirLocals != {})
-    (attrs2alist
-      cfg.dirLocals);
+    (attrs2alist cfg.dirLocals);
 }
