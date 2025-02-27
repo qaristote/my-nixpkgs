@@ -55,7 +55,8 @@ in {
           cfg.disks.crypted;
         preLVM = true;
         fallbackToPassword = true;
-        keyFileTimeout = 1;
+        # only supported with systemd-initrd
+        # keyFileTimeout = 1;
         keyFile =
           config.fileSystems."/boot".device
           + ":/keyfile";
