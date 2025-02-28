@@ -143,9 +143,9 @@ in {
               # Creating temporary LUKS key file for next reboot...
               if [[ "''${booted}" != "''${built}" && "''${do_reboot}" = true ]]
               then
-                dd if=/dev/urandom of=/boot/keyfile bs=1024 count=4
-                chmod 400 /boot/keyfile
-                cryptsetup --verbose luksAddKey --key-file /etc/luks/keyfile ${cryptCfg.device} /boot/keyfile
+                # dd if=/dev/urandom of=/boot/keyfile bs=1024 count=4
+                # chmod 400 /boot/keyfile
+                # cryptsetup --verbose luksAddKey --key-file /etc/luks/keyfile ${cryptCfg.device} /boot/keyfile
               fi
             '';
             postStop = ''

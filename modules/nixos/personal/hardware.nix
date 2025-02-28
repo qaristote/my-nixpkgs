@@ -55,11 +55,12 @@ in {
           cfg.disks.crypted;
         preLVM = true;
         fallbackToPassword = true;
-        # only supported with systemd-initrd
+        # broken
+        ## only supported with systemd-initrd
         # keyFileTimeout = 1;
-        keyFile =
-          config.fileSystems."/boot".device
-          + ":/keyfile";
+        # keyFile =
+        #   config.fileSystems."/boot".device
+        #   + ":/keyfile";
         postOpenCommands = ''
           if [[ -f /boot/keyfile ]]
           then
