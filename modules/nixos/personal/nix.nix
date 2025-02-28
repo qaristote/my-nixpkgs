@@ -117,6 +117,7 @@ in {
     })
 
     (lib.mkIf cfg.autoUpgrade.enable {
+      personal.boot.unattendedReboot = lib.mkIf config.system.autoUpgrade.allowReboot true;
       system.autoUpgrade = {
         enable = true;
         flake = cfg.flake;
@@ -137,22 +138,16 @@ in {
         in
           lib.mkIf (cryptExists && config.system.autoUpgrade.allowReboot) {
             script = lib.mkAfter ''
-              # clean previous keyfile
-              # shouldn't do anything, only in case something went wrong
-              ${cryptCfg.postOpenCommands}
-              # Creating temporary LUKS key file for next reboot...
-              if [[ "''${booted}" != "''${built}" && "''${do_reboot}" = true ]]
-              then
-                # dd if=/dev/urandom of=/boot/keyfile bs=1024 count=4
-                # chmod 400 /boot/keyfile
-                # cryptsetup --verbose luksAddKey --key-file /etc/luks/keyfile ${cryptCfg.device} /boot/keyfile
-              fi
+              cryptsetup --verbose luksAddKey --key-file /etc/luks/keys/master ${cryptCfg.device} /etc/luks/keys/tmp
             '';
             postStop = ''
               # if a reboot due to nixos-upgrade happens, it should occur within a minute
               sleep 120
-              # if no reboot has happened, clean any leftover keyfile
-              ${cryptCfg.postOpenCommands}
+              # if no reboot has happened, disable any leftover keyfile
+              while cryptsetup --verbose luksRemoveKey ${cryptCfg.device} --key-file /etc/luks/keys/tmp
+              do
+                :
+              done
             '';
           })
       ];

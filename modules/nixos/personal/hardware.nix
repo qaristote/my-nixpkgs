@@ -49,32 +49,15 @@ in {
         '';
     }
 
-    (lib.mkIf (cfg.disks.crypted != null) {
-      boot.initrd.luks.devices.crypt = {
-        device =
-          cfg.disks.crypted;
-        preLVM = true;
-        fallbackToPassword = true;
-        # broken
-        ## only supported with systemd-initrd
-        # keyFileTimeout = 1;
-        # keyFile =
-        #   config.fileSystems."/boot".device
-        #   + ":/keyfile";
-        postOpenCommands = ''
-          if [[ -f /boot/keyfile ]]
-          then
-            echo "Detected old LUKS key file."
-            echo "Disabling key file..."
-            cryptsetup --verbose luksRemoveKey ${cfg.disks.crypted} --key-file /boot/keyfile ||
-            echo "Shredding key file..."
-            shred --force --zero --remove /boot/keyfile
-          else
-            echo "No old LUKS keyfile detected."
-          fi
-        '';
-      };
-    })
+    (let
+      crypt = cfg.disks.crypted;
+    in
+      lib.mkIf (crypt != null) {
+        boot.initrd.luks.devices.crypt = {
+          device = crypt;
+          preLVM = true;
+        };
+      })
 
     (lib.mkIf cfg.sound.enable {
       security.rtkit.enable = true;
