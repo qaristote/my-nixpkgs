@@ -145,7 +145,7 @@ in {
               then
                 dd if=/dev/urandom of=/boot/keyfile bs=1024 count=4
                 chmod 400 /boot/keyfile
-                cryptsetup --verbose --key-file /etc/luks/keyfile ${cryptCfg.device} /boot/keyfile
+                cryptsetup --verbose luksAddKey --key-file /etc/luks/keyfile ${cryptCfg.device} /boot/keyfile
               fi
             '';
             postStop = ''
