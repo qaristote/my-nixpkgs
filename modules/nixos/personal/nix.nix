@@ -31,7 +31,7 @@ in {
       };
       checkHosts = lib.mkOption {
         type = with lib.types; listOf str;
-        default = ["cache.nixos.org"];
+        default = config.nix.settings.substituters;
       };
     };
     flake = lib.mkOption {
@@ -197,7 +197,7 @@ in {
         };
       };
 
-      personal.nix.autoUpgrade.checkHosts = ["hephaistos.${domain}"];
+      personal.nix.autoUpgrade.checkHosts = lib.mkDefault ["hephaistos.${domain}"];
 
       programs.ssh = {
         extraConfig = lib.optionalString enable ''
