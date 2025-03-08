@@ -14,7 +14,6 @@
         "dom.allow_cut_copy" = true; # 2404
         "dom.battery.enabled" = false; # 2502
         "permissions.default.xr" = 2; # 2521
-        "privacy.clearOnShutdown.siteSettings" = true; # 2811
         "browser.search.separatePrivateDefault" = false; #0830
         "browser.search.separatePrivateDefault.ui.enabled" = false; #0830
 
@@ -44,10 +43,8 @@
         "browser.cache.disk.enable" = true;
         "browser.cache.offline.storage" = true;
         # Privacy
-        "privacy.clearOnShutdown.cache" = false;
-        "privacy.clearOnShutdown.cookies" = false;
-        "privacy.clearOnShutdown.siteSettings" = false;
-        "privacy.clearOnShutdown.offlineApps" = false;
+        "privacy.clearOnShutdown_v2.cache" = false;
+        "privacy.clearOnShutdown_v2.cookiesAndStorage" = false;
       };
 
     videoconferencing =
