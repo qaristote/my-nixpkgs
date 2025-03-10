@@ -52,8 +52,18 @@ in {
           default = "ssh-ng";
         };
         speedFactor = lib.mkOption {
-          type = lib.types.int;
+          type =
+            lib.types.int;
           default = 4;
+        };
+        require = lib.mkOption {
+          type =
+            lib.types.bool;
+          default = true;
+          description = ''
+            Whether this remote builder is required to build the configuration.
+            If so, network connectivity to this remote builder will be checked prior to building.
+          '';
         };
       };
     };
@@ -192,7 +202,7 @@ in {
         };
       };
 
-      personal.nix.autoUpgrade.checkHosts = lib.mkDefault ["hephaistos.${domain}"];
+      personal.nix.autoUpgrade.checkHosts = lib.mkOptionDefault (lib.optional require "hephaistos.${domain}");
 
       programs.ssh = {
         extraConfig = lib.optionalString enable ''
