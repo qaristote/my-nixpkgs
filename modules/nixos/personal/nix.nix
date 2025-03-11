@@ -27,7 +27,7 @@ in {
       enable = lib.mkEnableOption "automatic system and nixpkgs upgrade";
       autoUpdateInputs = lib.mkOption {
         type = with lib.types; listOf str;
-        default = ["nixpkgs" "my-nixpkgs/nur"];
+        default = ["nixpkgs" "my-nixpkgs/nur" "nixos-hardware"];
       };
       checkHosts = lib.mkOption {
         type = with lib.types; listOf str;
