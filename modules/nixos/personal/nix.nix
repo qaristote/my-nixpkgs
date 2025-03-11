@@ -130,7 +130,6 @@ in {
       personal.boot.unattendedReboot = lib.mkIf config.system.autoUpgrade.allowReboot true;
       system.autoUpgrade = {
         enable = true;
-        flake = cfg.flake;
         flags = lib.optional (!hasFlake) "--upgrade-all";
       };
       systemd.services.nixos-upgrade = lib.mkMerge [
@@ -164,6 +163,16 @@ in {
     })
 
     (lib.mkIf hasFlake {
+      # don't use system.autoUpgrade.flake, as it enables the --refresh flag
+      assertions = [
+        {
+          assertion = !((config.system.autoUpgrade.channel != null));
+          message = ''
+            The options 'system.autoUpgrade.channel' and 'personal.nix.flake' cannot both be set.
+          '';
+        }
+      ];
+      system.autoUpgrade.flags = ["--flags ${cfg.flake}"];
       systemd.services.flake-update = lib.mkIf hasFlakeInputs (lib.mkMerge [
         checkNetwork
         {
