@@ -31,7 +31,7 @@ in {
       };
       checkHosts = lib.mkOption {
         type = with lib.types; listOf str;
-        default = config.nix.settings.substituters;
+        default = with builtins; concatMap (match "https://([^/]*)/?") config.nix.settings.substituters;
       };
     };
     flake = lib.mkOption {
@@ -172,7 +172,7 @@ in {
           '';
         }
       ];
-      system.autoUpgrade.flags = ["--flags ${cfg.flake}"];
+      system.autoUpgrade.flags = lib.mkForce ["--flake ${cfg.flake}"];
       systemd.services.flake-update = lib.mkIf hasFlakeInputs (lib.mkMerge [
         checkNetwork
         {
