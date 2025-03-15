@@ -135,7 +135,11 @@ in {
       systemd.services.nixos-upgrade = lib.mkMerge [
         checkNetwork
         {
+          path = [config.nix.package];
           preStart = lib.mkAfter ''
+            echo "Downloading input flakes..."
+            nix flake archive ${cfg.flake}
+            echo "Evaluating configuration..."
             ${config.system.build.nixos-rebuild}/bin/nixos-rebuild dry-build ${toString config.system.autoUpgrade.flags}
           '';
           personal.monitor = true;
