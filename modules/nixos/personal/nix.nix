@@ -173,16 +173,7 @@ in {
     })
 
     (lib.mkIf hasFlake {
-      # don't use system.autoUpgrade.flake, as it enables the --refresh flag
-      assertions = [
-        {
-          assertion = !((config.system.autoUpgrade.channel != null));
-          message = ''
-            The options 'system.autoUpgrade.channel' and 'personal.nix.flake' cannot both be set.
-          '';
-        }
-      ];
-      system.autoUpgrade.flags = lib.mkForce ["--flake ${cfg.flake}"];
+      system.autoUpgrade.flake = cfg.flake;
       systemd.services.flake-update = lib.mkIf hasFlakeInputs (lib.mkMerge [
         checkNetwork
         {
