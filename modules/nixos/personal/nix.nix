@@ -46,6 +46,10 @@ in {
         domain = lib.mkOption {
           type = lib.types.str;
         };
+        user = lib.mkOption {
+          type = lib.types.str;
+          default = "nixremote";
+        };
         protocol = lib.mkOption {
           type = lib.types.str;
           # Nix custom ssh-variant that avoids lots of "trusted-users" settings pain
@@ -222,10 +226,10 @@ in {
           Host hephaistos.${domain}
             # Prevent using ssh-agent or another keyfile, useful for testing
             IdentitiesOnly yes
-            IdentityFile /etc/ssh/nixremote
+            IdentityFile /etc/ssh/${user}
             # The weakly privileged user on the remote builder
             # If not set, 'root' is used – which will hopefully fail
-            User nixremote
+            User ${user}
         '';
         knownHosts."hephaistos.${domain}".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHvtqi8tziBuviUV8LDK2ddQQUbHdJYB02dgWTK5Olxq";
       };
