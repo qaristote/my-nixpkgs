@@ -58,7 +58,7 @@ in {
         speedFactor = lib.mkOption {
           type =
             lib.types.int;
-          default = 4;
+          default = 8;
         };
         require = lib.mkOption {
           type =
@@ -206,7 +206,7 @@ in {
           inherit protocol speedFactor;
           hostName = "hephaistos.${domain}";
           system = "x86_64-linux";
-          maxJobs = 4;
+          maxJobs = 8;
           supportedFeatures = ["nixos-test" "benchmark" "big-parallel" "kvm" "recursive-nix"];
           mandatoryFeatures = [];
         };
