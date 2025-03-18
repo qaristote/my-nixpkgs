@@ -156,6 +156,7 @@ in {
           cryptCfg = luksCfg.crypt;
         in
           lib.mkIf (cryptExists && config.system.autoUpgrade.allowReboot) {
+            path = [pkgs.cryptsetup];
             script = lib.mkAfter ''
               cryptsetup --verbose luksAddKey --key-file /etc/luks/keys/master ${cryptCfg.device} /etc/luks/keys/tmp
             '';
