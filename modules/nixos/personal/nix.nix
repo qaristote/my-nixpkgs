@@ -158,10 +158,7 @@ in {
           lib.mkIf (cryptExists && config.system.autoUpgrade.allowReboot) {
             path = [pkgs.cryptsetup];
             script = lib.mkAfter ''
-              if [ "$do_reboot" ]
-              then
-                cryptsetup --verbose luksAddKey --key-file /etc/luks/keys/master ${cryptCfg.device} /etc/luks/keys/tmp
-              fi
+              cryptsetup --verbose luksAddKey --key-file /etc/luks/keys/master ${cryptCfg.device} /etc/luks/keys/tmp
             '';
             serviceConfig.TimeoutStopSec = "infinity";
             postStop = ''
