@@ -158,12 +158,18 @@ in {
           lib.mkIf (cryptExists && config.system.autoUpgrade.allowReboot) {
             path = [pkgs.cryptsetup];
             script = lib.mkAfter ''
-              cryptsetup --verbose luksAddKey --key-file /etc/luks/keys/master ${cryptCfg.device} /etc/luks/keys/tmp
+              if [ "$do_reboot" ]
+              then
+                cryptsetup --verbose luksAddKey --key-file /etc/luks/keys/master ${cryptCfg.device} /etc/luks/keys/tmp
+              fi
             '';
+            serviceConfig.TimeoutStopSec = "infinity";
             postStop = ''
-              # if a reboot due to nixos-upgrade happens, it should occur within a minute
-              sleep 120
-              # if no reboot has happened, disable any leftover keyfile
+              # if a reboot due to nixos-upgrade happens,
+              # it should occur within a minute
+              sleep 60
+              # if no reboot has happened,
+              # disable any leftover keyfile
               while cryptsetup --verbose luksRemoveKey ${cryptCfg.device} --key-file /etc/luks/keys/tmp
               do
                 :
