@@ -159,8 +159,8 @@ in {
                     popd
                     # build remotely
                     config=$(ssh ${remoteBuilder} -- \
-                      'nix build --print-out-paths \
-                                 git+file://$(pwd)/nixos-configuration#nixosConfigurations.${name}.config.system.build.toplevel')
+                      'nix build --refresh --print-out-paths \
+                         git+file://$(pwd)/nixos-configuration#nixosConfigurations.${name}.config.system.build.toplevel')
                     # copy result locally
                     nix-copy-closure --from ${remoteBuilder} "$config"
                     # create new generation
