@@ -7,6 +7,7 @@
     ./monitoring.nix
     ./networking
     ./nix.nix
+    ./system.nix
     ./user.nix
   ];
 }
