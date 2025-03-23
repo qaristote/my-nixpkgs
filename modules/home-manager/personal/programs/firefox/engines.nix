@@ -7,7 +7,7 @@
   nixosIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
   self = {
     disable = engines: lib.genAttrs engines (_: {metaData.hidden = true;});
-    disableDefault = self.disable ["Google" "Amazon.fr" "Bing"];
+    disableDefault = self.disable ["google" "Amazon.fr" "bing"];
 
     nix = {
       inherit (self) "Home Manager Options" "NixOS Options" "NixOS Wiki" "Nix Packages";
@@ -24,7 +24,7 @@
           params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
-      iconUpdateURL = "https://emojipedia.org/static/img/favicons/favicon-16x16.png";
+      icon = "https://emojipedia.org/static/img/favicons/favicon-16x16.png";
       updateInterval = everyday;
       definedAliases = ["@emojipedia" "@emoji" "@em"];
     };
@@ -36,7 +36,7 @@
           params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
-      iconUpdateURL = "https://alternativeto.net/static/icons/a2/favicon-16x16.png";
+      icon = "https://alternativeto.net/static/icons/a2/favicon-16x16.png";
       updateInterval = everyday;
       definedAliases = ["@alternativeto" "@a2"];
     };
@@ -97,7 +97,7 @@
           params = [(lib.nameValuePair "query" searchTerms)];
         }
       ];
-      iconUpdateURL = "https://ncatlab.org/favicon.ico";
+      icon = "https://ncatlab.org/favicon.ico";
       updateInterval = everyday;
       definedAliases = ["@ncatlab" "@nlab"];
     };
@@ -109,7 +109,7 @@
           params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
-      iconUpdateURL = "https://searx.aristote.fr/static/themes/simple/img/favicon.svg";
+      icon = "https://searx.aristote.fr/static/themes/simple/img/favicon.svg";
       updateInterval = everyday;
     };
 
@@ -120,7 +120,7 @@
           params = [(lib.nameValuePair "q" searchTerms)];
         }
       ];
-      iconUpdateURL = "https://www.phind.com/images/favicon.png";
+      icon = "https://www.phind.com/images/favicon.png";
       updateInterval = everyday;
       definedAliases = ["@phind" "@ph"];
     };
