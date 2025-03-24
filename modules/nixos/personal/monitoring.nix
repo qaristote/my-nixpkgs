@@ -3,22 +3,27 @@
   lib,
   pkgs,
   ...
-}: {
-  options.systemd.services = lib.mkOption {
-    type = with lib.types;
-      attrsOf (submodule ({
-        name,
-        config,
-        lib,
-        ...
-      }: {
-        options.personal.monitor =
-          lib.mkEnableOption "e-mail monitoring for the ${name} seervice";
-        config.onFailure = lib.optional config.personal.monitor "notify@%i.service";
-      }));
+}: let
+  cfg = config.personal.monitoring;
+in {
+  options = {
+    personal.monitoring.enable = lib.mkEnableOption "e-mail monitoring of systemd services";
+    systemd.services = lib.mkOption {
+      type = with lib.types;
+        attrsOf (submodule ({
+          name,
+          config,
+          lib,
+          ...
+        }: {
+          options.personal.monitor =
+            lib.mkEnableOption "e-mail monitoring for the ${name} seervice";
+          config.onFailure = lib.optional config.personal.monitor "notify@%i.service";
+        }));
+    };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     programs.msmtp = {
       enable = true;
       accounts.default = {

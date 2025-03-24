@@ -70,7 +70,7 @@ in {
         StartLimitIntervalSec = 300;
         StartLimitBurst = 5;
       };
-      serviceConfig = {
+      serviceConfig = lib.mkIf (!config.personal.monitoring.enable) {
         Restart = "on-abort";
         RestartSec = 30;
       };
