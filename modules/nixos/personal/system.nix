@@ -155,7 +155,7 @@ in {
                   then ''
                     # update remote flake
                     pushd ${lib.removePrefix "git+file://" cfg.flake}
-                    git push --force ${cfgRemote.builder.hostName} master
+                    git push --force ${cfgRemote.builder.hostName} local:master
                     popd
                     # build remotely
                     config=$(ssh ${remoteBuilder} -- \
