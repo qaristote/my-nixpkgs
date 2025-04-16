@@ -11,19 +11,6 @@ with lib; let
     inherit (pkgs.lib.personal) toUserJS;
   };
   engines = import ./engines.nix {inherit lib pkgs;};
-  userchrome = let
-    userchromeTSTout = ./userchrome/treestyletabs-outer.css;
-    userchromeTSTin = config.lib.stylix.colors {
-      template = builtins.readFile ./userchrome/treestyletabs-inner.css;
-      extension = ".css";
-    };
-  in
-    ''
-      @import "${userchromeTSTout}";
-    ''
-    + lib.optionalString (config.lib ? stylix) ''
-      // @import "${userchromeTSTin}";
-    '';
   webappsWithIds =
     (builtins.foldl' ({
         counter,
@@ -128,7 +115,7 @@ in {
               order = ["Searx" "Wikipedia"];
             };
             extraConfig = userjs.default;
-            userChrome = userchrome;
+            userChrome = ./userchrome/treestyletabs-outer.css;
           };
 
           videoconferencing = {
@@ -151,7 +138,7 @@ in {
               default = "Searx";
             };
             extraConfig = userjs.videoconferencing;
-            userChrome = userchrome;
+            userChrome = ./userchrome/treestyletabs-outer.css;
           };
         }
         webappsWithIds;
