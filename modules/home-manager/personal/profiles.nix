@@ -68,7 +68,7 @@ in {
       home.packages = with pkgs;
         lib.optionals
         (config.personal.gui.enable && config.personal.identities.personal)
-        [signal-desktop];
+        [signal-desktop-bin];
       programs.thunderbird.enable = lib.mkDefault config.personal.gui.enable;
       programs.gpg.enable = true;
       services.gpg-agent.enable = true;
