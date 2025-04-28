@@ -60,6 +60,10 @@ in {
           windowManager.i3.enable = true;
         };
       };
+      security.pam.services = {
+        i3lock.enable = true;
+        i3lock-color.enable = true;
+      };
     })
     (lib.mkIf cfg.stylix.enable ({
         assertions = let
