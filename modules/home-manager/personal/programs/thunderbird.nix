@@ -30,7 +30,7 @@
       "calendar.view.visiblehours" = 16;
       "calendar.dayendhour" = 24;
       ## Duplicates
-      "mail.server.default.dup_action" = 3; # mark as read
+      "mail.server.default.dup_action" = 1; # delete
       ## Spam
       "mail.spam.manualMark" = true; # move manually marked-as-junk to junk folder
     };
