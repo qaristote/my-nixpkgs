@@ -34,6 +34,11 @@ in {
           # direnv
           .envrc
 
+          # devenv
+          .devenv.flake.nix
+          .devenv/
+          devenv.local.nix
+
           # Nix
           shell.nix
           .nix-gc-roots
