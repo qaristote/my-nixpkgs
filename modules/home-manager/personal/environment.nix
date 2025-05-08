@@ -32,7 +32,7 @@
 
   services.gpg-agent = {
     enableBashIntegration = lib.mkDefault config.programs.bash.enable;
-    pinentryPackage = lib.mkDefault (
+    pinentry.package = lib.mkDefault (
       if config.personal.gui.enable
       then pkgs.pinentry-qt
       else null
