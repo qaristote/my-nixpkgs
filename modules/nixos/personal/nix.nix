@@ -31,6 +31,17 @@ in {
         extraOptions = ''
           !include secrets.conf
         '';
+        registry.my-nixpkgs = {
+          from = {
+            type = "indirect";
+            id = "my-nixpkgs";
+          };
+          to = {
+            type = "github";
+            owner = "qaristote";
+            repo = "my-nixpkgs";
+          };
+        };
       };
     }
 
