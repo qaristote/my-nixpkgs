@@ -6,7 +6,7 @@
 } @ extraArgs: let
   cfg = config.personal.gui;
 in {
-  imports = [./redshift.nix ./x];
+  imports = [./redshift.nix ./safeeyes.nix ./x];
 
   options.personal.gui = {
     enable =
@@ -18,8 +18,6 @@ in {
 
   config = lib.mkIf cfg.enable {
     services.kdeconnect.indicator = lib.mkDefault true;
-
-    services.safeeyes.enable = true;
 
     home.pointerCursor = lib.mkDefault {
       name = "Numix-Cursor-Light";
