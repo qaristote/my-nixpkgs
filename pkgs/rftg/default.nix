@@ -4,23 +4,29 @@
   fetchurl,
   gtk2,
   pkg-config,
+  hostname,
 }:
 stdenv.mkDerivation rec {
   pname = "rftg";
-  version = "0.9.4";
+  version = "0.9.5";
 
   src = fetchurl {
-    url = "http://keldon.net/rftg/rftg-${version}.tar.bz2";
-    sha256 = "0j2y6ggpwdlvyqhirp010aix2g6aacj3kvggvpwzxhig30x9vgq8";
+    url = "https://github.com/bnordli/rftg/archive/refs/tags/${version}.tar.gz";
+    sha256 = "sha256-y/LluUDpNr5Umxc/XPO2mMQWhZ50NxoDkZ7VYt0Sd18=";
   };
 
   nativeBuildInputs = [pkg-config];
-  buildInputs = [gtk2.dev];
+  buildInputs = [gtk2.dev hostname];
+
+  preConfigure = ''
+    cd src/
+  '';
+
+  installFlags = ["prefix=$(out)"];
 
   meta = {
     homepage = "http://keldon.net/rftg/";
     description = "Implementation of the card game Race for the Galaxy, including an AI";
     license = lib.licenses.gpl2Plus;
-    maintainers = [lib.maintainers.falsifian];
   };
 }
