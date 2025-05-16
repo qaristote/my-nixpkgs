@@ -21,7 +21,7 @@ in {
   config = lib.mkIf cfg.enable {
     packages = with pkgs; [cfg.formatter deadnix] ++ lib.optionals cfg.packaging.enable [nix-prefetch-scripts nix-prefetch-github];
 
-    pre-commit.hooks = {
+    git-hooks.hooks = {
       deadnix.enable = lib.mkDefault true;
       "${cfg.formatter.pname}".enable = lib.mkDefault true;
     };
