@@ -32,8 +32,8 @@ in {
     (lib.mkIf cfg.locale.enable {
       time.timeZone = "Europe/Paris";
       i18n = {
-        defaultLocale = "fr_FR.utf8";
-        extraLocaleSettings.LANG = "en_US.utf8";
+        defaultLocale = "fr_FR.UTF-8";
+        extraLocaleSettings.LANG = "en_US.UTF-8";
       };
       console = {
         font = "Lat2-Terminus16";
