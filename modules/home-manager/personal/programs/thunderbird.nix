@@ -11,6 +11,9 @@
       "mail.bii.alert.show_preview" = false;
       # 0610
       "browser.send_pings" = false;
+      # 905
+      # fixes calendar auth
+      "network.auth.subresource-http-auth-allow" = 2;
       # 5004
       "permissions.memory_only" = false;
       # 5016
