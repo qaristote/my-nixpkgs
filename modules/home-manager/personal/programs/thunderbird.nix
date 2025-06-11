@@ -49,7 +49,10 @@ in {
     }
     (lib.mkIf config.programs.thunderbird.enable {
       home.file.".thunderbird/default/user.js".text = configDefault;
-      xdg.mimeApps.defaultApplications."x-scheme-handler/mailto" = ["thunderbird.desktop"];
+      xdg.mimeApps.defaultApplications = {
+        "x-scheme-handler/mailto" = ["thunderbird.desktop"];
+        "application/x-xpinstall" = ["thunderbird.desktop"];
+      };
     })
   ];
 }
