@@ -7,12 +7,6 @@
   cfg = config.services.rss-bridge;
 in {
   options.services.rss-bridge = {
-    package = lib.mkOption {
-      type = lib.types.package;
-      description = "Which derivation to use.";
-      default = pkgs.rss-bridge;
-      defaultText = lib.literalExample "pkgs.rss-bridge";
-    };
     debug = lib.mkEnableOption "debug mode";
     extraBridges = lib.mkOption {
       type = lib.types.listOf (lib.types.submodule {
