@@ -73,6 +73,7 @@ in {
       serviceConfig = lib.mkIf (!config.personal.monitoring.enable) {
         Restart = "on-abort";
         RestartSec = 30;
+        RestartMode = "direct"; # dependent units will not fail
       };
     };
   in
