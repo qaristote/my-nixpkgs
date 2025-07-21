@@ -26,12 +26,13 @@ in {
     ignores =
       [
         (builtins.readFile
-          (pkgs.personal.static.gitignore.override {templates = ["direnv" "Emacs" "Linux"];}))
+          (pkgs.personal.static.gitignore.override {templates = ["Emacs" "Linux"];}))
       ]
       ++ [
         # Personal rules
         ''
           # direnv
+          .direnv
           .envrc
 
           # devenv

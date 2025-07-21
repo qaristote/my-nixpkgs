@@ -7,17 +7,17 @@
 }:
 stdenvNoCC.mkDerivation {
   name = lib.concatStringsSep "+" templates + ".gitignore";
-  version = "2023-06-30";
+  version = "2025-07-20";
 
   src = fetchFromGitHub {
-    owner = "toptal";
+    owner = "github";
     repo = "gitignore";
-    rev = "0a7fb01801c62ca53ab2dcd73ab96185e159e864";
-    hash = "sha256-tZ+hlpt7T1by3f9BxzakjpQr+Y4top570J58q8VP9YE=";
+    rev = "9c2e50c7ccbf2f367f44e3c93e83934d12d67611";
+    hash = "sha256-Zo0eOiCH6NWSjO1mm8KhoNDxQePb15dVKhxvQ62alyQ=";
   };
 
   buildPhase = ''
-    cd templates
+    mv {Global,community}/*.gitignore .
     for file in ${lib.concatStringsSep " " (builtins.map (name: lib.escapeShellArg "${name}.gitignore") templates)}
     do
       echo "### $(basename "$file" .gitignore)" >> $out
