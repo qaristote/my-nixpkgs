@@ -31,6 +31,8 @@ super: let
       };
       wallpapers = super.callPackage ./static/wallpapers {};
     };
+
+    watermark = super.callPackage ./watermark {};
   };
 in
   self
