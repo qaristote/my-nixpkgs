@@ -122,7 +122,7 @@ in {
     {
       packages = [texlive];
       gitignore = {
-        LaTeX.enable = true;
+        TeX.enable = true;
         extra = ''
           *-SAVE-ERROR
         '';
