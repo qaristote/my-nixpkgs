@@ -20,7 +20,7 @@ in {
           signByDefault = true;
         };
         thunderbirdSettings = id: {
-          "mail.identity.id_${id}.fcc_folder_picker_mode" = 0;
+          "mail.identity.id_${id}.fcc_folder_picker_mode" = 1;
         };
       in {
         personal = lib.mkIf cfg.personal {
