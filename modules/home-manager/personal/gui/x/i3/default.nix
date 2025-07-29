@@ -9,7 +9,7 @@ let
 in
 {
   imports = [
-    ./bar
+    ./bar.nix
     ./keybindings.nix
     ./startup.nix
   ];

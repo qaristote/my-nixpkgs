@@ -11,7 +11,7 @@
       ...
     }@config:
     {
-      services.${name} = { inherit (config) Unit Install Service; };
+      services.${name} = { inherit (config) Unit Service; };
       timers.${name} = {
         inherit (config) Unit Install;
         Timer = config.Timer // {
