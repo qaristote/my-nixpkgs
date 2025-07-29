@@ -3,17 +3,21 @@
   lib,
   pkgs,
   ...
-} @ extraArgs: let
+}@extraArgs:
+let
   cfg = config.personal.gui;
-in {
-  imports = [./redshift.nix ./safeeyes.nix ./x];
+in
+{
+  imports = [
+    ./redshift.nix
+    ./safeeyes.nix
+    ./x
+  ];
 
   options.personal.gui = {
-    enable =
-      lib.mkEnableOption "GUI"
-      // {
-        default = extraArgs.osConfig.personal.gui.enable or false;
-      };
+    enable = lib.mkEnableOption "GUI" // {
+      default = extraArgs.osConfig.personal.gui.enable or false;
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -43,7 +47,10 @@ in {
 
     home.packages =
       lib.optional config.dconf.enable pkgs.dconf
-      ++ (with pkgs; [keepassxc pavucontrol]);
+      ++ (with pkgs; [
+        keepassxc
+        pavucontrol
+      ]);
     programs.firefox.enable = true;
   };
 }

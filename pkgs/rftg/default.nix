@@ -15,14 +15,17 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-y/LluUDpNr5Umxc/XPO2mMQWhZ50NxoDkZ7VYt0Sd18=";
   };
 
-  nativeBuildInputs = [pkg-config];
-  buildInputs = [gtk2.dev hostname];
+  nativeBuildInputs = [ pkg-config ];
+  buildInputs = [
+    gtk2.dev
+    hostname
+  ];
 
   preConfigure = ''
     cd src/
   '';
 
-  installFlags = ["prefix=$(out)"];
+  installFlags = [ "prefix=$(out)" ];
 
   meta = {
     homepage = "http://keldon.net/rftg/";

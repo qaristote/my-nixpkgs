@@ -1,4 +1,5 @@
-{inputs, ...}: {
-  imports = [inputs.my-nixpkgs.devenvModules.personal];
+{ inputs, ... }:
+{
+  imports = [ inputs.my-nixpkgs.devenvModules.personal ];
   languages.nix.enable = true;
 }

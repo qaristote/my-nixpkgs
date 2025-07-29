@@ -3,23 +3,30 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.personal.monitoring;
-in {
+in
+{
   options = {
     personal.monitoring.enable = lib.mkEnableOption "e-mail monitoring of systemd services";
     systemd.services = lib.mkOption {
-      type = with lib.types;
-        attrsOf (submodule ({
-          name,
-          config,
-          lib,
-          ...
-        }: {
-          options.personal.monitor =
-            lib.mkEnableOption "e-mail monitoring for the ${name} seervice";
-          config.onFailure = lib.optional config.personal.monitor "notify@%i.service";
-        }));
+      type =
+        with lib.types;
+        attrsOf (
+          submodule (
+            {
+              name,
+              config,
+              lib,
+              ...
+            }:
+            {
+              options.personal.monitor = lib.mkEnableOption "e-mail monitoring for the ${name} seervice";
+              config.onFailure = lib.optional config.personal.monitor "notify@%i.service";
+            }
+          )
+        );
     };
   };
 
@@ -42,18 +49,20 @@ in {
       description = "Send the status of the %i service as an e-mail.";
       serviceConfig.type = "oneshot";
       scriptArgs = "%i";
-      script = let
-        netCfg = config.networking;
-        host = "${builtins.toString netCfg.hostName}.${builtins.toString netCfg.domain}";
-      in ''
-           service="$1"
-        echo \
-        "Subject: ${host}: service $service failed
-        Service $soervice failed on ${host}, with the following log:
+      script =
+        let
+          netCfg = config.networking;
+          host = "${builtins.toString netCfg.hostName}.${builtins.toString netCfg.domain}";
+        in
+        ''
+             service="$1"
+          echo \
+          "Subject: ${host}: service $service failed
+          Service $soervice failed on ${host}, with the following log:
 
-        $(journalctl --no-pager --unit $service --since -1h)
-        " | ${pkgs.msmtp}/bin/msmtp quentin@aristote.fr
-      '';
+          $(journalctl --no-pager --unit $service --since -1h)
+          " | ${pkgs.msmtp}/bin/msmtp quentin@aristote.fr
+        '';
     };
   };
 }

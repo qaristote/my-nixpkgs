@@ -4,41 +4,56 @@
   pkgs,
   inputs,
   ...
-}: let
+}:
+let
   cfg = config.gitignore;
   ignoreDevenv = cfg.devenv.enable or false;
-  templates = lib.attrNames (lib.filterAttrs (name: value: (value.enable or false) && name != "devenv") cfg);
+  templates = lib.attrNames (
+    lib.filterAttrs (name: value: (value.enable or false) && name != "devenv") cfg
+  );
   toUncomment = builtins.concatLists (lib.collect lib.isList cfg);
-in {
+in
+{
   options.gitignore = lib.mkOption {
-    type = with lib.types; (submodule {
-      freeformType = with lib.types;
-        attrsOf (submodule {
-          options = {
-            enable = lib.mkEnableOption "";
-            uncomment = lib.mkOption {
-              type = with lib.types; listOf str;
-              default = [];
-              description = "Lines that should be uncommented and thus enabled in the template file.";
+    type =
+      with lib.types;
+      (submodule {
+        freeformType =
+          with lib.types;
+          attrsOf (submodule {
+            options = {
+              enable = lib.mkEnableOption "";
+              uncomment = lib.mkOption {
+                type = with lib.types; listOf str;
+                default = [ ];
+                description = "Lines that should be uncommented and thus enabled in the template file.";
+              };
             };
-          };
-        });
-      options.extra = lib.mkOption {
-        type = lib.types.lines;
-        default = "";
-        example = ''
-          *.my-file-extension
-        '';
-      };
-    });
-    default = {extra = "";};
+          });
+        options.extra = lib.mkOption {
+          type = lib.types.lines;
+          default = "";
+          example = ''
+            *.my-file-extension
+          '';
+        };
+      });
+    default = {
+      extra = "";
+    };
   };
 
   config = {
-    dotfiles.".gitignore" = lib.mkIf (templates != {} || cfg.extra != "") {
+    dotfiles.".gitignore" = lib.mkIf (templates != { } || cfg.extra != "") {
       gitignore = lib.mkDefault false;
       text =
-        lib.optionalString (templates != []) (builtins.readFile ((pkgs.extend inputs.my-nixpkgs.overlays.personal).personal.static.gitignore.override {inherit templates toUncomment;}))
+        lib.optionalString (templates != [ ]) (
+          builtins.readFile (
+            (pkgs.extend inputs.my-nixpkgs.overlays.personal).personal.static.gitignore.override {
+              inherit templates toUncomment;
+            }
+          )
+        )
         + lib.optionalString ignoreDevenv ''
           ### devenv
           .devenv/

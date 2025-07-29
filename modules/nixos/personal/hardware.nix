@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.personal.hardware;
-in {
+in
+{
   options.personal.hardware = {
     usb.enable = lib.mkEnableOption "usb";
     disks.crypted = lib.mkOption {
@@ -20,24 +22,26 @@ in {
         default = "fr";
       };
     };
-    backlights = let
-      mkBacklightOption = name:
-        lib.mkOption {
-          type = with lib.types; nullOr str;
-          default = null;
-          description = "Whether to allow all users to change hardware the ${name} brightness.";
-        };
-    in {
-      screen = mkBacklightOption "screen";
-      keyboard = mkBacklightOption "keyboard";
-    };
+    backlights =
+      let
+        mkBacklightOption =
+          name:
+          lib.mkOption {
+            type = with lib.types; nullOr str;
+            default = null;
+            description = "Whether to allow all users to change hardware the ${name} brightness.";
+          };
+      in
+      {
+        screen = mkBacklightOption "screen";
+        keyboard = mkBacklightOption "keyboard";
+      };
     sound.enable = lib.mkEnableOption "sound";
   };
 
   config = lib.mkMerge [
     {
-      hardware.firmware =
-        lib.optional cfg.firmwareNonFree.enable pkgs.firmwareLinuxNonfree;
+      hardware.firmware = lib.optional cfg.firmwareNonFree.enable pkgs.firmwareLinuxNonfree;
       boot.initrd.availableKernelModules = lib.optional cfg.usb.enable "usb_storage";
 
       services.udev.extraRules =
@@ -49,15 +53,17 @@ in {
         '';
     }
 
-    (let
-      crypt = cfg.disks.crypted;
-    in
+    (
+      let
+        crypt = cfg.disks.crypted;
+      in
       lib.mkIf (crypt != null) {
         boot.initrd.luks.devices.crypt = {
           device = crypt;
           preLVM = true;
         };
-      })
+      }
+    )
 
     (lib.mkIf cfg.sound.enable {
       security.rtkit.enable = true;

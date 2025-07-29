@@ -1,5 +1,9 @@
 { ... }:
 
 {
-  imports = [ ./filtron.nix ./personal ./rss-bridge.nix ];
+  imports = [
+    ./filtron.nix
+    ./personal
+    ./rss-bridge.nix
+  ];
 }

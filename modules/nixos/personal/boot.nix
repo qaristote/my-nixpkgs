@@ -2,9 +2,11 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.personal.boot;
-in {
+in
+{
   options.personal.boot = {
     grub.enable = lib.mkEnableOption "grub";
     efi.enable = lib.mkEnableOption "EFI";
@@ -16,7 +18,7 @@ in {
       (lib.mkIf cfg.grub.enable {
         grub = {
           enable = true;
-          enableCryptodisk = config.boot.initrd.luks.devices != {};
+          enableCryptodisk = config.boot.initrd.luks.devices != { };
           device = lib.mkDefault "nodev";
         };
       })
@@ -26,9 +28,10 @@ in {
       })
     ];
 
-    initrd = let
-      crypt = config.personal.hardware.disks.crypted;
-    in
+    initrd =
+      let
+        crypt = config.personal.hardware.disks.crypted;
+      in
       lib.mkIf (cfg.unattendedReboot && crypt != null) {
         secrets."/keyfile.luks" = /etc/luks/keys/tmp;
         luks.devices.crypt = {

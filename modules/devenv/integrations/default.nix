@@ -1,3 +1,6 @@
 {
-  imports = [./emacs.nix ./gitignore.nix];
+  imports = [
+    ./emacs.nix
+    ./gitignore.nix
+  ];
 }

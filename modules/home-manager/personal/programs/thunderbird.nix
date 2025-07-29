@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   configDefault =
     builtins.readFile "${pkgs.personal.static.userjs.thunderbird}"
     + pkgs.lib.personal.toUserJS {
@@ -37,7 +38,8 @@
       ## Spam
       "mail.spam.manualMark" = true; # move manually marked-as-junk to junk folder
     };
-in {
+in
+{
   config = lib.mkMerge [
     {
       programs.thunderbird = {
@@ -50,8 +52,8 @@ in {
     (lib.mkIf config.programs.thunderbird.enable {
       home.file.".thunderbird/default/user.js".text = configDefault;
       xdg.mimeApps.defaultApplications = {
-        "x-scheme-handler/mailto" = ["thunderbird.desktop"];
-        "application/x-xpinstall" = ["thunderbird.desktop"];
+        "x-scheme-handler/mailto" = [ "thunderbird.desktop" ];
+        "application/x-xpinstall" = [ "thunderbird.desktop" ];
       };
     })
   ];

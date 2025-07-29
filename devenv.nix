@@ -1,3 +1,4 @@
-{...}: {
+{ ... }:
+{
   languages.nix.enable = true;
 }

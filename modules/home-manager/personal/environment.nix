@@ -3,12 +3,20 @@
   lib,
   pkgs,
   ...
-} @ inputs: {
-  home.packages = with pkgs; [coreutils moreutils];
-  personal.home.wallpaper =
-    lib.mkDefault (inputs.osConfig.stylix.image or (pkgs.personal.static.wallpapers.nga-1973-68-1.override {gravity = "north";}));
+}@inputs:
+{
+  home.packages = with pkgs; [
+    coreutils
+    moreutils
+  ];
+  personal.home.wallpaper = lib.mkDefault (
+    inputs.osConfig.stylix.image
+      or (pkgs.personal.static.wallpapers.nga-1973-68-1.override { gravity = "north"; })
+  );
 
-  programs.bash = {enable = lib.mkDefault true;};
+  programs.bash = {
+    enable = lib.mkDefault true;
+  };
 
   home = {
     shellAliases = {
@@ -32,12 +40,7 @@
 
   services.gpg-agent = {
     enableBashIntegration = lib.mkDefault config.programs.bash.enable;
-    pinentry.package = lib.mkDefault (
-      if config.personal.gui.enable
-      then pkgs.pinentry-qt
-      else null
-    );
-    grabKeyboardAndMouse =
-      lib.mkDefault false; # insecure, but necessary with keepass auto-type
+    pinentry.package = lib.mkDefault (if config.personal.gui.enable then pkgs.pinentry-qt else null);
+    grabKeyboardAndMouse = lib.mkDefault false; # insecure, but necessary with keepass auto-type
   };
 }

@@ -1,7 +1,16 @@
-{ buildGoModule, fetchFromGitHub, wirelesstools, fontawesomeMetadata, materialDesignIconsMetadata, i3statusGo ? null }:
+{
+  buildGoModule,
+  fetchFromGitHub,
+  wirelesstools,
+  fontawesomeMetadata,
+  materialDesignIconsMetadata,
+  i3statusGo ? null,
+}:
 
-let useDefaultConfig = i3statusGo == null;
-in buildGoModule {
+let
+  useDefaultConfig = i3statusGo == null;
+in
+buildGoModule {
   name = "barista";
   version = "autorelease";
 
@@ -14,23 +23,28 @@ in buildGoModule {
 
   patchPhase = ''
     mkdir main
-  '' + (if useDefaultConfig then # use samples/i3status/i3status.go as config
   ''
-    mv samples/i3status/i3status.go main/i3status.go
-  '' else # import config and patch font loading
-  ''
-    cp ${i3statusGo} main/i3status.go
-    substituteInPlace main/i3status.go \
-                      --replace 'fontawesome.Load()' 'fontawesome.Load("${fontawesomeMetadata}")' \
-                      --replace 'mdi.Load()' 'mdi.Load("${materialDesignIconsMetadata}")'
-  '') + # patch call to iwgetid
-    ''
-      substituteInPlace modules/wlan/wlan.go \
-                        --replace '/sbin/iwgetid' '${wirelesstools}/bin/iwgetid'
-    '';
+  + (
+    if useDefaultConfig then # use samples/i3status/i3status.go as config
+      ''
+        mv samples/i3status/i3status.go main/i3status.go
+      ''
+    # import config and patch font loading
+    else
+      ''
+        cp ${i3statusGo} main/i3status.go
+        substituteInPlace main/i3status.go \
+                          --replace 'fontawesome.Load()' 'fontawesome.Load("${fontawesomeMetadata}")' \
+                          --replace 'mdi.Load()' 'mdi.Load("${materialDesignIconsMetadata}")'
+      ''
+  )
+  # patch call to iwgetid
+  + ''
+    substituteInPlace modules/wlan/wlan.go \
+                      --replace '/sbin/iwgetid' '${wirelesstools}/bin/iwgetid'
+  '';
 
   subPackages = [ "main/i3status.go" ];
 
   vendorHash = "sha256-gpzxwtGxHcidRYY8o1Lz0iboU5aNnwsWfOoGo6Lvefo=";
 }
-

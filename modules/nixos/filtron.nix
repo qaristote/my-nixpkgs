@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.services.filtron;
@@ -11,7 +16,8 @@ let
       port = lib.mkOption { type = lib.types.port; };
     };
   };
-in {
+in
+{
   options.services.filtron = {
     enable = lib.mkEnableOption "filtron";
     package = lib.mkOption {
@@ -23,21 +29,28 @@ in {
     };
     api = lib.mkOption {
       type = addressType;
-      default = { address = "localhost"; port = 4005; };
+      default = {
+        address = "localhost";
+        port = 4005;
+      };
       description = ''
         API listen address and port.
       '';
     };
     listen = lib.mkOption {
       type = addressType;
-      default = { port = 4004; };
+      default = {
+        port = 4004;
+      };
       description = ''
         Proxy listen address and port.
       '';
     };
     target = lib.mkOption {
       type = addressType;
-      default = { port = 8888; };
+      default = {
+        port = 8888;
+      };
       description = ''
         Target address and port for reverse proxy.
       '';

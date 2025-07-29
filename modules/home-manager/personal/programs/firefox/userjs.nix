@@ -1,7 +1,8 @@
 {
   arkenfox,
   toUserJS,
-}: let
+}:
+let
   self = {
     arkenfox = builtins.readFile "${arkenfox}";
     default =
@@ -14,8 +15,8 @@
         "dom.allow_cut_copy" = true; # 2404
         "dom.battery.enabled" = false; # 2502
         "permissions.default.xr" = 2; # 2521
-        "browser.search.separatePrivateDefault" = false; #0830
-        "browser.search.separatePrivateDefault.ui.enabled" = false; #0830
+        "browser.search.separatePrivateDefault" = false; # 0830
+        "browser.search.separatePrivateDefault.ui.enabled" = false; # 0830
 
         # Personal
         ## Warnings
@@ -57,12 +58,10 @@
         "media.peerconnection.enabled" = true;
         "media.peerconnection.ice.no_host" = false; # may or may not be required
         "webgl.min_capability_mode" = true;
-        "media.autoplay.blocking_policy" =
-          0; # optional (otherwise add site exceptions)
-        "javascript.options.wasm" =
-          true; # optional (some platforms may require this)
+        "media.autoplay.blocking_policy" = 0; # optional (otherwise add site exceptions)
+        "javascript.options.wasm" = true; # optional (some platforms may require this)
         "dom.webaudio.enabled" = true;
       };
   };
 in
-  self
+self

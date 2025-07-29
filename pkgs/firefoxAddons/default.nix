@@ -2,7 +2,8 @@
   buildFirefoxXpiAddon,
   lib,
   ...
-}: {
+}:
+{
   "add-custom-search-engine" = buildFirefoxXpiAddon {
     pname = "add-custom-search-engine";
     version = "4.2";
@@ -12,7 +13,10 @@
     meta = with lib; {
       description = "Add a custom search engine to the list of available search engines in the search bar and URL bar.";
       license = licenses.mpl20;
-      mozPermissions = ["https://paste.mozilla.org/api/" "search"];
+      mozPermissions = [
+        "https://paste.mozilla.org/api/"
+        "search"
+      ];
       platforms = platforms.all;
     };
   };
@@ -492,7 +496,11 @@
       homepage = "https://unpaywall.org/products/extension";
       description = "Get free text of research papers as you browse, using Unpaywall's index of ten million legal, open-access articles.";
       license = licenses.mit;
-      mozPermissions = ["*://*.oadoi.org/*" "storage" "<all_urls>"];
+      mozPermissions = [
+        "*://*.oadoi.org/*"
+        "storage"
+        "<all_urls>"
+      ];
       platforms = platforms.all;
     };
   };
@@ -506,7 +514,11 @@
       homepage = "https://github.com/cloutierjo/titleUrl";
       description = "Add the current host name to the windows title bar. It adds the possibility to recognize the window from other application that work based on windows titles like KeePass's autotype.";
       license = licenses.gpl3;
-      mozPermissions = ["<all_urls>" "tabs" "storage"];
+      mozPermissions = [
+        "<all_urls>"
+        "tabs"
+        "storage"
+      ];
       platforms = platforms.all;
     };
   };

@@ -3,17 +3,18 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.programs.direnv;
-in {
+in
+{
   programs.direnv.nix-direnv.enable = true;
 
-  systemd.user =
-    lib.mkIf cfg.enable
-    (pkgs.personal.lib.homeManager.serviceWithTimer "direnv-clean-update" {
+  systemd.user = lib.mkIf cfg.enable (
+    pkgs.personal.lib.homeManager.serviceWithTimer "direnv-clean-update" {
       Unit = {
         Description = "Remove old virtual environments and update the current ones";
-        After = ["network-online.target"];
+        After = [ "network-online.target" ];
       };
       Service = {
         Type = "oneshot";
@@ -30,6 +31,9 @@ in {
         Persistent = true;
         OnCalendar = "daily";
       };
-      Install = {WantedBy = ["default.target "];};
-    });
+      Install = {
+        WantedBy = [ "default.target " ];
+      };
+    }
+  );
 }

@@ -1,3 +1,4 @@
-{...}: {
+{ ... }:
+{
   cachix.enable = false;
 }

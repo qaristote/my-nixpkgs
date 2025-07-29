@@ -6,7 +6,11 @@
 }:
 writeShellApplication {
   name = "watermark";
-  runtimeInputs = [coreutils imagemagick pdftk];
+  runtimeInputs = [
+    coreutils
+    imagemagick
+    pdftk
+  ];
   text = ''
     if [[ $1 == --help || $1 == -h ]]
     then

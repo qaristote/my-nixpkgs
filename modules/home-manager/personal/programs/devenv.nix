@@ -3,10 +3,12 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.personal.programs.devenv;
-  importedDevenv = pkgs ? devenv; #
-in {
+  importedDevenv = pkgs ? devenv;
+in
+{
   options.personal.programs.devenv.enable = lib.mkEnableOption "devenv";
 
   config = lib.mkIf cfg.enable {

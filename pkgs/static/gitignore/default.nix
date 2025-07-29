@@ -1,6 +1,6 @@
 {
-  templates ? [],
-  toUncomment ? [],
+  templates ? [ ],
+  toUncomment ? [ ],
   stdenvNoCC,
   fetchFromGitHub,
   lib,
@@ -18,12 +18,20 @@ stdenvNoCC.mkDerivation {
 
   buildPhase = ''
     mv {Global,community}/*.gitignore .
-    for file in ${lib.concatStringsSep " " (builtins.map (name: lib.escapeShellArg "${name}.gitignore") templates)}
+    for file in ${
+      lib.concatStringsSep " " (builtins.map (name: lib.escapeShellArg "${name}.gitignore") templates)
+    }
     do
       echo "### $(basename "$file" .gitignore)" >> $out
       cat "$file" >> $out
       echo >> $out
     done
-    substituteInPlace $out ${lib.concatStringsSep " " (builtins.map (line: "--replace ${lib.escapeShellArg "# ${line}"} ${lib.escapeShellArg line}") toUncomment)}
+    substituteInPlace $out ${
+      lib.concatStringsSep " " (
+        builtins.map (
+          line: "--replace ${lib.escapeShellArg "# ${line}"} ${lib.escapeShellArg line}"
+        ) toUncomment
+      )
+    }
   '';
 }

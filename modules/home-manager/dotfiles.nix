@@ -3,11 +3,10 @@
 {
   options.personal.home.dotfiles = lib.mkOption {
     type = with lib.types; attrsOf path;
-    default = {};
+    default = { };
     description = ''
       Paths to dotfiles.
     '';
-    example =
-      lib.literalExample "{ \"init.el\" = ./dotfiles/init.el; }";
+    example = lib.literalExample "{ \"init.el\" = ./dotfiles/init.el; }";
   };
 }

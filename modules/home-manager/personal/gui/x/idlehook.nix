@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   brightnessctl = "${pkgs.brightnessctl}/bin/brightnessctl";
-in {
+in
+{
   config.services.xidlehook = {
     enable = lib.mkDefault config.personal.x.enable;
     not-when-fullscreen = lib.mkDefault true;

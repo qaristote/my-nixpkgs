@@ -1,38 +1,39 @@
-super: let
+super:
+let
   self = {
     barista = super.callPackage ./barista {
       fontawesomeMetadata = self.static.fontMetadata.fontawesome;
-      materialDesignIconsMetadata =
-        self.static.fontMetadata.materialDesignIcons;
+      materialDesignIconsMetadata = self.static.fontMetadata.materialDesignIcons;
     };
 
-    lib = import ./lib {inherit (super) lib;};
+    lib = import ./lib { inherit (super) lib; };
 
-    lockscreen = super.callPackage ./lockscreen {};
+    lockscreen = super.callPackage ./lockscreen { };
 
     firefoxAddons = super.callPackage ./firefoxAddons {
       inherit (super.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
     };
 
-    rftg = super.callPackage ./rftg {};
+    rftg = super.callPackage ./rftg { };
 
     static = {
-      css = {lineAwesome = super.callPackage ./static/css/lineAwesome {};};
+      css = {
+        lineAwesome = super.callPackage ./static/css/lineAwesome { };
+      };
       fontMetadata = {
-        fontawesome = super.callPackage ./static/fontMetadata/fontawesome {};
-        materialDesignIcons =
-          super.callPackage ./static/fontMetadata/materialDesignIcons {};
+        fontawesome = super.callPackage ./static/fontMetadata/fontawesome { };
+        materialDesignIcons = super.callPackage ./static/fontMetadata/materialDesignIcons { };
       };
-      icons = super.callPackage ./static/icons {};
-      gitignore = super.callPackage ./static/gitignore {};
+      icons = super.callPackage ./static/icons { };
+      gitignore = super.callPackage ./static/gitignore { };
       userjs = {
-        arkenfox = super.callPackage ./static/userjs/arkenfox {};
-        thunderbird = super.callPackage ./static/userjs/thunderbird {};
+        arkenfox = super.callPackage ./static/userjs/arkenfox { };
+        thunderbird = super.callPackage ./static/userjs/thunderbird { };
       };
-      wallpapers = super.callPackage ./static/wallpapers {};
+      wallpapers = super.callPackage ./static/wallpapers { };
     };
 
-    watermark = super.callPackage ./watermark {};
+    watermark = super.callPackage ./watermark { };
   };
 in
-  self
+self

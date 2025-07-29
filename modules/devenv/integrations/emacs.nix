@@ -2,33 +2,31 @@
   config,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.emacs;
-  attrs2alist = value:
-    if lib.isAttrs value
-    then "(${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "(${name} . ${attrs2alist value})") value)})"
+  attrs2alist =
+    value:
+    if lib.isAttrs value then
+      "(${
+        lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (name: value: "(${name} . ${attrs2alist value})") value
+        )
+      })"
     else
       (
-        if lib.isList value
-        then "(${lib.concatStringsSep " " value})"
+        if lib.isList value then
+          "(${lib.concatStringsSep " " value})"
         else
-          (
-            if lib.isBool value
-            then
-              (
-                if value
-                then "t"
-                else "nil"
-              )
-            else builtins.toString value
-          )
+          (if lib.isBool value then (if value then "t" else "nil") else builtins.toString value)
       );
-in {
+in
+{
   options.emacs = {
     enable = lib.mkEnableOption "emacs integration";
     dirLocals = lib.mkOption {
       type = with lib.types; attrsOf (attrsOf anything);
-      default = {};
+      default = { };
       example =
         # the first example from https://www.gnu.org/software/emacs/manual/html_node/emacs/Directory-Variables.html
         {
@@ -46,7 +44,5 @@ in {
     };
   };
 
-  config.dotfiles.".dir-locals.el".text =
-    lib.mkIf (cfg.dirLocals != {})
-    (attrs2alist cfg.dirLocals);
+  config.dotfiles.".dir-locals.el".text = lib.mkIf (cfg.dirLocals != { }) (attrs2alist cfg.dirLocals);
 }

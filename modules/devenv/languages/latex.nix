@@ -4,7 +4,8 @@
   pkgs,
   devenv,
   ...
-}: let
+}:
+let
   cfg = config.languages.texlive;
   pdfModes = {
     "pdflatex" = "1";
@@ -17,21 +18,14 @@
     "latex" = "1";
     "lualatex" = "2";
   };
-  latexmkrc = with cfg.latexmk; let
-    pdfMode = with output.pdf;
-      if enable
-      then pdfModes."${mode}"
-      else "0";
-    dviMode = with output.dvi;
-      if enable
-      then dviModes."${mode}"
-      else "0";
-    psMode =
-      if output.ps.enable
-      then "1"
-      else "0";
-  in
-    lib.optionalString (extraFlags != []) ''
+  latexmkrc =
+    with cfg.latexmk;
+    let
+      pdfMode = with output.pdf; if enable then pdfModes."${mode}" else "0";
+      dviMode = with output.dvi; if enable then dviModes."${mode}" else "0";
+      psMode = if output.ps.enable then "1" else "0";
+    in
+    lib.optionalString (extraFlags != [ ]) ''
       set_tex_cmds('${lib.concatStringsSep " " extraFlags}');
     ''
     + ''
@@ -47,8 +41,9 @@
   packages = cfg.packages cfg.base;
   packagesRequireShellEscape = packages ? minted;
   texlive = cfg.base.combine packages;
-in {
-  disabledModules = [(devenv.modules + "/languages/texlive.nix")];
+in
+{
+  disabledModules = [ (devenv.modules + "/languages/texlive.nix") ];
 
   options.languages.texlive = {
     enable = lib.mkEnableOption "TeX Live";
@@ -57,13 +52,16 @@ in {
       description = "TeX Live package set to use";
     };
     packages = lib.mkOption {
-      type = with lib.types;
-        functionTo (attrsOf (submodule {
-          options.pkgs = lib.mkOption {
-            type = listOf (either package (attrsOf anything));
-          };
-        }));
-      default = tl: {inherit (tl) scheme-medium;};
+      type =
+        with lib.types;
+        functionTo (
+          attrsOf (submodule {
+            options.pkgs = lib.mkOption {
+              type = listOf (either package (attrsOf anything));
+            };
+          })
+        );
+      default = tl: { inherit (tl) scheme-medium; };
       description = "Packages available to TeX Live.";
     };
 
@@ -71,27 +69,40 @@ in {
       enable = lib.mkEnableOption "latexmk";
       cleanExt = lib.mkOption {
         type = with lib.types; listOf str;
-        default = ["fdb_latexmk" "nav" "prv_%R.fmt" "prv_%R.log" "prv/*/*" "prv/*" "prv" "-SAVE-ERROR" "snm" "vrb"];
+        default = [
+          "fdb_latexmk"
+          "nav"
+          "prv_%R.fmt"
+          "prv_%R.log"
+          "prv/*/*"
+          "prv/*"
+          "prv"
+          "-SAVE-ERROR"
+          "snm"
+          "vrb"
+        ];
       };
       cleanFullExt = lib.mkOption {
         type = with lib.types; listOf str;
-        default = ["bbl"];
+        default = [ "bbl" ];
       };
       shellEscape.enable = lib.mkEnableOption "shell escaping";
       extraFlags = lib.mkOption {
         type = with lib.types; listOf str;
-        default = [];
-        example = ["--interaction=nonstopmode"];
+        default = [ ];
+        example = [ "--interaction=nonstopmode" ];
       };
-      output = let
-        mkOutputOptions = formats:
-          lib.mapAttrs (format: extra:
-            lib.recursiveUpdate {
-              enable = lib.mkEnableOption "${format} output";
-            }
-            extra)
-          formats;
-      in
+      output =
+        let
+          mkOutputOptions =
+            formats:
+            lib.mapAttrs (
+              format: extra:
+              lib.recursiveUpdate {
+                enable = lib.mkEnableOption "${format} output";
+              } extra
+            ) formats;
+        in
         mkOutputOptions {
           pdf = {
             enable.default = true;
@@ -108,7 +119,7 @@ in {
               description = "How to generate the dvi file.";
             };
           };
-          ps = {};
+          ps = { };
         };
       extraConfig = lib.mkOption {
         type = lib.types.lines;
@@ -118,35 +129,39 @@ in {
     };
   };
 
-  config = lib.mkIf cfg.enable (lib.mkMerge [
-    {
-      packages = [texlive];
-      gitignore = {
-        TeX.enable = true;
-        extra = ''
-          *-SAVE-ERROR
-        '';
-      };
-    }
-    (lib.mkIf cfg.latexmk.enable {
-      languages.texlive = {
-        packages = tl: {inherit (tl) latexmk;};
-        latexmk = {
-          shellEscape.enable = lib.mkDefault packagesRequireShellEscape;
-          extraFlags = lib.optional cfg.latexmk.shellEscape.enable "-shell-escape";
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      {
+        packages = [ texlive ];
+        gitignore = {
+          TeX.enable = true;
+          extra = ''
+            *-SAVE-ERROR
+          '';
         };
-      };
+      }
+      (lib.mkIf cfg.latexmk.enable {
+        languages.texlive = {
+          packages = tl: { inherit (tl) latexmk; };
+          latexmk = {
+            shellEscape.enable = lib.mkDefault packagesRequireShellEscape;
+            extraFlags = lib.optional cfg.latexmk.shellEscape.enable "-shell-escape";
+          };
+        };
 
-      scripts.latexmk.exec = ''
-        ${texlive}/bin/latexmk -r ${config.devenv.root}/.latexmkrc $@
-      '';
+        scripts.latexmk.exec = ''
+          ${texlive}/bin/latexmk -r ${config.devenv.root}/.latexmkrc $@
+        '';
 
-      gitignore.LaTeX.uncomment = with cfg.latexmk.output; lib.optional pdf.enable "*.pdf" ++ lib.optional dvi.enable "*.dvi" ++ lib.optional ps.enable "*.ps";
+        gitignore.LaTeX.uncomment =
+          with cfg.latexmk.output;
+          lib.optional pdf.enable "*.pdf" ++ lib.optional dvi.enable "*.dvi" ++ lib.optional ps.enable "*.ps";
 
-      dotfiles.".latexmkrc" = {
-        gitignore = lib.mkDefault false;
-        text = latexmkrc;
-      };
-    })
-  ]);
+        dotfiles.".latexmkrc" = {
+          gitignore = lib.mkDefault false;
+          text = latexmkrc;
+        };
+      })
+    ]
+  );
 }
