@@ -1,11 +1,6 @@
 super:
 let
   self = {
-    barista = super.callPackage ./barista {
-      fontawesomeMetadata = self.static.fontMetadata.fontawesome;
-      materialDesignIconsMetadata = self.static.fontMetadata.materialDesignIcons;
-    };
-
     lib = import ./lib { inherit (super) lib; };
 
     lockscreen = super.callPackage ./lockscreen { };
