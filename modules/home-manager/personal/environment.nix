@@ -5,10 +5,6 @@
   ...
 }@inputs:
 {
-  home.packages = with pkgs; [
-    coreutils
-    moreutils
-  ];
   personal.home.wallpaper = lib.mkDefault (
     inputs.osConfig.stylix.image
       or (pkgs.personal.static.wallpapers.nga-1973-68-1.override { gravity = "north"; })
@@ -29,6 +25,12 @@
       CDPATH = "~";
       DO_NOT_TRACK = "1";
     };
+    packages =
+      lib.optional (inputs.osConfig.programs.starship.enable or false) pkgs.nerd-fonts.fira-code
+      ++ (with pkgs; [
+        coreutils
+        moreutils
+      ]);
   };
 
   programs.bash.bashrcExtra = ''
