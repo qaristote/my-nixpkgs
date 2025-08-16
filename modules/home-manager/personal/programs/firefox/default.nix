@@ -74,6 +74,10 @@ in
 
   config = lib.mkMerge [
     {
+      stylix.targets.firefox.profileNames = [
+        "default"
+        "videoconferencing"
+      ];
       programs.firefox.profiles =
         builtins.foldl'
           (
