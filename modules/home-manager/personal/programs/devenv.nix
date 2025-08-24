@@ -15,6 +15,7 @@ let
       findutils,
       git,
       gnugrep,
+      nix,
     }:
     pkgs.writeShellApplication {
       name = "devenv-update";
@@ -26,6 +27,7 @@ let
         findutils
         git
         gnugrep
+        nix
       ];
 
       text = ''
