@@ -30,7 +30,6 @@ in
             experimental-features = [
               "nix-command"
               "flakes"
-              "recursive-nix"
             ];
             substituters = [
               "https://devenv.cachix.org/"
