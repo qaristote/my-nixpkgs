@@ -29,13 +29,18 @@ in
           };
         };
 
-        programs.starship.enable = true;
-        programs.bash.shellInit = ''
-          function set_win_title(){
-            echo -ne "\033]0;$(whoami)@$(hostname --long):$(dirs)\a"
-          }
-          starship_precmd_user_func="set_win_title"
-        '';
+        programs = {
+          starship.enable = true;
+          bash = {
+            shellInit = ''
+              function set_win_title(){
+                echo -ne "\033]0;$(whoami)@$(hostname).$(domainname):$(dirs)\a"
+              }
+              starship_precmd_user_func="set_win_title"
+            '';
+          };
+        };
+
       }
       (lib.mkIf cfg.locale.enable {
         time.timeZone = "Europe/Paris";

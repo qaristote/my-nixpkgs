@@ -62,9 +62,6 @@ in
     services = lib.mkIf cfg.ssh.enable {
       openssh = {
         enable = true;
-        extraConfig = ''
-          AcceptEnv PS1
-        '';
       }
       // (
         if options.services.openssh ? settings then
