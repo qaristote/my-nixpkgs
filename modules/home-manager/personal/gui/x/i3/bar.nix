@@ -84,9 +84,14 @@ in
               }
               {
                 block = "sound";
+                headphones_indicator = true;
+                show_volume_when_muted = true;
               }
               {
                 block = "sound";
+                name = "@DEFAULT_SOURCE@";
+                device_kind = "source";
+                show_volume_when_muted = true;
               }
               {
                 block = "time";
