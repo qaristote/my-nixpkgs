@@ -46,7 +46,7 @@ in
             ++ (ifDevice cfg.devices.eth {
               block = "net";
               device = cfg.devices.eth;
-              format = " ^icon_net_wired $ip ";
+              format = " ^icon_net_wired {$ip|no IP address} ";
               inactive_format = " ^icon_net_wired × ";
               missing_format = " ^icon_net_wired × ";
             })
