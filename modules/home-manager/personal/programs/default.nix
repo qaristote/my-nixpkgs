@@ -9,6 +9,7 @@
     ./firefox
     ./git.nix
     ./rofi.nix
+    ./ssh.nix
     ./thunderbird.nix
   ];
 }

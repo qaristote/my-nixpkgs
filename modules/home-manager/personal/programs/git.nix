@@ -70,4 +70,10 @@ in
       pull.rebase = true;
     };
   };
+
+  programs.ssh.matchBlocks."git.aristote.fr" = {
+    hostname = "hephaistos.aristote.mesh";
+    user = "git";
+    proxyJump = "sshjump@hermes.aristote.fr";
+  };
 }
