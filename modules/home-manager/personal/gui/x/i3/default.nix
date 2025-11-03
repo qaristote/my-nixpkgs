@@ -23,7 +23,7 @@ in
   config = lib.mkIf cfg.enable {
     xsession.windowManager.i3 = {
       enable = cfg.enable;
-      package = lib.mkDefault pkgs.i3-gaps;
+      package = lib.mkDefault pkgs.i3; # i3-gaps
 
       config = {
         assigns =
