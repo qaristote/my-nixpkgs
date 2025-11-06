@@ -41,7 +41,7 @@ in
 
   config = lib.mkMerge [
     {
-      hardware.firmware = lib.optional cfg.firmwareNonFree.enable pkgs.firmwareLinuxNonfree;
+      hardware.firmware = lib.optional cfg.firmwareNonFree.enable pkgs.linux-firmware;
       boot.initrd.availableKernelModules = lib.optional cfg.usb.enable "usb_storage";
 
       services.udev.extraRules =
