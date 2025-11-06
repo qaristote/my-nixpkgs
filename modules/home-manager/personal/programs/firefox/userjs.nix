@@ -17,6 +17,13 @@ let
         "permissions.default.xr" = 2; # 2521
         "browser.search.separatePrivateDefault" = false; # 0830
         "browser.search.separatePrivateDefault.ui.enabled" = false; # 0830
+        "privacy.clearOnShutdown_v2.historyFormDataAndDownloads" = true; # 2811
+        "privacy.clearOnShutdown_v2.browsingHistoryAndDownloads" = true; # 2812
+        "privacy.clearOnShutdown_v2.downloads" = true; # 2812
+        "privacy.clearSiteData.historyFormDataAndDownloads" = true; # 2820
+        "privacy.clearSiteData.browsingHistoryAndDownloads" = true; # 2821
+        "privacy.clearHistory.historyFormDataAndDownloads" = true; # 2830
+        "privacy.clearHistory.browsingHistoryAndDownloads" = true; # 2831
 
         # Personal
         ## Warnings
