@@ -21,8 +21,6 @@ let
 in
 {
   programs.git = {
-    userName = primaryEmail.userName;
-    userEmail = primaryEmail.address;
     signing = lib.mkIf (primaryEmail ? "gpg") {
       inherit (primaryEmail.gpg) key signByDefault;
     };
@@ -57,7 +55,11 @@ in
       ''
     ];
 
-    extraConfig = {
+    settings = {
+      user = {
+        name = primaryEmail.userName;
+        email = primaryEmail.address;
+      };
       safe.directory = lib.mkIf (extraArgs ? osConfig) (
         let
           flake = extraArgs.osConfig.system.autoUpgrade.flake;
