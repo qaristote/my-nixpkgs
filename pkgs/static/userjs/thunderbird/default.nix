@@ -1,8 +1,8 @@
 { fetchurl }:
 let
-  version = "140.0";
+  version = "140.2";
 in
 fetchurl {
   url = "https://raw.githubusercontent.com/HorlogeSkynet/thunderbird-user.js/v${version}/user.js";
-  sha256 = "sha256-y4OwHPPJUGBCID5FdfjygdnF/j4il/Ys8i7BbDyaPn8=";
+  sha256 = "sha256-Y7TDCfp/sMDxotx2Mx9Idvi99vBGlMyCQ64EV6yGMCA=";
 }
