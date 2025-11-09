@@ -12,6 +12,51 @@ let
     default = null;
   };
   ifDevice = device: attrs: lib.optional (device != null) ({ inherit device; } // attrs);
+  isUserServiceEnabled = service: lib.hasAttr service config.systemd.user.services;
+  serviceStatusBlock =
+    {
+      service,
+      isServiceEnabled ? (_: true),
+      state ? {
+        dead = "Idle";
+        start = "Good";
+        failed = "Critical";
+        other = "Warning";
+      },
+      interval ? 60,
+      hide_when_empty ? true,
+      flags ? [ ],
+    }:
+    let
+      checkServiceStatus = pkgs.writeShellApplication {
+        name = "i3status_check-service-status";
+        runtimeInputs = with pkgs; [ systemd ];
+        text = ''
+          status=$(systemctl show ${lib.concatStringsSep " " flags} --value --property SubState ${service})
+          text="${service}"
+          state="Idle"
+          case $status in
+            dead)
+              text=""
+              state="${state.dead}"
+              ;;
+            start)
+              state="${state.start}";;
+            failed)
+              state="${state.failed}";;
+            *)
+              state="${state.other}";;
+          esac
+          echo '{"icon": "update", "state": "'"$state"'", "text": "'"$text"'"}'
+        '';
+      };
+    in
+    lib.optional (isServiceEnabled service) {
+      block = "custom";
+      json = true;
+      inherit interval hide_when_empty;
+      command = "${checkServiceStatus}/bin/i3status_check-service-status";
+    };
 in
 {
   options.personal.x.i3 = {
@@ -38,7 +83,20 @@ in
         default = {
           icons = "material-nf";
           blocks =
-            (ifDevice cfg.devices.wifi {
+            (serviceStatusBlock {
+              service = "nixos-upgrade";
+            })
+            ++ (serviceStatusBlock {
+              service = "spacemacs-update";
+              isServiceEnabled = isUserServiceEnabled;
+              flags = [ "--user" ];
+            })
+            ++ (serviceStatusBlock {
+              service = "devenv-update";
+              isServiceEnabled = isUserServiceEnabled;
+              flags = [ "--user" ];
+            })
+            ++ (ifDevice cfg.devices.wifi {
               block = "net";
               device = cfg.devices.wifi;
               format = " ^icon_net_wireless  $ssid ";
