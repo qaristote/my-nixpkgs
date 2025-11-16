@@ -8,13 +8,18 @@
 let
   cfg = config.programs.emacs;
   spacemacs-update-script = pkgs.callPackage (
-    { emacs, git }:
+    {
+      emacs,
+      git,
+      coreutils,
+    }:
     pkgs.writeShellApplication {
       name = "spacemacs-update";
 
       runtimeInputs = [
         emacs
         git
+        coreutils
       ];
 
       text = ''
