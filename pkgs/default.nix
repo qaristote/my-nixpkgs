@@ -1,7 +1,7 @@
 super:
 let
   self = {
-    lib = import ./lib { inherit (super) lib; };
+    lib = import ./lib { inherit (super) lib pkgs; };
 
     lockscreen = super.callPackage ./lockscreen { };
 

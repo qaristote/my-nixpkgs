@@ -56,25 +56,33 @@ in
     ];
     home.packages = lib.optional importedDevenv pkgs.devenv;
 
-    systemd.user = pkgs.personal.lib.homeManager.serviceWithTimer "devenv-update" {
-      Unit = {
-        Description = "Update devenv shells";
-        After = [
-          "network-online.target"
-        ];
-      };
-      Service = {
-        Type = "oneshot";
-        WorkingDirectory = "${config.home.homeDirectory}";
-        ExecStart = "${devenvUpdateScript}/bin/devenv-update";
-      };
-      Timer = {
-        Persistent = true;
-        OnCalendar = "daily";
-      };
-      Install = {
-        WantedBy = [ "default.target" ];
-      };
-    };
+    systemd.user = lib.mkMerge [
+      (pkgs.lib.personal.services.home.serviceWithTimer "devenv-update" {
+        Unit = {
+          Description = "Update devenv shells";
+          After = [
+            "network-online.target"
+          ];
+        };
+        Service = {
+          Type = "oneshot";
+          WorkingDirectory = "${config.home.homeDirectory}";
+          ExecStart = "${devenvUpdateScript}/bin/devenv-update";
+        };
+        Timer = {
+          Persistent = true;
+          OnCalendar = "daily";
+        };
+        Install = {
+          WantedBy = [ "default.target" ];
+        };
+      })
+      ({
+        services.devenv-update = pkgs.lib.personal.services.home.checkNetwork {
+          hosts = [ "github.com" ];
+          restart = true;
+        };
+      })
+    ];
   };
 }

@@ -1,8 +1,8 @@
-{ lib }:
+{ lib, pkgs }:
 
 let
   self = {
-    homeManager = import ./home-manager { };
+    services = import ./services { inherit lib pkgs; };
     toUserJS = prefs: ''
       ${lib.concatStrings (
         lib.mapAttrsToList (name: value: ''

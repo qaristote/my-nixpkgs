@@ -75,8 +75,8 @@ in
     home.file.".spacemacs.d/init.el".source = lib.mkDefault config.personal.home.dotfiles.spacemacs;
 
     # service to update spacemacs
-    systemd.user = (
-      pkgs.personal.lib.homeManager.serviceWithTimer "spacemacs-update" {
+    systemd.user = lib.mkMerge [
+      (pkgs.lib.personal.services.home.serviceWithTimer "spacemacs-update" {
         Unit = {
           Description = "Update Spacemacs by pulling the develop branch";
           After = [
@@ -96,7 +96,13 @@ in
         Install = {
           WantedBy = [ "default.target" ];
         };
-      }
-    );
+      })
+      ({
+        services.spacemacs-update = pkgs.lib.personal.services.home.checkNetwork {
+          hosts = [ "github.com" ];
+          restart = true;
+        };
+      })
+    ];
   };
 }

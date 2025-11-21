@@ -68,29 +68,16 @@ in
 
       remoteBuilder = with cfgRemote.builder; "${hostName}.${domain}";
 
-      checkNetwork = {
-        path = [ pkgs.unixtools.ping ];
-        # Check network connectivity
-        preStart = "(${
-          lib.concatMapStringsSep " && " (host: "ping -c 1 ${host}") cfg.autoUpgrade.checkHosts
-        }) || kill -s SIGUSR1 $$";
-        unitConfig = {
-          StartLimitIntervalSec = 300;
-          StartLimitBurst = 5;
-        };
-        serviceConfig = lib.mkIf (!config.personal.monitoring.enable) {
-          Restart = "on-abort";
-          RestartSec = 30;
-          RestartMode = "direct"; # dependent units will not fail
-        };
-      };
     in
     lib.mkMerge [
       (lib.mkIf hasFlake {
         system.autoUpgrade.flake = cfg.flake;
         systemd.services.flake-update = lib.mkIf hasFlakeInputs (
           lib.mkMerge [
-            checkNetwork
+            (pkgs.lib.personal.services.checkNetwork {
+              hosts = cfg.autoUpgrade.checkHosts;
+              restart = !config.personal.monitoring.enable;
+            })
             {
               description = "Update flake inputs";
               serviceConfig.Type = "oneshot";
@@ -146,7 +133,10 @@ in
           flags = lib.optional (!hasFlake) "--upgrade-all";
         };
         systemd.services.nixos-upgrade = lib.mkMerge [
-          checkNetwork
+          (pkgs.lib.personal.services.checkNetwork {
+            hosts = cfg.autoUpgrade.checkHosts;
+            restart = !config.personal.monitoring.enable;
+          })
           {
             path =
               lib.optional reboot pkgs.coreutils
