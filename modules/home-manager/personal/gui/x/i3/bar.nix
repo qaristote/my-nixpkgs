@@ -84,6 +84,9 @@ in
           icons = "material-nf";
           blocks =
             (serviceStatusBlock {
+              service = "flake-update";
+            })
+            ++ (serviceStatusBlock {
               service = "nixos-upgrade";
             })
             ++ (serviceStatusBlock {
