@@ -82,6 +82,7 @@ in
         // lib.optionalAttrs importedStylix {
           stylix = {
             enable = true;
+            enableReleaseChecks = false;
             image = lib.mkDefault wallpaper;
             base16Scheme = lib.mkDefault {
               author = "Stylix";

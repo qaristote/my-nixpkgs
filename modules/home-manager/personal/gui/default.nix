@@ -52,5 +52,7 @@ in
         pavucontrol
       ]);
     programs.firefox.enable = true;
+
+    stylix.enableReleaseChecks = false;
   };
 }
