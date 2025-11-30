@@ -34,7 +34,7 @@ in
           bash = {
             shellInit = ''
               function set_win_title(){
-                echo -ne "\033]0;$(whoami)@$(hostname).$(domainname):$(dirs)\a"
+                echo -ne "\033]0;$(whoami)@$(hostname --long):$(dirs)\a"
               }
               starship_precmd_user_func="set_win_title"
             '';
