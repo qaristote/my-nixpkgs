@@ -8,7 +8,12 @@ let
         name = "check-network";
         runtimeInputs = [ pkgs.unixtools.ping ];
         text = ''
-          (${lib.concatMapStringsSep " && " (host: "ping -c 1 ${host}") hosts}) || kill -s SIGUSR1 $$
+          for _ in {1..5}
+          do
+            (${lib.concatMapStringsSep " && " (host: "ping -c 1 ${host}") hosts}) && exit 0
+            sleep 30
+          done
+          exit 1
         '';
       };
     in
@@ -37,42 +42,24 @@ in
   home.checkNetwork =
     {
       hosts,
-      restart ? true,
+      ...
     }:
     {
       # Check network connectivity
-      Unit = {
-        StartLimitIntervalSec = 300;
-        StartLimitBurst = 5;
-      };
       Service = lib.mkMerge [
         {
           ExecStartPre = checkNetwork hosts;
         }
-        (lib.mkIf restart {
-          Restart = "on-abort";
-          RestartSec = 30;
-          RestartMode = "direct"; # dependent units will not fail
-        })
       ];
     };
 
   checkNetwork =
     {
       hosts,
-      restart ? true,
+      ...
     }:
     {
       # Check network connectivity
       preStart = checkNetwork hosts;
-      unitConfig = {
-        StartLimitIntervalSec = 300;
-        StartLimitBurst = 5;
-      };
-      serviceConfig = lib.mkIf restart {
-        Restart = "on-abort";
-        RestartSec = 30;
-        RestartMode = "direct"; # dependent units will not fail
-      };
     };
 }
