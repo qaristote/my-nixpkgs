@@ -75,11 +75,11 @@ in
             };
             imap = {
               host = "imap.irif.fr";
-              port = 993;
+              port = 143;
             };
             smtp = {
               host = "smtp.irif.fr";
-              port = 465;
+              port = 587;
             };
             thunderbird = {
               enable = true;
