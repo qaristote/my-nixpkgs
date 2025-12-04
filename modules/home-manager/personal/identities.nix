@@ -76,10 +76,11 @@ in
             imap = {
               host = "imap.irif.fr";
               port = 143;
+              tls.useStartTls = true;
             };
             smtp = {
               host = "smtp.irif.fr";
-              port = 587;
+              port = 465;
             };
             thunderbird = {
               enable = true;
