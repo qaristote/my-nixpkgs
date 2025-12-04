@@ -6,7 +6,7 @@ let
     let
       pkg = pkgs.writeShellApplication {
         name = "check-network";
-        runtimeInputs = [ pkgs.unixtools.ping ];
+        runtimeInputs = [ pkgs.toybox ];
         text = ''
           for _ in {1..5}
           do
