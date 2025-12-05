@@ -66,7 +66,6 @@ in
             address = "quentin.aristote@irif.fr";
             userName = "aristote";
             realName = "Quentin Aristote";
-            aliases = [ "aristote@irif.fr" ];
             folders = {
               drafts = "Drafts";
               inbox = "Inbox";
