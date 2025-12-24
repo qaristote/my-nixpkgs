@@ -46,8 +46,6 @@ let
     aristote = "ARISTOTE";
     aristote-4g = "ARISTOTE 4G";
     stvictoret = "ORBIWAN";
-    montlaur = "Nordnet_E080";
-    montlaur-5g = "Nordnet_E080_5G";
   };
 in
 {
