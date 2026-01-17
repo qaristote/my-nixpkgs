@@ -32,6 +32,14 @@ in
         ];
       };
 
+      services.openssh.extraConfig = ''
+        Match user ${cfg.name}
+          AllowAgentForwarding yes
+          AllowTcpForwarding yes
+          PermitTTY yes
+          PermitUserRC yes
+      '';
+
       assertions =
         let
           missingArgAssertion = name: {

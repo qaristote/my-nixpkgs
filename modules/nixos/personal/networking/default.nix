@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  options,
   ...
 }:
 let
@@ -62,21 +61,30 @@ in
     services = lib.mkIf cfg.ssh.enable {
       openssh = {
         enable = true;
-      }
-      // (
-        if options.services.openssh ? settings then
-          {
-            settings = {
-              PermitRootLogin = "no";
-              PasswordAuthentication = false;
-            };
-          }
-        else
-          {
-            permitRootLogin = "no";
-            passwordAuthentication = false;
-          }
-      );
+        settings = {
+          # Authentication
+          KbdInteractiveAuthentication = false;
+          PasswordAuthentication = false;
+          PermitRootLogin = "no";
+
+          # Forwarding
+          GatewayPorts = "no";
+          X11Forwarding = false;
+        };
+        extraConfig = lib.mkBefore ''
+          # Authentication
+          PubkeyAuthentication yes
+          HostbasedAuthentication no
+
+          # Forwarding
+          AllowAgentForwarding no
+          AllowTcpForwarding no
+          PermitTTY no
+          PermitUserEnvironment no
+          PermitUserRC no
+          PermitTunnel no
+        '';
+      };
       fail2ban = {
         enable = true;
         maxretry = 16;
