@@ -8,6 +8,7 @@
     ./monitoring.nix
     ./networking
     ./nix.nix
+    ./services
     ./system.nix
     ./user.nix
   ];
