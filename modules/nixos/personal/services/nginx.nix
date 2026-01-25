@@ -9,4 +9,6 @@
     recommendedTlsSettings = lib.mkDefault true;
     recommendedUwsgiSettings = lib.mkDefault config.services.uwsgi.enable;
   };
+
+  systemd.services.nginx.personal.monitor = true;
 }
